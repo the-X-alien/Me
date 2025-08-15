@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dhiaan's Projects</title>
+  <meta name="description" content="Check Out My Projects!" />
+  <meta name="keywords" content="Dhiaan Dave, portfolio, projects, contact, Dhiaan, the-X-alien" />
+  <meta name="author" content="Dhiaan Dave" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+</head>
+<body>
+  <header>
+    <h1>Check out my projects!</h1>
+    <p>Explore my GitHub repositories below.</p>
+  </header>
+
+  <main>
+    <section id="projects">
+      <h2>My GitHub Projects</h2>
+      <div id="repo-container" class="repo-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Dhiaan Dave — All rights reserved.</p>
+  </footer>
+
+  <script>
+    const username = 'the-X-alien';
+
+    fetch(`https://api.github.com/users/${username}/repos?sort=updated`)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(repos) {
+        const container = document.getElementById('repo-container');
+
+        repos.forEach(function(repo) {
+          if (repo.fork) {
+            return;
+          }
+
+          const box = document.createElement('div');
+          box.className = 'repo-box';
+          box.innerHTML = `
+            <h3><a href="${repo.html_url}" target="_blank">${repo.name}</a></h3>
+            <p>${repo.description ? repo.description : "No description provided."}</p>
+            <div class="repo-meta">
+              <span>⭐ ${repo.stargazers_count}</span>
+              <span>📅 Created: ${new Date(repo.created_at).toLocaleDateString()}</span>
+            </div>
+          `;
+          container.appendChild(box);
+        });
+      })
+      .catch(function(error) {
+        console.log('Error:', error);
+        document.getElementById('repo-container').innerHTML = '<p>Sorry, something went wrong.</p>';
+      });
+  </script>
+</body>
+</html>

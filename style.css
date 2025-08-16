@@ -119,15 +119,3 @@ footer {
   color: white;
   text-decoration: none;
 }
-
-#about {
-  display: flex;
-  justify-content: center;
-  height: 100vh;          
-}
-
-#skills {
-  display: flex;
-  justify-content: center;
-  height: 100vh;          
-}

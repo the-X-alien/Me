@@ -114,3 +114,8 @@ footer {
     font-size: 1.5rem;
   }
 }
+
+.link-group a {
+  color: white;
+  text-decoration: none;
+}

@@ -164,6 +164,11 @@ header::after {
   border-radius: 4px;
 }
 
+@keyframes colorShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; } 
+}
 
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }

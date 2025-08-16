@@ -6,13 +6,12 @@
 
 body {
   background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
-  background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
+  margin: 0;
+  padding: 0;
   font-family: 'Nunito', sans-serif;
   color: #1f2937;
   line-height: 1.6;
-  margin: 0;
-  padding: 0;
 }
 
 header {
@@ -125,7 +124,6 @@ footer {
 }
 
 #about {
-  background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
   animation: gradientShift 15s ease infinite;
   margin: 0;
   padding: 0;
@@ -135,7 +133,6 @@ footer {
 }
 
 #skills {
-  background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
   animation: gradientShift 15s ease infinite;
   margin: 0;
   padding: 0;

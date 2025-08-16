@@ -5,10 +5,12 @@
 }
 
 body {
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  background-color: #f0f2f5;
+  background: linear-gradient(to bottom right, #f0f4f8, #dfe9f3);
+  font-family: 'Nunito', sans-serif;
   color: #1f2937;
   line-height: 1.6;
+  margin: 0;
+  padding: 0;
 }
 
 header {
@@ -133,4 +135,5 @@ footer {
   color: #1f2937;
   line-height: 1.6;
 }
+
 

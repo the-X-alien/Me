@@ -6,7 +6,7 @@
 
 body {
   background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
-  animation: gradientShift 1s ease infinite;
+  animation: gradientShift 0.5s ease infinite;
   margin: 0;
   padding: 0;
   font-family: 'Nunito', sans-serif;
@@ -164,9 +164,9 @@ header::after {
   border-radius: 4px;
 }
 
-@keyframes colorShift {
+
+@keyframes gradientShift {
   0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 

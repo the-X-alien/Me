@@ -31,11 +31,11 @@
         <br>
     </section>
     
-    <section id="about" style="text-align: center;">
-      <h2 style="color: white;">About Me</h2>
-        <p>This is my personal portfolio website</p>
-        <br>
-    </section>
+<section id="latest-project" style="text-align: center;">
+  <h2 style="color: white;">Check Out My Latest Project</h2>
+  <div id="latest-project"></div>
+  <br>
+</section>
 
     <section id="skills" style="text-align: center;">
       <h2 style="color: white;">What I Do</h2>
@@ -50,8 +50,31 @@
   <footer>
     <p>&copy; 2025 Dhiaan Dave — All rights reserved.</p>
   </footer>
+  <script>
+  const githubUsername = 'the-X-alien';
+
+  fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated`)
+    .then(response => response.json())
+    .then(repos => {
+      const latestRepo = repos.find(repo => !repo.fork);
+      if (!latestRepo) return;
+
+      const container = document.getElementById('latest-project');
+      container.innerHTML = `
+        <h3><a href="${latestRepo.html_url}" target="_blank" style="color: #3b82f6;">${latestRepo.name}</a></h3>
+        <p style="color: #d1d5db;">${latestRepo.description || 'No description available.'}</p>
+        <p style="color: #9ca3af;">⭐ ${latestRepo.stargazers_count} | Last updated: ${new Date(latestRepo.updated_at).toLocaleDateString()}</p>
+      `;
+    })
+    .catch(error => {
+      console.error('Error fetching repos:', error);
+      document.getElementById('latest-project').innerHTML = `<p style="color: red;">Failed to load latest project.</p>`;
+    });
+</script>
+
 </body>
 </html>
+
 
 
 

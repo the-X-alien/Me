@@ -125,6 +125,10 @@ footer {
 }
 
 #about {
+  background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
+  animation: gradientShift 15s ease infinite;
+  margin: 0;
+  padding: 0;
   font-family: 'Nunito', sans-serif;
   background-color: #f0f2f5;
   color: #1f2937;
@@ -132,6 +136,10 @@ footer {
 }
 
 #skills {
+  background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
+  animation: gradientShift 15s ease infinite;
+  margin: 0;
+  padding: 0;
   font-family: 'Nunito', sans-serif;
   background-color: #f0f2f5;
   color: #1f2937;

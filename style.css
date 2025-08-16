@@ -126,3 +126,10 @@ footer {
   align-items: center;    
   height: 100vh;          
 }
+
+#skills {
+  display: flex;
+  justify-content: center;
+  align-items: center;    
+  height: 100vh;          
+}

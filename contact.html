@@ -85,21 +85,45 @@
 </head>
 <body>
 
-  <section class="contact-container">
-    <h1>Contact Me</h1>
-    <form action="dhiaandave@outlook.com" method="post" enctype="text/plain">
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" required />
+<section class="contact-container">
+  <h1>Contact Me</h1>
 
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required />
+  <form action="https://formspree.io/f/mblkejvj" method="POST">
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" required>
 
-      <label for="message">Message</label>
-      <textarea id="message" name="message" rows="6" required></textarea>
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" required>
 
-      <button type="submit">Send</button>
-    </form>
-  </section>
+    <label for="message">Message</label>
+    <textarea name="message" id="message" rows="6" required></textarea>
+
+    <button type="submit">Send</button>
+  </form>
+  <p id="form-status" style="color: green; display: none;">Thank you! Your message has been sent.</p>
+  <script>
+  const form = document.querySelector("form");
+  const status = document.getElementById("form-status");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const data = new FormData(form);
+    fetch(form.action, {
+      method: "POST",
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(response => {
+      form.reset();
+      status.style.display = "block";
+    }).catch(error => {
+      status.textContent = "Oops! There was a problem.";
+      status.style.color = "red";
+      status.style.display = "block";
+    });
+  });
+</script>
+</section>
+
 
   <footer>
     <p>&copy; 2025 Dhiaan Dave — All rights reserved.</p>
@@ -107,6 +131,7 @@
 
 </body>
 </html>
+
 
 
 

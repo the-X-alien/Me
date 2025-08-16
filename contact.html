@@ -100,7 +100,7 @@
 
     <button type="submit">Send</button>
   </form>
-  <p id="form-status" style="color: green; display: none;">Thank you! Your message has been sent.</p>
+  <p id="form-status" style="color: green; display: none; text-align: center;">Thank you! Your message has been sent.</p>
   <script>
   const form = document.querySelector("form");
   const status = document.getElementById("form-status");
@@ -116,7 +116,7 @@
       form.reset();
       status.style.display = "block";
     }).catch(error => {
-      status.textContent = "Oops! There was a problem.";
+      status.textContent = "Sorry, There was a problem! :(";
       status.style.color = "red";
       status.style.display = "block";
     });
@@ -131,6 +131,7 @@
 
 </body>
 </html>
+
 
 
 

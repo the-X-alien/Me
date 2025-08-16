@@ -160,7 +160,7 @@ header::after {
     #d1d5db 
   );
   background-size: 800% 800%;
-  animation: colorShift 10s ease infinite;
+  animation: colorShift 5s ease infinite;
   border-radius: 4px;
 }
 

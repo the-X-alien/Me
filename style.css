@@ -141,4 +141,33 @@ footer {
   line-height: 1.6;
 }
 
+header {
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 6px;
+  width: 100%;
+  background: linear-gradient(270deg, 
+    #d1d5db,
+    #ef4444, 
+    #8b5cf6,
+    #3b82f6, 
+    #d1d5db 
+  );
+  background-size: 800% 800%;
+  animation: colorShift 10s ease infinite;
+  border-radius: 4px;
+}
+
+@keyframes colorShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 

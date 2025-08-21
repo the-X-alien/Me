@@ -24,6 +24,13 @@
     </nav>
   </header>
 
+  <script>
+    if (!document.cookie.split('; ').find(row => row.startsWith('cookie_consent'))) {
+    alert("By using this website, you agree to our cookie policy.");
+    document.cookie = "cookie_consent=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"; }
+  </script>
+
+
   <main>
     <section id="I" style="text-align: center;">
       <h2 style="color: white;">Hi, I'm 13 year old named Dhiaan Dave</h2>

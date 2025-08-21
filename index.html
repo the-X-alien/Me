@@ -28,7 +28,28 @@
     if (!document.cookie.split('; ').find(row => row.startsWith('cookie_consent'))) {
     alert("By using this website, you agree to our cookie policy.");
     document.cookie = "cookie_consent=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"; }
-  </script>
+    function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();}
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";}
+
+    function getCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for(let i=0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    setCookie("user_id", "12345", 365);  // expires in 7 days
+    console.log("user_id cookie:", getCookie("user_id"));
+</script>
 
 
   <main>
@@ -91,6 +112,7 @@
 
 </body>
 </html>
+
 
 
 

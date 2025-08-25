@@ -10,5 +10,80 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
-<header>WIP! Soon to come</header>
+  <style>
+    .blog-post {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      border: 1px solid #e5e7eb;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .blog-post h3 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #111827;
+    }
+
+    .blog-post .date {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 1rem;
+    }
+
+    .blog-banner {
+      width: 100%;
+      height: 200px;
+      border-radius: 0.75rem;
+      background-color: #e5e7eb;
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 1rem;
+    }
+
+    .blog-content {
+      font-size: 1rem;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My Blog</h1>
+    <p>Sharing thoughts, ideas, and projects</p>
+  </header>
+
+  <main>
+    <h2>Latest Posts</h2>
+
+    <!-- Blog Post Example 1 (with image) -->
+    <div class="blog-post">
+      <div class="blog-banner" style="background-image: url('your-image.jpg');"></div>
+      <h3>First Blog Post</h3>
+      <p class="date">August 25, 2025</p>
+      <div class="blog-content">
+        <p>This is the content of your first blog post. You can write as much as you want here. The image above was added using background-image.</p>
+      </div>
+    </div>
+
+    <!-- Blog Post Example 2 (no image → blank banner) -->
+    <div class="blog-post">
+      <div class="blog-banner"></div>
+      <h3>Second Blog Post</h3>
+      <p class="date">August 20, 2025</p>
+      <div class="blog-content">
+        <p>This post doesn’t have an image. Instead, it just shows a neutral blank banner.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 My Blog. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>
 

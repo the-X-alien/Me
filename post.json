@@ -1,0 +1,14 @@
+[
+  {
+    "title": "First Blog Post",
+    "date": "2025-08-25",
+    "image": "https://picsum.photos/800/400", 
+    "content": "This is the full content of my first blog post. It supports long text paragraphs, so I can write everything I want."
+  },
+  {
+    "title": "Second Blog Post",
+    "date": "2025-08-20",
+    "image": "",
+    "content": "This post doesn’t have an image. When the image field is blank, it just shows a neutral gray banner."
+  }
+]

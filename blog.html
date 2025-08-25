@@ -57,34 +57,38 @@
   </header>
 
   <main>
-    <h2>Latest Posts</h2>
-
-    <!-- Blog Post Example 1 (with image) -->
-    <div class="blog-post">
-      <div class="blog-banner" style="background-image: url('your-image.jpg');"></div>
-      <h3>First Blog Post</h3>
-      <p class="date">August 25, 2025</p>
-      <div class="blog-content">
-        <p>This is the content of your first blog post. You can write as much as you want here. The image above was added using background-image.</p>
-      </div>
-    </div>
-
-    <!-- Blog Post Example 2 (no image → blank banner) -->
-    <div class="blog-post">
-      <div class="blog-banner"></div>
-      <h3>Second Blog Post</h3>
-      <p class="date">August 20, 2025</p>
-      <div class="blog-content">
-        <p>This post doesn’t have an image. Instead, it just shows a neutral blank banner.</p>
-      </div>
-    </div>
-
+  <h2>Latest Posts</h2>
+  <div id="blog-list"></div>
   </main>
+
+  <script>
+    fetch("posts.json")
+      .then(res => res.json())
+      .then(posts => {
+        const blogList = document.getElementById("blog-list");
+        posts.forEach(post => {
+          const div = document.createElement("div");
+          div.className = "blog-post";
+          div.onclick = () => {
+            localStorage.setItem("currentPost", JSON.stringify(post));
+            window.location.href = "post.html";
+          };
+          div.innerHTML = `
+            <div class="blog-banner" style="background-image: url('${post.image || ""}');"></div>
+            <h3>${post.title}</h3>
+            <p class="date">${post.date}</p>
+            <p>${post.content.substring(0,100)}...</p>
+          `;
+          blogList.prepend(div);
+        });
+      });
+  </script>
 
   <footer>
     <p>&copy; 2025 Dhiaan Dave - All Rights Reserved.</p>
   </footer>
 </body>
 </html>
+
 
 

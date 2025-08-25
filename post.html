@@ -1,0 +1,23 @@
+<main>
+  <div class="blog-container">
+    <div id="banner" class="blog-banner"></div>
+    <h1 id="title"></h1>
+    <span id="date" class="date"></span>
+    <p id="content"></p>
+  </div>
+  <p style="text-align:center; margin-top:1rem;">
+    <a href="blog.html">← Back to Blog</a>
+  </p>
+</main>
+
+<script>
+  const post = JSON.parse(localStorage.getItem("currentPost"));
+  if(post){
+    document.getElementById("title").innerText = post.title;
+    document.getElementById("date").innerText = post.date;
+    document.getElementById("content").innerText = post.content;
+    if(post.image) document.getElementById("banner").style.backgroundImage = `url('${post.image}')`;
+  } else {
+    document.querySelector(".blog-container").innerHTML = "<p>No post found.</p>";
+  }
+</script>

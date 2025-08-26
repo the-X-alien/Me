@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog Admin</title>
+<!-- TinyMCE CDN -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<style>
+  body { font-family: 'Nunito', sans-serif; padding: 2rem; background: #f0f0f0; }
+  label { display:block; margin-top: 1rem; font-weight: bold; }
+  input, textarea { width: 100%; padding: 0.5rem; margin-top: 0.25rem; }
+  button { margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer; background: #3b82f6; color: white; border: none; border-radius: 0.25rem; }
+  button:hover { background: #2563eb; }
+  pre { background: #eee; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-top: 1rem; }
+  h2 { margin-top: 2rem; }
+  .preview { background: rgba(255,255,255,0.8); padding: 1rem; border-radius: 0.75rem; margin-top: 1rem; }
+  .blog-banner { width: 100%; height: 200px; border-radius: 0.5rem; background-size: cover; background-position: center; margin-bottom: 1rem; }
+  .blog-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; }
+  .blog-date { font-size: 0.9rem; color: #6b7280; margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+<h1>Blog Post Editor</h1>
+
+<label>Post ID (unique): <input type="text" id="post-id" placeholder="first-blog"></label>
+<label>Title: <input type="text" id="post-title" placeholder="First Blog Post"></label>
+<label>Date: <input type="text" id="post-date" placeholder="August 25, 2025"></label>
+<label>Banner URL: <input type="text" id="post-banner" placeholder="your-image.jpg"></label>
+<label>Content:</label>
+<textarea id="post-content"></textarea>
+
+<button id="generateBtn">Generate JSON & Copy</button>
+
+<h2>JSON Output:</h2>
+<pre id="output"></pre>
+
+<h2>Live Preview:</h2>
+<div class="preview">
+  <div id="preview-banner" class="blog-banner"></div>
+  <div id="preview-title" class="blog-title"></div>
+  <div id="preview-date" class="blog-date"></div>
+  <div id="preview-content"></div>
+</div>
+
+<script>
+  // Initialize TinyMCE
+  tinymce.init({
+    selector: '#post-content',
+    height: 400,
+    menubar: false,
+    plugins: 'lists link image code',
+    toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright | bullist numlist | link image | code',
+    branding: false,
+    setup: function(editor) {
+      editor.on('input', updatePreview);
+      editor.on('change', updatePreview);
+    }
+  });
+
+  const titleInput = document.getElementById('post-title');
+  const dateInput = document.getElementById('post-date');
+  const bannerInput = document.getElementById('post-banner');
+
+  titleInput.addEventListener('input', updatePreview);
+  dateInput.addEventListener('input', updatePreview);
+  bannerInput.addEventListener('input', updatePreview);
+
+  function updatePreview() {
+    document.getElementById('preview-title').textContent = titleInput.value;
+    document.getElementById('preview-date').textContent = dateInput.value;
+    document.getElementById('preview-banner').style.backgroundImage = bannerInput.value ? `url('${bannerInput.value}')` : '';
+    const content = tinymce.get('post-content') ? tinymce.get('post-content').getContent() : '';
+    document.getElementById('preview-content').innerHTML = content;
+  }
+
+  document.getElementById('generateBtn').addEventListener('click', () => {
+    const id = document.getElementById('post-id').value.trim();
+    const title = titleInput.value.trim();
+    const date = dateInput.value.trim();
+    const banner = bannerInput.value.trim();
+    const content = tinymce.get('post-content') ? tinymce.get('post-content').getContent().trim() : '';
+
+    if(!id || !title || !date || !content){
+      alert("Please fill out Post ID, Title, Date, and Content.");
+      return;
+    }
+
+    const jsonSnippet = `"${id}": {\n` +
+                        `  "title": "${title}",\n` +
+                        `  "date": "${date}",\n` +
+                        `  "banner": "${banner}",\n` +
+                        `  "content": "${content.replace(/\n/g,' ')}"\n` +
+                        `}`;
+
+    const output = document.getElementById('output');
+    output.textContent = jsonSnippet;
+
+    // Auto-copy to clipboard
+    navigator.clipboard.writeText(jsonSnippet).then(() => {
+      alert("JSON copied to clipboard!");
+    });
+
+    // Clear fields
+    document.getElementById('post-id').value = '';
+    titleInput.value = '';
+    dateInput.value = '';
+    bannerInput.value = '';
+    tinymce.get('post-content').setContent('');
+    updatePreview();
+  });
+
+  // Initialize preview on load
+  updatePreview();
+</script>
+</body>
+</html>

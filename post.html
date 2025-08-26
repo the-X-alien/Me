@@ -1,23 +1,57 @@
-<main>
-  <div class="blog-container">
-    <div id="banner" class="blog-banner"></div>
-    <h1 id="title"></h1>
-    <span id="date" class="date"></span>
-    <p id="content"></p>
-  </div>
-  <p style="text-align:center; margin-top:1rem;">
-    <a href="blog.html">← Back to Blog</a>
-  </p>
-</main>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Post</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1 id="post-title"></h1>
+    <p id="post-date"></p>
+  </header>
 
-<script>
-  const post = JSON.parse(localStorage.getItem("currentPost"));
-  if(post){
-    document.getElementById("title").innerText = post.title;
-    document.getElementById("date").innerText = post.date;
-    document.getElementById("content").innerText = post.content;
-    if(post.image) document.getElementById("banner").style.backgroundImage = `url('${post.image}')`;
-  } else {
-    document.querySelector(".blog-container").innerHTML = "<p>No post found.</p>";
-  }
-</script>
+  <main>
+    <div id="post-banner" class="blog-banner"></div>
+    <div id="post-content" class="blog-content"></div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Dhiaan Dave - All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Your blog posts data
+    const posts = {
+      "first-blog": {
+        title: "First Blog Post",
+        date: "August 25, 2025",
+        banner: "your-image.jpg",
+        content: "<p>This is the content of your first blog post.</p>"
+      },
+      "second-blog": {
+        title: "Second Blog Post",
+        date: "August 20, 2025",
+        banner: "",
+        content: "<p>This post doesn’t have an image. It shows a blank banner.</p>"
+      }
+    };
+
+    // Get ID from URL
+    const params = new URLSearchParams(window.location.search);
+    const postId = params.get('id');
+
+    if (posts[postId]) {
+      const post = posts[postId];
+      document.getElementById('post-title').textContent = post.title;
+      document.getElementById('post-date').textContent = post.date;
+      const banner = document.getElementById('post-banner');
+      if(post.banner) banner.style.backgroundImage = `url('${post.banner}')`;
+      document.getElementById('post-content').innerHTML = post.content;
+    } else {
+      document.body.innerHTML = "<p>Post not found.</p>";
+    }
+  </script>
+</body>
+</html>

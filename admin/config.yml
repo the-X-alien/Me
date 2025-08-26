@@ -2,8 +2,9 @@ backend:
   name: github
   repo: the-X-alien/Me   
   branch: main                    
+  auth_scope: repo
 
-media_folder: "images/uploads"    
+media_folder: "images/uploads"
 public_folder: "/images/uploads"
 
 collections:

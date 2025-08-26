@@ -3,57 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Fake Proxy</title>
+  <title>Mini Browser</title>
   <style>
     body {
-      font-family: monospace;
-      background: #111;
-      color: #0f0;
+      margin: 0;
+      font-family: sans-serif;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: 40px;
+      height: 100vh;
     }
-    input, button {
-      background: #000;
-      border: 1px solid #0f0;
-      color: #0f0;
-      padding: 5px 10px;
-      margin: 5px;
+    header {
+      background: #222;
+      color: white;
+      padding: 10px;
+      display: flex;
+      gap: 8px;
+    }
+    input {
+      flex: 1;
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #444;
+    }
+    button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      background: #4caf50;
+      color: white;
+      cursor: pointer;
     }
     iframe {
-      width: 80%;
-      height: 400px;
-      border: 1px solid #0f0;
-      margin-top: 20px;
+      flex: 1;
+      border: none;
+      width: 100%;
     }
   </style>
 </head>
 <body>
-  <h1>Proxy Portal (Demo)</h1>
-  <form id="proxyForm">
-    <input type="text" id="urlInput" placeholder="Enter URL..." required>
-    <button type="submit">Go</button>
-  </form>
-  <iframe id="viewer"></iframe>
+  <header>
+    <input id="url" type="text" placeholder="Enter a URL (https://...)" />
+    <button onclick="loadSite()">Go</button>
+  </header>
+  <iframe id="frame" sandbox="allow-same-origin allow-scripts allow-forms allow-popups"></iframe>
 
   <script>
-    const form = document.getElementById('proxyForm');
-    const input = document.getElementById('urlInput');
-    const viewer = document.getElementById('viewer');
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      let url = input.value;
-
-      // If no protocol, add https://
-      if (!/^https?:\/\//i.test(url)) {
-        url = 'https://' + url;
+    function loadSite() {
+      let input = document.getElementById("url").value.trim();
+      if (!input.startsWith("http://") && !input.startsWith("https://")) {
+        input = "https://" + input;
       }
-
-      // NOTE: This only works if the site allows embedding (most block it)
-      viewer.src = url;
-    });
+      document.getElementById("frame").src = input;
+    }
   </script>
 </body>
 </html>

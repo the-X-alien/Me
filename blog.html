@@ -59,24 +59,21 @@
   <main>
     <h2>Latest Posts</h2>
 
-    <div class="blog-post">
+    <!-- Blog Post 1 -->
+    <div class="blog-post" onclick="openPost('first-blog')">
       <div class="blog-banner" style="background-image: url('your-image.jpg');"></div>
       <h3>First Blog Post</h3>
       <p class="date">August 25, 2025</p>
-      <div class="blog-content">
-        <p>This is the content of your first blog post. You can write as much as you want here. The image above was added using background-image.</p>
-      </div>
     </div>
 
-    <div class="blog-post">
+    <!-- Blog Post 2 -->
+    <div class="blog-post" onclick="openPost('second-blog')">
       <div class="blog-banner"></div>
       <h3>Second Blog Post</h3>
       <p class="date">August 20, 2025</p>
-      <div class="blog-content">
-        <p>This post doesn’t have an image. Instead, it just shows a neutral blank banner.</p>
-      </div>
     </div>
 
+    <!-- Add more posts here -->
   </main>
 
   <footer>
@@ -84,21 +81,9 @@
   </footer>
 
   <script>
-    const posts = document.querySelectorAll('.blog-post');
-
-    posts.forEach(post => {
-      post.addEventListener('click', () => {
-        const content = post.querySelector('.blog-content');
-        const isOpen = content.style.display === 'block';
-
-        // Close all posts
-        posts.forEach(p => p.querySelector('.blog-content').style.display = 'none');
-
-        // Toggle current post
-        content.style.display = isOpen ? 'none' : 'block';
-      });
-    });
+    function openPost(id) {
+      window.location.href = `post.html?id=${id}`;
+    }
   </script>
 </body>
 </html>
-

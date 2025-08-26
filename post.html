@@ -5,95 +5,98 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog Post</title>
   <link rel="stylesheet" href="style.css">
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dhiaan's Portfolio</title>
-  <meta name="description" content="Welcome to Dhiaan's portfolio. Explore my blog, projects, and contact information.">
-  <meta name="keywords" content="Dhiaan Dave, portfolio, blog, projects, contact, Dhiaan, the-X-alien, Milpitas, California, Thomas Russell, Milpitas High School, MHS, TRMS, student">
-  <meta name="author" content="Dhiaan Dave">
-  <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
   <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
+      margin: 0;
+      padding: 0;
+      color: #1f2937;
+    }
+
     .blog-post {
-      background: rgba(255, 255, 255, 0.7);
+      max-width: 800px;
+      margin: 2rem auto;
+      background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(10px);
       border-radius: 1rem;
       border: 1px solid #e5e7eb;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+      box-shadow: 0 10px 15px rgba(0,0,0,0.05);
     }
 
-    .blog-post h3 {
-      font-size: 1.75rem;
-      font-weight: 700;
+    .blog-banner {
+      width: 100%;
+      height: 300px;
+      border-radius: 0.75rem;
+      background-color: #e5e7eb;
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .blog-post h1 {
+      font-size: 2rem;
       margin-bottom: 0.5rem;
-      color: #111827;
     }
 
     .blog-post .date {
       font-size: 0.9rem;
       color: #6b7280;
-      margin-bottom: 1rem;
-    }
-
-    .blog-banner {
-      width: 100%;
-      height: 200px;
-      border-radius: 0.75rem;
-      background-color: #e5e7eb; /* fallback if no image */
-      background-size: cover;
-      background-position: center;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .blog-content {
       font-size: 1rem;
       color: #374151;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      color: #d1d5db;
+      padding: 1.5rem;
+      margin-top: 3rem;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1 id="post-title"></h1>
-    <p id="post-date"></p>
-  </header>
-
-  <main>
+  <div class="blog-post">
     <div id="post-banner" class="blog-banner"></div>
+    <h1 id="post-title"></h1>
+    <p class="date" id="post-date"></p>
     <div id="post-content" class="blog-content"></div>
-  </main>
+  </div>
 
   <footer>
     <p>&copy; 2025 Dhiaan Dave - All Rights Reserved.</p>
   </footer>
 
   <script>
-    // Your blog posts data
+    // Blog posts data
     const posts = {
       "first-blog": {
         title: "First Blog Post",
         date: "August 25, 2025",
         banner: "your-image.jpg",
-        content: "<p>This is the content of your first blog post.</p>"
+        content: "<p>This is the content of your first blog post. You can write as much as you want here.</p>"
       },
       "second-blog": {
         title: "Second Blog Post",
         date: "August 20, 2025",
         banner: "",
-        content: "<p>This post doesn’t have an image. It shows a blank banner.</p>"
+        content: "<p>This post doesn’t have an image. Instead, it just shows a blank banner.</p>"
       }
     };
 
-    // Get ID from URL
+    // Get post ID from URL
     const params = new URLSearchParams(window.location.search);
     const postId = params.get('id');
 
-    if (posts[postId]) {
+    if(posts[postId]) {
       const post = posts[postId];
       document.getElementById('post-title').textContent = post.title;
       document.getElementById('post-date').textContent = post.date;
@@ -101,9 +104,8 @@
       if(post.banner) banner.style.backgroundImage = `url('${post.banner}')`;
       document.getElementById('post-content').innerHTML = post.content;
     } else {
-      document.body.innerHTML = "<p>Post not found.</p>";
+      document.body.innerHTML = "<p style='text-align:center;margin-top:2rem;color:white;'>Post not found.</p>";
     }
   </script>
 </body>
 </html>
-

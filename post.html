@@ -8,12 +8,18 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
   <style>
-    body {
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
       font-family: 'Nunito', sans-serif;
       background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
-      margin: 0;
-      padding: 0;
       color: #1f2937;
+    }
+
+    body {
+      flex: 1;
     }
 
     .blog-post {
@@ -55,10 +61,10 @@
     }
 
     footer {
+      margin-top: auto; /* pushes footer to the bottom */
       text-align: center;
       color: #d1d5db;
       padding: 1.5rem;
-      margin-top: 3rem;
       font-size: 0.9rem;
     }
   </style>

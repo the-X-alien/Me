@@ -1,11 +1,67 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Blog Editor</title>
-  <script src="https://unpkg.com/netlify-cms-app/dist/netlify-cms.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog Admin</title>
+<!-- TinyMCE CDN -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<style>
+  body { font-family: 'Nunito', sans-serif; padding: 2rem; background: #f0f0f0; }
+  label { display:block; margin-top: 1rem; font-weight: bold; }
+  input, textarea { width: 100%; padding: 0.5rem; margin-top: 0.25rem; }
+  button { margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer; background: #3b82f6; color: white; border: none; border-radius: 0.25rem; }
+  button:hover { background: #2563eb; }
+  pre { background: #eee; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-top: 1rem; }
+</style>
 </head>
 <body>
-  <!-- Netlify CMS mounts here -->
+<h1>Blog Post Editor</h1>
+
+<label>Post ID (unique): <input type="text" id="post-id" placeholder="first-blog"></label>
+<label>Title: <input type="text" id="post-title" placeholder="First Blog Post"></label>
+<label>Date: <input type="text" id="post-date" placeholder="August 25, 2025"></label>
+<label>Banner URL: <input type="text" id="post-banner" placeholder="your-image.jpg"></label>
+<label>Content:</label>
+<textarea id="post-content"></textarea>
+
+<button onclick="generatePost()">Generate JSON</button>
+
+<h2>JSON Output:</h2>
+<pre id="output"></pre>
+
+<script>
+  // Initialize TinyMCE editor
+  tinymce.init({
+    selector: '#post-content',
+    height: 400,
+    menubar: false,
+    plugins: 'lists link image code',
+    toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright | bullist numlist | link image | code',
+    branding: false
+  });
+
+  function generatePost() {
+    const id = document.getElementById('post-id').value.trim();
+    const title = document.getElementById('post-title').value.trim();
+    const date = document.getElementById('post-date').value.trim();
+    const banner = document.getElementById('post-banner').value.trim();
+    const content = tinymce.get('post-content').getContent().trim();
+
+    if(!id || !title || !date || !content){
+      alert("Please fill out Post ID, Title, Date, and Content.");
+      return;
+    }
+
+    const jsonSnippet = `"${id}": {\n` +
+                        `  "title": "${title}",\n` +
+                        `  "date": "${date}",\n` +
+                        `  "banner": "${banner}",\n` +
+                        `  "content": "${content.replace(/\n/g,' ')}"\n` +
+                        `}`;
+
+    document.getElementById('output').textContent = jsonSnippet;
+  }
+</script>
 </body>
 </html>

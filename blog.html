@@ -84,15 +84,21 @@
   </footer>
 
   <script>
-    // Select all blog posts
     const posts = document.querySelectorAll('.blog-post');
 
     posts.forEach(post => {
       post.addEventListener('click', () => {
         const content = post.querySelector('.blog-content');
-        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        const isOpen = content.style.display === 'block';
+
+        // Close all posts
+        posts.forEach(p => p.querySelector('.blog-content').style.display = 'none');
+
+        // Toggle current post
+        content.style.display = isOpen ? 'none' : 'block';
       });
     });
   </script>
 </body>
 </html>
+

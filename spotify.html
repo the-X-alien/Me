@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dhiaan's Portfolio</title>
+  <meta name="description" content="Welcome to Dhiaan's portfolio. Explore my blog, projects, and contact information.">
+  <meta name="keywords" content="Dhiaan Dave, portfolio, blog, projects, contact, Dhiaan, the-X-alien, Milpitas, California, Thomas Russell, Milpitas High School, MHS, TRMS, student">
+  <meta name="author" content="Dhiaan Dave">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Spotify</h1>
+    <p>What I'm listening to 🎧</p>
+  </header>
+
+  <main>
+    <div class="repo-grid">
+      <div class="repo-box">
+        <h3>Now Playing</h3>
+        <p id="spotifyStats">Loading...</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>🎶 Powered by Spotify API</p>
+  </footer>
+
+  <script>
+    async function loadSpotify() {
+      try {
+        let res = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+          headers: { "Authorization": "Bearer YOUR_SPOTIFY_TOKEN" }
+        });
+
+        if (res.status === 204) {
+          document.getElementById("spotifyStats").textContent = "Not playing anything 🎧";
+          return;
+        }
+
+        let data = await res.json();
+        let song = data.item;
+        document.getElementById("spotifyStats").textContent =
+          `Now Playing: ${song.name} - ${song.artists.map(a => a.name).join(", ")}`;
+      } catch {
+        document.getElementById("spotifyStats").textContent = "Error loading stats";
+      }
+    }
+    loadSpotify();
+  </script>
+</body>
+</html>

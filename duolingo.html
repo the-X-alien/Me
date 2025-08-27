@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dhiaan's Portfolio</title>
+  <meta name="description" content="Welcome to Dhiaan's portfolio. Explore my blog, projects, and contact information.">
+  <meta name="keywords" content="Dhiaan Dave, portfolio, blog, projects, contact, Dhiaan, the-X-alien, Milpitas, California, Thomas Russell, Milpitas High School, MHS, TRMS, student">
+  <meta name="author" content="Dhiaan Dave">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Duolingo Stats</h1>
+    <p>Language learning progress</p>
+  </header>
+
+  <main>
+    <div class="repo-grid">
+      <div class="repo-box">
+        <h3>My Duolingo Data</h3>
+        <p id="duolingoStats">Loading...</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>🦉 Powered by Duolingo API</p>
+  </footer>
+
+  <script>
+    async function loadDuolingo() {
+      try {
+        let res = await fetch("https://www.duolingo.com/2017-06-30/users?username={yourUsername}");
+        let data = await res.json();
+        let user = data.users[0];
+        document.getElementById("duolingoStats").textContent =
+          `Streak: ${user.streak || 0} 🔥 | XP: ${user.totalXp || 0}`;
+      } catch {
+        document.getElementById("duolingoStats").textContent = "Error loading stats";
+      }
+    }
+    loadDuolingo();
+  </script>
+</body>
+</html>

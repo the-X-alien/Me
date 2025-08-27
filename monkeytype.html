@@ -45,37 +45,37 @@
   </footer>
 
   <py-script>
-import asyncio
-from pyodide.http import pyfetch
-import json
-
-APE_KEY = "NjhhZjc5Y2NlZmY2N2M0ZmRjM2Q4NjAyLkxpYkdMUHpZNkVBZjBGWkh0WUVaLW9lU3I3UF9WNkJE"  # Replace this with your ApeKey
-
-async def fetch_stats():
-    try:
-        response = await pyfetch(
-            "https://api.monkeytype.com/users/personalBests?mode=time",
-            method="GET",
-            headers={"Authorization": f"ApeKey {APE_KEY}"}
-        )
-        data = await response.json()
-
-        mode_data = data["data"].get("personalBests", {}).get("time", {})
-        stats_60 = mode_data.get("60", {})
-
-        best_wpm = stats_60.get("wpm", "N/A")
-        acc = stats_60.get("acc", "N/A")
-        consistency = stats_60.get("consistency", "N/A")
-
-        element = js.document.getElementById("stats")
-        element.innerText = f"Best WPM: {best_wpm} | Accuracy: {acc}% | Consistency: {consistency}%"
-
-    except Exception as e:
-        js.console.error(e)
-        element = js.document.getElementById("stats")
-        element.innerText = "Error loading stats"
-
-asyncio.ensure_future(fetch_stats())
+    import asyncio
+    from pyodide.http import pyfetch
+    import json
+    
+    APE_KEY = "NjhhZjc5Y2NlZmY2N2M0ZmRjM2Q4NjAyLkxpYkdMUHpZNkVBZjBGWkh0WUVaLW9lU3I3UF9WNkJE"  # Replace this with your ApeKey
+    
+    async def fetch_stats():
+        try:
+            response = await pyfetch(
+                "https://api.monkeytype.com/users/personalBests?mode=time",
+                method="GET",
+                headers={"Authorization": f"ApeKey {APE_KEY}"}
+            )
+            data = await response.json()
+    
+            mode_data = data["data"].get("personalBests", {}).get("time", {})
+            stats_60 = mode_data.get("60", {})
+    
+            best_wpm = stats_60.get("wpm", "N/A")
+            acc = stats_60.get("acc", "N/A")
+            consistency = stats_60.get("consistency", "N/A")
+    
+            element = js.document.getElementById("stats")
+            element.innerText = f"Best WPM: {best_wpm} | Accuracy: {acc}% | Consistency: {consistency}%"
+    
+        except Exception as e:
+            js.console.error(e)
+            element = js.document.getElementById("stats")
+            element.innerText = "Error loading stats"
+    
+    asyncio.ensure_future(fetch_stats())
   </py-script>
 </body>
 </html>

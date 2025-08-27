@@ -27,21 +27,32 @@
   </main>
 
   <footer>
-    <p>Using the Monkeytype API</p>
+    <p>🐒 Powered by Monkeytype API</p>
   </footer>
 
   <script>
+    const APE_KEY = "NjhhZjc5Y2NlZmY2N2M0ZmRjM2Q4NjAyLkxpYkdMUHpZNkVBZjBGWkh0WUVaLW9lU3I3UF9WNkJE";
+
     async function loadMonkeytype() {
       try {
-        let res = await fetch("https://api.monkeytype.com/users/{Dhiaan_Dave}");
-        let data = await res.json();
+        const res = await fetch("https://api.monkeytype.com/users/personalBests?mode=time", {
+          headers: { "Authorization": `ApeKey ${APE_KEY}` }
+        });
+        const data = await res.json();
+
+        // Extract useful stats
+        const bestWPM = data.data.personalBests?.time?.["60"]?.wpm || "N/A";
+        const acc = data.data.personalBests?.time?.["60"]?.acc || "N/A";
+        const consistency = data.data.personalBests?.time?.["60"]?.consistency || "N/A";
+
         document.getElementById("monkeytypeStats").textContent =
-          `Best WPM: ${data.data.personalBests?.time?.["60"]?.wpm || "N/A"} | 
-           Total Tests: ${data.data.typingStats?.testsCompleted || "N/A"}`;
-      } catch {
+          `Best WPM: ${bestWPM} | Accuracy: ${acc}% | Consistency: ${consistency}%`;
+      } catch (err) {
+        console.error(err);
         document.getElementById("monkeytypeStats").textContent = "Error loading stats";
       }
     }
+
     loadMonkeytype();
   </script>
 </body>

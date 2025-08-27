@@ -14,32 +14,62 @@
   <title>Monkeytype Stats</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .repo-box iframe {
-      width: 100%;
-      height: 600px; 
-      border: none;
+    /* Styling for the stats display */
+    .repo-box {
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 12px;
-      overflow: auto;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+    .repo-box h3 {
+      margin-bottom: 10px;
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+    .repo-box p {
+      font-size: 1rem;
+      margin: 5px 0;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Monkeytype Stats</h1>
-    <p>My stats!</p>
+    <p>Your typing performance at a glance</p>
   </header>
 
   <main>
     <div class="repo-grid">
       <div class="repo-box">
-        <h3>My Monkeytype Profile</h3>
-        <iframe src="https://monkeytype.com/profile/Dhiaan_Dave" scrolling="yes"></iframe>
+        <h3>My Monkeytype Stats</h3>
+        <p id="wpm">WPM: Loading...</p>
+        <p id="accuracy">Accuracy: Loading...</p>
+        <p id="consistency">Consistency: Loading...</p>
       </div>
     </div>
   </main>
 
   <footer>
-    <p>🐒 Embedded from Monkeytype</p>
+    <p>🐒 Stats powered by Monkeytype API</p>
   </footer>
+
+  <script>
+    async function fetchStats() {
+      try {
+        const response = await fetch('https://api.monkeytype.com/users/stats?username=Dhiaan_Dave');
+        const data = await response.json();
+
+        // Assuming the API returns data in the following structure
+        document.getElementById('wpm').textContent = `WPM: ${data.wpm}`;
+        document.getElementById('accuracy').textContent = `Accuracy: ${data.accuracy}%`;
+        document.getElementById('consistency').textContent = `Consistency: ${data.consistency}%`;
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+      }
+    }
+
+    fetchStats();
+  </script>
 </body>
 </html>

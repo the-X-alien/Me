@@ -33,7 +33,7 @@
   <script>
     async function loadDuolingo() {
       try {
-        let res = await fetch("https://www.duolingo.com/2017-06-30/users?username={yourUsername}");
+        let res = await fetch("https://www.duolingo.com/profile/DhiaanDave");
         let data = await res.json();
         let user = data.users[0];
         document.getElementById("duolingoStats").textContent =

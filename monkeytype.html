@@ -49,46 +49,32 @@
     <p>🐒 Powered by Monkeytype API</p>
   </footer>
 
-  <script>
-    const APE_KEY = "NjhhZjc5Y2NlZmY2N2M0ZmRjM2Q4NjAyLkxpYkdMUHpZNkVBZjBGWkh0WUVaLW9lU3I3UF9WNkJE"; // Replace with your actual ApeKey
+<p id="monkeytypeStats">Loading...</p>
+<script>
+const APE_KEY = "NjhhZjc5Y2NlZmY2N2M0ZmRjM2Q4NjAyLkxpYkdMUHpZNkVBZjBGWkh0WUVaLW9lU3I3UF9WNkJE";
 
-    async function loadMonkeytype() {
-      try {
-        const res = await fetch("https://api.monkeytype.com/users/personalBests?mode=time", {
-          headers: { "Authorization": `ApeKey ${APE_KEY}` }
-        });
-        const data = await res.json();
+async function loadMonkeytype() {
+  try {
+    const res = await fetch("https://api.monkeytype.com/users/personalBests?mode=time", {
+      headers: { "Authorization": `ApeKey ${APE_KEY}` }
+    });
+    const data = await res.json();
 
-        // Personal Bests
-        const bestWPM = data.data?.personalBests?.time?.["60"]?.wpm ?? "N/A";
-        const acc = data.data?.personalBests?.time?.["60"]?.acc ?? "N/A";
-        const consistency = data.data?.personalBests?.time?.["60"]?.consistency ?? "N/A";
-        document.getElementById("personalBests").textContent =
-          `Best WPM: ${bestWPM} | Accuracy: ${acc}% | Consistency: ${consistency}%`;
+    // Only the time mode personal bests
+    const bestWPM = data.data?.personalBests?.time?.["60"]?.wpm ?? "N/A";
+    const acc = data.data?.personalBests?.time?.["60"]?.acc ?? "N/A";
+    const consistency = data.data?.personalBests?.time?.["60"]?.consistency ?? "N/A";
 
-        // Recent Results
-        const results = data.data?.recentResults ?? [];
-        document.getElementById("recentResults").textContent =
-          results.length > 0 ? results.map(result => `WPM: ${result.wpm}, Accuracy: ${result.acc}%`).join(" | ") : "No recent results";
+    document.getElementById("monkeytypeStats").textContent =
+      `Best WPM: ${bestWPM} | Accuracy: ${acc}% | Consistency: ${consistency}%`;
+  } catch(err) {
+    console.error(err);
+    document.getElementById("monkeytypeStats").textContent = "Error loading stats";
+  }
+}
 
-        // Streak
-        const streak = data.data?.streak ?? "N/A";
-        document.getElementById("streak").textContent = `Current Streak: ${streak} days`;
+loadMonkeytype();
+</script>
 
-        // Tags
-        const tags = data.data?.tags ?? [];
-        document.getElementById("tags").textContent =
-          tags.length > 0 ? tags.join(", ") : "No tags set";
-      } catch (err) {
-        console.error(err);
-        document.getElementById("personalBests").textContent = "Error loading stats";
-        document.getElementById("recentResults").textContent = "Error loading stats";
-        document.getElementById("streak").textContent = "Error loading stats";
-        document.getElementById("tags").textContent = "Error loading stats";
-      }
-    }
-
-    loadMonkeytype();
-  </script>
 </body>
 </html>

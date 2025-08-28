@@ -13,17 +13,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Monkeytype Stats</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-<script defer src="https://pyscript.net/latest/pyscript.js"></script>
-  <style>
-    .repo-box {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 20px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    }
-  </style>
   <style>
     body {
       font-family: 'Nunito', sans-serif;
@@ -34,29 +23,51 @@
       background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
       color: #1f2937;
       text-align: center;
+      padding: 1rem;
+    }
+
+    .repo-box {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 500px;
+      box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+    }
+
+    a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <h1>Opening Monkeytype...</h1>
-  <p>If nothing happens, <a href="https://monkeytype.com/profile/Dhiaan_Dave" target="_blank">click here</a></p>
+  <div class="repo-box">
+    <h1>Opening Monkeytype...</h1>
+    <p>If nothing happens, <a href="https://monkeytype.com/profile/Dhiaan_Dave" target="_blank">click here</a></p>
+  </div>
 
   <script>
-    // Open popup
     const popup = window.open(
       "https://monkeytype.com/profile/Dhiaan_Dave",
       "MonkeytypeProfile",
       "width=1000,height=800,resizable=yes,scrollbars=yes"
     );
 
-    // Check if popup is closed every 500ms
-    const checkPopup = setInterval(() => {
-      if (!popup || popup.closed) {
-        clearInterval(checkPopup);
-        // Redirect to homepage
-        window.location.href = "https://dhiaandave.vercel.app";
-      }
-    }, 500);
+    if (popup) {
+      const checkPopup = setInterval(() => {
+        if (popup.closed) {
+          clearInterval(checkPopup);
+          window.location.href = "https://dhiaandave.vercel.app";
+        }
+      }, 500);
+    } else {
+      console.log("Popup blocked. User must click the link manually.");
+    }
   </script>
 </body>
 </html>

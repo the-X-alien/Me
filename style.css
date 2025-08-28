@@ -183,3 +183,44 @@ header::after {
   color: #FFFFFF;
   line-height: 1.6;
 }
+
+.hamburger {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 25px;
+}
+
+.hamburger div {
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #1f2937;
+  width: 200px;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.dropdown a {
+  color: #d1d5db;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.dropdown a:hover {
+  background-color: #374151;
+  color: #fff;
+}
+

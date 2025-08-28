@@ -24,18 +24,19 @@ header {
   padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
 header h1 {
   font-size: 1.5rem;
   margin: 0;
-  flex: 1 1 100%;
+  flex: 1;
 }
 .link-group {
   display: flex;
+  justify-content: center;
   gap: 1.5rem;
-  flex: 1 1 100%;
+  width: 100%;
   margin-top: 0.5rem;
 }
 .link-group a {
@@ -92,6 +93,7 @@ main {
   max-width: 1000px;
   margin: 2rem auto;
   box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+  color: black;
 }
 .repo-meta {
   display: flex;
@@ -117,12 +119,12 @@ footer {
 </head>
 <body>
 <header>
+  <h1>Hey, glad you could make it! This is the humble corner of the internet they gave me!</h1>
   <div class="hamburger" onclick="toggleMenu()">
     <div></div>
     <div></div>
     <div></div>
   </div>
-  <h1>Hey, glad you could make it! This is the humble corner of the internet they gave me!</h1>
   <nav class="link-group">
     <a href="blog.html">My Blog</a>
     <a href="projects.html">See My Projects</a>

@@ -10,111 +10,184 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
-  <script src="header.js"></script>
-
-</head>
-<body>
-  <header>
-    <h1>Hey, glad you could make it! This is the humble corner of the internet they gave me!</h1>
-    <nav>
-      <div class="link-group">
-        <b><u><a href="blog.html">My Blog</a></u></b>
-        <b><u><a href="projects.html">See My Projects</a></u></b>
-        <b><u><a href="contact.html">Contact Me</a></u></b>
-      </div>
-    </nav>
-  </header>
-
-  <script>
-    if (!document.cookie.split('; ').find(row => row.startsWith('cookie_consent'))) {
-    alert("By using this website, you agree to our cookie policy.");
-    document.cookie = "cookie_consent=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/"; }
-    function setCookie(name, value, days) {
-    let expires = "";
-    if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();}
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";}
-
-    function getCookie(name) {
-        const nameEQ = name + "=";
-        const ca = document.cookie.split(';');
-        for(let i=0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-        }
-        return null;
+  <style>
+    /* Hamburger */
+    .hamburger {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 25px;
+    }
+    .hamburger div {
+      height: 3px;
+      background-color: white;
+      border-radius: 2px;
     }
 
-    setCookie("user_id", "12345", 365);  // expires in 7 days
-    console.log("user_id cookie:", getCookie("user_id"));
-</script>
+    /* Dropdown menu */
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #1f2937;
+      width: 200px;
+      border-radius: 0 0 8px 8px;
+      flex-direction: column;
+      z-index: 10;
+    }
+    .dropdown a {
+      color: #d1d5db;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .dropdown a:hover {
+      background-color: #374151;
+      color: #fff;
+    }
 
+    /* Header */
+    header {
+      position: relative;
+      background: linear-gradient(to right, #1f2937, #4b5563);
+      color: white;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    main {
+      padding: 2rem 1.5rem;
+      max-width: 1200px;
+      margin: auto;
+      color: white;
+    }
+
+    .repo-box {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 1.5rem;
+      max-width: 1000px;
+      margin: 2rem auto;
+      box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+    }
+
+    .repo-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #1f2937;
+      color: #d1d5db;
+      text-align: center;
+      padding: 1.5rem;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <h1>Hey, glad you could make it!</h1>
+
+    <div class="dropdown" id="dropdownMenu">
+      <a href="index.html">Home</a>
+      <a href="blog.html">My Blog</a>
+      <a href="projects.html">See My Projects</a>
+      <a href="contact.html">Contact Me</a>
+      <a href="spotify.html">Spotify</a>
+      <a href="youtube.html">YouTube</a>
+      <a href="duolingo.html">Duolingo</a>
+      <a href="monkeytype.html">Monkeytype</a>
+    </div>
+  </header>
 
   <main>
-    <section id="I" style="text-align: center;">
-      <h2 style="color: white;">Hi, I'm 13 year old named Dhiaan Dave</h2>
-        <p>I live the great state of California. I'm currently at Thomas Russell Middle School. I'm always open to suggestions be it about Github, coding, hardware, or just learning anything in general. Reach out to me by clicking Contact above, maybe read my latest blog by clicking blog, or check out all of my projects with links to their GitHub repos!</p>
-      <br><br>
+    <section id="intro" style="text-align:center;">
+      <h2>Hi, I'm 13 year old Dhiaan Dave</h2>
+      <p>I live in California and attend Thomas Russell Middle School. I love coding, hardware, PCB-making, CADding, and learning anything new!</p>
     </section>
-    
-<section id="latest-project" style="text-align: center;">
-  <h2 style="color: white;">Check Out My Latest Project:</h2>
-  <div id="latest-project" style="display: flex; justify-content: center;"></div>
-  <br><br>
-</section>
 
-
-    <section id="skills" style="text-align: center;">
-      <br><br>
-      <h2 style="color: white;">What I Do:</h2>
-        <p>Coding</p>
-        <p>PCB-making</p>
-        <p>CADding</p>
-        <p>and other hacking :D</p>
-      </ul>
+    <section id="latest-project">
+      <h2 style="text-align:center;">Check Out My Latest Project:</h2>
+      <div id="latest-project-container"></div>
     </section>
   </main>
 
   <footer>
     <p>&copy; 2025 Dhiaan Dave — All rights reserved.</p>
   </footer>
+
+  <!-- Hamburger JS -->
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('dropdownMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
+
+  <!-- GitHub Latest Repo -->
   <script>
     const githubUsername = 'the-X-alien';
-  
+
     fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated`)
       .then(response => response.json())
       .then(repos => {
         const latestRepo = repos.find(repo => !repo.fork);
         if (!latestRepo) return;
-  
-        const container = document.getElementById('latest-project');
-  
+
+        const container = document.getElementById('latest-project-container');
+
         const box = document.createElement('div');
         box.className = 'repo-box';
         box.innerHTML = `
-          <h3><a href="${latestRepo.html_url}" target="_blank" style="color: #3b82f6;">${latestRepo.name}</a></h3>
+          <h3><a href="${latestRepo.html_url}" target="_blank" style="color:#3b82f6;">${latestRepo.name}</a></h3>
           <p>${latestRepo.description || 'No description available.'}</p>
           <div class="repo-meta">
             <span>⭐ ${latestRepo.stargazers_count}</span>
             <span>📅 Last updated: ${new Date(latestRepo.updated_at).toLocaleDateString()}</span>
           </div>
         `;
-  
+
         container.appendChild(box);
       })
       .catch(error => {
         console.error('Error fetching repos:', error);
-        document.getElementById('latest-project').innerHTML = `<p style="color: red;">Failed to load latest project.</p>`;
+        document.getElementById('latest-project-container').innerHTML = `<p style="color:red;">Failed to load latest project.</p>`;
       });
-</script>
+  </script>
+
+  <!-- Cookie Consent -->
+  <script>
+    if (!document.cookie.split('; ').find(row => row.startsWith('cookie_consent'))) {
+      alert("By using this website, you agree to our cookie policy.");
+      document.cookie = "cookie_consent=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+    }
+  </script>
 
 </body>
 </html>
-
-
 
 
 

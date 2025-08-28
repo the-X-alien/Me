@@ -24,58 +24,39 @@
       box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
     }
   </style>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
+      color: #1f2937;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Monkeytype Stats</h1>
-    <p>Your typing stats powered by PyScript</p>
-  </header>
+  <h1>Opening Monkeytype...</h1>
+  <p>If nothing happens, <a href="https://monkeytype.com/profile/Dhiaan_Dave" target="_blank">click here</a></p>
 
-  <main>
-    <div class="repo-grid">
-      <div class="repo-box">
-        <h3>Personal Bests</h3>
-        <p id="stats">Loading...</p>
-      </div>
-    </div>
-  </main>
+  <script>
+    // Open popup
+    const popup = window.open(
+      "https://monkeytype.com/profile/Dhiaan_Dave",
+      "MonkeytypeProfile",
+      "width=1000,height=800,resizable=yes,scrollbars=yes"
+    );
 
-  <footer>
-    <p>🐒 Stats powered by Monkeytype API</p>
-  </footer>
-
-  <py-script>
-    import asyncio
-    from pyodide.http import pyfetch
-    import json
-    
-    APE_KEY = "NjhhZjc5Y2NlZmY2N2M0ZmRjM2Q4NjAyLkxpYkdMUHpZNkVBZjBGWkh0WUVaLW9lU3I3UF9WNkJE"  # Replace this with your ApeKey
-    
-    async def fetch_stats():
-        try:
-            response = await pyfetch(
-                "https://api.monkeytype.com/users/personalBests?mode=time",
-                method="GET",
-                headers={"Authorization": f"ApeKey {APE_KEY}"}
-            )
-            data = await response.json()
-    
-            mode_data = data["data"].get("personalBests", {}).get("time", {})
-            stats_60 = mode_data.get("60", {})
-    
-            best_wpm = stats_60.get("wpm", "N/A")
-            acc = stats_60.get("acc", "N/A")
-            consistency = stats_60.get("consistency", "N/A")
-    
-            element = js.document.getElementById("stats")
-            element.innerText = f"Best WPM: {best_wpm} | Accuracy: {acc}% | Consistency: {consistency}%"
-    
-        except Exception as e:
-            js.console.error(e)
-            element = js.document.getElementById("stats")
-            element.innerText = "Error loading stats"
-    
-    asyncio.ensure_future(fetch_stats())
-  </py-script>
+    // Check if popup is closed every 500ms
+    const checkPopup = setInterval(() => {
+      if (!popup || popup.closed) {
+        clearInterval(checkPopup);
+        // Redirect to homepage
+        window.location.href = "https://dhiaandave.vercel.app";
+      }
+    }, 500);
+  </script>
 </body>
 </html>

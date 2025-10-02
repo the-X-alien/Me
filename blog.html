@@ -19,6 +19,7 @@
       padding: 1.5rem;
       margin-bottom: 2rem;
       box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
     }
 
     .blog-post h3 {
@@ -43,11 +44,6 @@
       background-position: center;
       margin-bottom: 1rem;
     }
-
-    .blog-content {
-      font-size: 1rem;
-      color: #374151;
-    }
   </style>
 </head>
 <body>
@@ -58,7 +54,6 @@
       <div></div>
     </div>
     <h1>My Blog!</h1>
-    <br>
     <p>Read my thoughts, ideas, and experiences</p>
     <div class="dropdown" id="dropdownMenu">
       <a href="index.html">Home</a>
@@ -71,62 +66,10 @@
       <a href="monkeytype.html">Monkeytype</a>
     </div>
   </header>
-<script>
-function toggleMenu() {
-  const menu = document.getElementById('dropdownMenu');
-  menu.classList.toggle('show');
-}
-if (!document.cookie.split('; ').find(row => row.startsWith('cookie_consent'))) {
-  alert("By using this website, you agree to our cookie policy.");
-  document.cookie = "cookie_consent=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-}
-function setCookie(name, value, days) {
-  let expires = "";
-  if (days) {
-    const date = new Date();
-    date.setTime(date.getTime() + (days*24*60*60*1000));
-    expires = "; expires=" + date.toUTCString();
-  }
-  document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-}
-function getCookie(name) {
-  const nameEQ = name + "=";
-  const ca = document.cookie.split(';');
-  for(let i=0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-  }
-  return null;
-}
-setCookie("user_id", "12345", 365);
-console.log("user_id cookie:", getCookie("user_id"));
-</script>
 
   <main>
     <h2>Latest Posts</h2>
-
-    <!-- Blog Post 1 -->
-    <div class="blog-post" onclick="openPost('first-blog')">
-      <div class="blog-banner" style="background-image: url('your-image.jpg');"></div>
-      <h3>First Blog Post</h3>
-      <p class="date">August 25, 2025</p>
-    </div>
-
-    <!-- Blog Post 2 -->
-    <div class="blog-post" onclick="openPost('Witnessing a Masterpiece of our Time')">
-      <div class="blog-banner" style="background-image: url('images/gta5.png');"></div>
-      <h3>Witnessing a Masterpiece of our Time</h3>
-      <p class="date">September 10, 2025</p>
-    </div>
-
-    <!-- Blog Post 3 -->
-    <div class="blog-post" onclick="openPost('Daydream SV')">
-      <div class="blog-banner" style="background-image: url('images/daydream.png');"></div>
-      <h3>Daydream Silicon Valley</h3>
-      <p class="date">October 1, 2025</p>
-    </div>
-
+    <div id="posts-container"></div>
   </main>
 
   <footer>
@@ -134,12 +77,28 @@ console.log("user_id cookie:", getCookie("user_id"));
   </footer>
 
   <script>
-    function openPost(id) {
-      window.location.href = `post.html?id=${id}`;
+    function toggleMenu() {
+      document.getElementById('dropdownMenu').classList.toggle('show');
     }
+
+    // Load posts from posts.json
+    fetch('posts.json')
+      .then(response => response.json())
+      .then(posts => {
+        const container = document.getElementById('posts-container');
+        posts.forEach(post => {
+          const div = document.createElement('div');
+          div.className = 'blog-post';
+          div.onclick = () => { window.location.href = `post.html?id=${encodeURIComponent(post.id)}`; };
+          div.innerHTML = `
+            <div class="blog-banner" style="background-image: url('${post.banner}');"></div>
+            <h3>${post.title}</h3>
+            <p class="date">${post.date}</p>
+          `;
+          container.appendChild(div);
+        });
+      })
+      .catch(err => console.error(err));
   </script>
 </body>
 </html>
-
-
-

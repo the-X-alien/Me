@@ -1,0 +1,23 @@
+{
+  "name": "primary",
+  "version": "1.0.0",
+  "description": "Hi, I'm Dhiaan Dave! I live the great and glorius state of California. I'm a middle schooler at Thomas Russell Middle School. Thats all for now!",
+  "main": "hamburger.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/the-X-alien/Me.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/the-X-alien/Me/issues"
+  },
+  "homepage": "https://github.com/the-X-alien/Me#readme",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}

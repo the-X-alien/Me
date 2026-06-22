@@ -6,6 +6,13 @@
 <title>Dhiaan Dave</title>
 <meta name="description" content="Dhiaan Dave — builder and hackathon organizer from California.">
 <meta name="author" content="Dhiaan Dave">
+<meta property="og:title" content="Dhiaan Dave - Student, Builder, Hackathon Organizer">
+<meta property="og:description" content="Dhiaan Dave — builder and hackathon organizer from California. Lead of Logistics & Ops at Cove Hacks, Co-Founder of Telos Tutoring.">
+<meta property="og:url" content="https://dhiaandave.vercel.app">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://dhiaandave.vercel.app/images/idk.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://dhiaandave.vercel.app">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -592,6 +599,21 @@ section.content-section{
 /* === Hero Typewriter === */
 .typewriter-cursor{display:inline-block;width:1px;height:1em;background:var(--color-steel);margin-left:2px;vertical-align:text-bottom;animation:blink .8s step-end infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}100%{opacity:0;transform:translateY(80vh) rotate(720deg) scale(0.3)}}
+
+/* === FAQ === */
+.faq-list{display:flex;flex-direction:column;gap:var(--sp-4)}
+.faq-item{border:1px solid var(--color-graphite);border-radius:var(--radius-sm);overflow:hidden}
+.faq-question{width:100%;background:var(--color-card);border:none;padding:var(--sp-14) var(--sp-16);font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-white);text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s;text-transform:uppercase;letter-spacing:.04em}
+.faq-question:hover{background:var(--color-surface)}
+.faq-arrow{font-family:var(--font-sans);font-size:var(--text-lg);color:var(--color-steel);transition:transform .3s var(--ease-out)}
+.faq-item.open .faq-arrow{transform:rotate(45deg)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .3s var(--ease-out),padding .3s var(--ease-out);background:var(--color-surface)}
+.faq-item.open .faq-answer{max-height:200px;padding:var(--sp-14) var(--sp-16)}
+.faq-answer p{font-family:var(--font-serif);font-size:var(--text-base);line-height:var(--leading-loose);color:var(--color-ash)}
+
+/* === Top Tracks === */
+.tracks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--sp-16)}
 </style>
 <script type="application/ld+json">
 {
@@ -778,6 +800,23 @@ section.content-section{
   </div>
 </section>
 
+<!-- Top Tracks -->
+<section id="toptracks" class="content-section">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="label-tag">&#x266B;</span>
+      <span class="label-tag">Top Tracks</span>
+    </div>
+    <div class="tracks-grid fade-in">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0VjIjW4GlUuAMeMOeDPTMA?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Top Track"></iframe>
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2LBqCSwhJGcFQeTHMVGwy3?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Top Track"></iframe>
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4cOdK2wGLETKBW3PvgPWqT?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Top Track"></iframe>
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1q6IKYRZNYvMlS5w6LZPRI?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Top Track"></iframe>
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/53pcyf3d8m1ApzSp0ngWA7?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Top Track"></iframe>
+    </div>
+  </div>
+</section>
+
 <!-- Blog -->
 <section id="blog" class="content-section">
   <div class="section-inner">
@@ -813,6 +852,38 @@ section.content-section{
       <button type="submit">Send</button>
       <p id="form-status" style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-graphite);margin-top:var(--sp-12);display:none"></p>
     </form>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="content-section">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="label-tag">06</span>
+      <span class="label-tag">FAQ</span>
+    </div>
+    <div class="faq-list fade-in" id="faqList">
+      <div class="faq-item">
+        <button class="faq-question" type="button">Who is Dhiaan Dave? <span class="faq-arrow">+</span></button>
+        <div class="faq-answer"><p>Dhiaan Dave is a student and builder based in Milpitas, California. He is the Lead of Logistics &amp; Operations at Cove Hacks and Co-Founder of Telos Tutoring.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button">What is Cove Hacks? <span class="faq-arrow">+</span></button>
+        <div class="faq-answer"><p>Cove Hacks is the world&rsquo;s largest in-person high school hackathon. Dhiaan serves as Lead of Logistics &amp; Operations.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button">What is Telos Tutoring? <span class="faq-arrow">+</span></button>
+        <div class="faq-answer"><p>Telos Tutoring is a free peer-to-peer tutoring nonprofit for K-8 students, co-founded by Dhiaan Dave.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button">What does Dhiaan build? <span class="faq-arrow">+</span></button>
+        <div class="faq-answer"><p>Dhiaan builds web apps, electronics projects, CAD designs, and 3D-printed hardware. He also organizes hackathons and tech communities.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" type="button">Is Dhiaan available for internships? <span class="faq-arrow">+</span></button>
+        <div class="faq-answer"><p>Yes, Dhiaan is open to unpaid internship opportunities for Summer 2026 to gain hands-on experience in software engineering and technology.</p></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1249,6 +1320,36 @@ contentSections.forEach(s => sectionObserver.observe(s));
     container.innerHTML = '<div class="error-text">Could not load posts.</div>';
   }
 })();
+
+// === Konami Code Easter Egg ===
+(function() {
+  const kc = [38,38,40,40,37,39,37,39,66,65];
+  let pos = 0;
+  document.addEventListener('keydown', (e) => {
+    pos = e.keyCode === kc[pos] ? pos + 1 : (e.keyCode === kc[0] ? 1 : 0);
+    if (pos === kc.length) {
+      pos = 0;
+      const colors = ['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#ff6b6b'];
+      for (let i = 0; i < 80; i++) {
+        const el = document.createElement('div');
+        el.style.cssText = `position:fixed;pointer-events:none;z-index:9999;width:6px;height:6px;background:${colors[i%colors.length]};border-radius:50%;left:${50+Math.random()*40}vw;top:${50+Math.random()*40}vh;animation:confettiFall ${1.5+Math.random()}s ease-out forwards`;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 3000);
+      }
+    }
+  });
+})();
+
+// === FAQ Toggle ===
+document.getElementById('faqList').addEventListener('click', (e) => {
+  const btn = e.target.closest('.faq-question');
+  if (btn) {
+    const item = btn.parentElement;
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  }
+});
 
 // === Contact Form ===
 const form = document.querySelector('.contact-form');

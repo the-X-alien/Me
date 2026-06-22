@@ -12,7 +12,9 @@
   }],
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
-    { "source": "/robots.txt", "destination": "/api/robots" }
+    { "source": "/robots.txt", "destination": "/api/robots" },
+    { "source": "/resume", "destination": "/resume.html" },
+    { "source": "/manifesto", "destination": "/manifesto.html" }
   ],
   "crons": [{
     "path": "/api/ping-index",

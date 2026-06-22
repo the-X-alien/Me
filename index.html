@@ -25,6 +25,7 @@
 }
 </script>
 <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -614,6 +615,13 @@ section.content-section{
 
 /* === Top Tracks === */
 .tracks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--sp-16)}
+.live-count{position:fixed;bottom:var(--sp-20);left:var(--sp-20);z-index:100;font-family:var(--font-mono);font-size:10px;color:var(--color-graphite);display:flex;align-items:center;gap:var(--sp-6);pointer-events:none;opacity:0;animation:fadeUp .5s var(--ease-out) 2s forwards}
+.live-count .live-dot{width:4px;height:4px;border-radius:50%;background:var(--color-steel)}
+.live-count .live-dot.active{background:#6bcb77;box-shadow:0 0 6px rgba(107,203,119,.6)}
+.radar-wrap{display:flex;justify-content:center;padding:var(--sp-20) 0}
+#radar-svg{max-width:100%;height:auto}
+.shelf-tooltip{position:fixed;pointer-events:none;z-index:9999;font-family:var(--font-mono);font-size:10px;color:var(--color-white);background:rgba(0,0,0,.85);border:1px solid var(--color-graphite);border-radius:4px;padding:4px 10px;opacity:0;transition:opacity .2s;white-space:nowrap;transform:translate(-50%,-100%);margin-top:-12px}
+.shelf-tooltip.visible{opacity:1}
 </style>
 <script type="application/ld+json">
 {
@@ -733,6 +741,8 @@ section.content-section{
     <span>Scroll</span>
     <div class="scroll-line"></div>
   </div>
+  <div class="live-count" id="liveCount"><span class="live-dot" id="liveDot"></span><span id="liveCountText">-- viewing</span></div>
+  <div class="shelf-tooltip" id="shelfTooltip"></div>
 </section>
 
 <!-- About -->
@@ -796,6 +806,19 @@ section.content-section{
         <span>Python</span><span>·</span><span>JavaScript</span><span>·</span><span>TypeScript</span><span>·</span><span>React</span><span>·</span><span>Next.js</span><span>·</span><span>Node.js</span><span>·</span><span>HTML/CSS</span><span>·</span><span>PCB Design</span><span>·</span><span>3D Printing</span><span>·</span><span>CAD</span><span>·</span><span>Arduino</span><span>·</span><span>Git</span><span>·</span><span>Linux</span><span>·</span><span>Hackathon Ops</span>
         <span>Python</span><span>·</span><span>JavaScript</span><span>·</span><span>TypeScript</span><span>·</span><span>React</span><span>·</span><span>Next.js</span><span>·</span><span>Node.js</span><span>·</span><span>HTML/CSS</span><span>·</span><span>PCB Design</span><span>·</span><span>3D Printing</span><span>·</span><span>CAD</span><span>·</span><span>Arduino</span><span>·</span><span>Git</span><span>·</span><span>Linux</span><span>·</span><span>Hackathon Ops</span>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- Radar -->
+<section id="radar" class="content-section">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="label-tag">&#x25C8;</span>
+      <span class="label-tag">Proficiency</span>
+    </div>
+    <div class="radar-wrap fade-in">
+      <svg id="radar-svg"></svg>
     </div>
   </div>
 </section>
@@ -1050,6 +1073,121 @@ const sparkMat = new THREE.PointsMaterial({
 const sparks = new THREE.Points(sparkGeo, sparkMat);
 scene.add(sparks);
 
+// === Tech Stack Cubes ===
+const techData = [
+  { name:'Python', color:0x3776AB, url:'https://python.org', r:2.8, h:1.5, s:0.4 },
+  { name:'JS', color:0xF7DF1E, url:'https://javascript.info', r:3.2, h:0.7, s:-0.5 },
+  { name:'TS', color:0x3178C6, url:'https://typescriptlang.org', r:3.6, h:0, s:0.3 },
+  { name:'React', color:0x61DAFB, url:'https://react.dev', r:3.0, h:-0.7, s:-0.35 },
+  { name:'Next.js', color:0xffffff, url:'https://nextjs.org', r:3.4, h:-1.4, s:0.25 },
+  { name:'Node.js', color:0x339933, url:'https://nodejs.org', r:2.6, h:-2.0, s:-0.3 },
+  { name:'Arduino', color:0x00979D, url:'https://arduino.cc', r:4.0, h:1.2, s:0.2 },
+  { name:'CAD', color:0x8B5CF6, url:'#', r:4.2, h:0.3, s:-0.25 },
+  { name:'PCB', color:0x4CAF50, url:'#', r:3.8, h:-0.8, s:0.35 },
+];
+
+const techMeshes = [];
+const techAngles = techData.map(() => Math.random() * Math.PI * 2);
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+let hoveredIdx = -1;
+let targetScale = 1;
+const tooltipEl = document.getElementById('shelfTooltip');
+
+function makeLabelSprite(text) {
+  const c = document.createElement('canvas');
+  c.width = 256; c.height = 48;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = 'rgba(0,0,0,0.7)';
+  ctx.fillRect(0, 0, 256, 48);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 20px Space Mono,monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, 128, 24);
+  const tex = new THREE.CanvasTexture(c);
+  tex.minFilter = THREE.LinearFilter;
+  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, opacity: 0.9 });
+  const sprite = new THREE.Sprite(mat);
+  sprite.scale.set(0.8, 0.15, 1);
+  sprite.position.y = 0.35;
+  return sprite;
+}
+
+techData.forEach((item, i) => {
+  const geo = new THREE.BoxGeometry(0.22, 0.22, 0.22);
+  const mat = new THREE.MeshPhysicalMaterial({
+    color: item.color,
+    metalness: 0.3, roughness: 0.4,
+    emissive: item.color, emissiveIntensity: 0.08,
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.userData = { url: item.url, name: item.name, index: i };
+  scene.add(mesh);
+
+  const g2 = new THREE.BoxGeometry(0.18, 0.18, 0.18);
+  const m2 = new THREE.MeshBasicMaterial({ color: item.color, transparent: true, opacity: 0.12 });
+  const inner = new THREE.Mesh(g2, m2);
+  mesh.add(inner);
+
+  mesh.add(makeLabelSprite(item.name));
+  techMeshes.push(mesh);
+});
+
+function updateTechPositions(t) {
+  techMeshes.forEach((mesh, i) => {
+    const d = techData[i];
+    techAngles[i] += d.s * 0.006;
+    mesh.position.x = d.r * Math.cos(techAngles[i]);
+    mesh.position.z = d.r * Math.sin(techAngles[i]);
+    mesh.position.y = d.h + Math.sin(t + i) * 0.06;
+    mesh.rotation.x = t * 0.4 + i;
+    mesh.rotation.y = t * 0.6 + i * 0.5;
+  });
+}
+
+canvas.addEventListener('pointermove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+});
+
+canvas.addEventListener('click', () => {
+  if (hoveredIdx >= 0) {
+    const url = techData[hoveredIdx].url;
+    if (url && url !== '#') window.open(url, '_blank');
+  }
+});
+
+function checkRaycaster() {
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(techMeshes);
+  if (hits.length > 0) {
+    const idx = hits[0].object.userData.index;
+    if (idx !== undefined) {
+      if (hoveredIdx !== idx) {
+        hoveredIdx = idx;
+        targetScale = 1.6;
+        canvas.style.cursor = techData[idx].url !== '#' ? 'pointer' : 'default';
+        tooltipEl.textContent = 'Click to learn ' + techData[idx].name;
+        tooltipEl.classList.add('visible');
+      }
+      const p = hits[0].point.clone().project(camera);
+      const x = (p.x * 0.5 + 0.5) * window.innerWidth;
+      const y = (-p.y * 0.5 + 0.5) * window.innerHeight;
+      tooltipEl.style.left = x + 'px';
+      tooltipEl.style.top = y + 'px';
+    }
+  } else {
+    if (hoveredIdx >= 0) {
+      hoveredIdx = -1;
+      targetScale = 1;
+      canvas.style.cursor = '';
+      tooltipEl.classList.remove('visible');
+    }
+  }
+}
+
 // === Mouse Parallax ===
 let mouseX = 0, mouseY = 0;
 let targetX = 0, targetY = 0;
@@ -1114,6 +1252,14 @@ function animate() {
     }
   }
   sparkPosAttr.needsUpdate = true;
+
+  updateTechPositions(t);
+  checkRaycaster();
+
+  techMeshes.forEach((m, i) => {
+    const s = i === hoveredIdx ? 1 + (targetScale - 1) * 0.1 : 1 + (m.scale.x - 1) * 0.9;
+    m.scale.setScalar(s);
+  });
 
   // Gentle camera sway
   camera.position.x = Math.sin(t * 0.1) * 0.3 + targetX * 0.2;
@@ -1374,6 +1520,145 @@ if (form) {
     }
   });
 }
+</script>
+
+<!-- === Live Visitor Count === -->
+<script>
+(function() {
+  const dot = document.getElementById('liveDot');
+  const text = document.getElementById('liveCountText');
+  const session = 's' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  const api = '/api/visitors';
+
+  async function ping(action) {
+    try {
+      const r = await fetch(api + '?action=' + action + '&session=' + session);
+      const d = await r.json();
+      if (d.count !== undefined) {
+        text.textContent = d.count + ' viewing';
+        dot.classList.toggle('active', d.count > 0);
+      }
+    } catch {}
+  }
+
+  ping('enter');
+  setInterval(() => ping('heartbeat'), 60000);
+  window.addEventListener('beforeunload', () => {
+    navigator.sendBeacon(api + '?action=leave&session=' + session);
+  });
+})();
+</script>
+
+<!-- === D3 Radar Chart === -->
+<script>
+(function() {
+  const svgEl = document.getElementById('radar-svg');
+  if (!svgEl || typeof d3 === 'undefined') return;
+
+  const data = [
+    { axis:'Programming', value:0.85 },
+    { axis:'Web Dev', value:0.75 },
+    { axis:'Hardware', value:0.70 },
+    { axis:'Design', value:0.50 },
+    { axis:'Leadership', value:0.80 },
+    { axis:'AI/ML', value:0.40 },
+  ];
+
+  const w = 440, h = 440;
+  const cx = w / 2, cy = h / 2;
+  const radius = 170;
+  const levels = 5;
+  const total = data.length;
+  const angleSlice = Math.PI * 2 / total;
+
+  const svg = d3.select('#radar-svg')
+    .attr('viewBox', '0 0 ' + w + ' ' + h)
+    .style('width', '100%')
+    .style('max-width', '440px')
+    .style('height', 'auto');
+
+  const g = svg.append('g').attr('transform', 'translate(' + cx + ',' + cy + ')');
+
+  // Grid rings
+  for (let l = 1; l <= levels; l++) {
+    const r = radius / levels * l;
+    g.append('circle')
+      .attr('r', r)
+      .attr('fill', 'none')
+      .attr('stroke', '#2a2a2a')
+      .attr('stroke-width', 0.5);
+  }
+
+  // Axes and labels
+  data.forEach((d, i) => {
+    const angle = angleSlice * i - Math.PI / 2;
+    g.append('line')
+      .attr('x1', 0).attr('y1', 0)
+      .attr('x2', radius * Math.cos(angle))
+      .attr('y2', radius * Math.sin(angle))
+      .attr('stroke', '#2a2a2a')
+      .attr('stroke-width', 0.5);
+
+    const lr = radius + 28;
+    g.append('text')
+      .attr('x', lr * Math.cos(angle))
+      .attr('y', lr * Math.sin(angle))
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .attr('fill', '#808080')
+      .style('font-family', 'Space Mono, monospace')
+      .style('font-size', '9px')
+      .style('text-transform', 'uppercase')
+      .style('letter-spacing', '0.05em')
+      .text(d.axis);
+  });
+
+  // Radial line generator
+  const radarLine = d3.lineRadial()
+    .radius(d => d * radius)
+    .angle((d, i) => angleSlice * i);
+
+  const vals = data.map(d => d.value);
+  vals.push(vals[0]);
+
+  // Fill
+  g.append('path')
+    .datum(vals)
+    .attr('d', radarLine)
+    .attr('fill', 'rgba(52, 55, 85, 0.25)')
+    .attr('stroke', '#343755')
+    .attr('stroke-width', 1.5)
+    .attr('stroke-linejoin', 'round');
+
+  // Data points
+  data.forEach((d, i) => {
+    const angle = angleSlice * i - Math.PI / 2;
+    const x = d.value * radius * Math.cos(angle);
+    const y = d.value * radius * Math.sin(angle);
+    g.append('circle')
+      .attr('cx', x).attr('cy', y)
+      .attr('r', 3)
+      .attr('fill', '#343755')
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 0.8);
+  });
+
+  // Percentage labels
+  data.forEach((d, i) => {
+    const angle = angleSlice * i - Math.PI / 2;
+    const pr = d.value * radius + 14;
+    const px = pr * Math.cos(angle);
+    const py = pr * Math.sin(angle);
+    g.append('text')
+      .attr('x', px).attr('y', py)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .attr('fill', '#c6c6c6')
+      .style('font-family', 'Space Mono, monospace')
+      .style('font-size', '9px')
+      .text(Math.round(d.value * 100) + '%');
+  });
+})();
 </script>
 </body>
 </html>

@@ -13,7 +13,9 @@
 <meta property="og:image" content="https://dhiaandave.vercel.app/images/idk.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://dhiaandave.vercel.app">
+<link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Georgia&display=swap" rel="stylesheet">
@@ -643,6 +645,41 @@ section.content-section{
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://dhiaandave.vercel.app"},
+    {"@type":"ListItem","position":2,"name":"Blog","item":"https://dhiaandave.vercel.app/blog"},
+    {"@type":"ListItem","position":3,"name":"Projects","item":"https://dhiaandave.vercel.app/projects"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"Dhiaan Dave",
+  "url":"https://dhiaandave.vercel.app",
+  "potentialAction":{
+    "@type":"SearchAction",
+    "target":{"@type":"EntryPoint","urlTemplate":"https://dhiaandave.vercel.app/search?q={search_term_string}"},
+    "query-input":"required name=search_term_string"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"SoftwareSourceCode",
+  "author":{"@type":"Person","name":"Dhiaan Dave"},
+  "name":"Me",
+  "description":"Personal portfolio and project hub",
+  "codeRepository":"https://github.com/the-X-alien/Me",
+  "programmingLanguage":["JavaScript","HTML","CSS"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
   "@type":"FAQPage",
   "mainEntity":[
     {"@type":"Question","name":"Who is Dhiaan Dave?","acceptedAnswer":{"@type":"Answer","text":"Dhiaan Dave is a student and builder based in Milpitas, California. He is the Lead of Logistics & Operations at Cove Hacks and Co-Founder of Telos Tutoring."}},
@@ -918,6 +955,7 @@ section.content-section{
       <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
       <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
       <a href="blog.html">Blog</a>
+    <a href="sitemap">Sitemap</a>
     </div>
   </div>
 </footer>

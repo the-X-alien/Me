@@ -1,0 +1,10 @@
+/* TEAM */
+Name: Dhiaan Dave
+Site: https://dhiaandave.vercel.app
+GitHub: https://github.com/the-X-alien
+Email: dhiaan.n.d@gmail.com
+
+/* SITE */
+Standards: HTML5, CSS3, JavaScript (ES6+)
+Components: Three.js, D3.js, Lenis
+Hosting: Vercel

@@ -14,12 +14,12 @@ module.exports = (req, res) => {
     ['/duolingo', '0.6', 'daily'],
     ['/monkeytype', '0.6', 'monthly'],
     ['/contact', '0.7', 'monthly'],
-    ['/jklm', '0.3', 'monthly'],
     ['/minecraft', '0.3', 'monthly'],
     ['/slope2', '0.3', 'monthly'],
     ['/cloudmoon', '0.3', 'monthly'],
     ['/aliex', '0.3', 'monthly'],
     ['/search', '0.5', 'monthly'],
+    ['/sitemap', '0.6', 'monthly'],
   ];
 
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';

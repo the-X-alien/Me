@@ -6,5 +6,8 @@ Allow: /
 Crawl-delay: 1
 
 Sitemap: https://dhiaandave.vercel.app/sitemap.xml
+
+# Humans
+# https://dhiaandave.vercel.app/humans.txt
 `);
 };

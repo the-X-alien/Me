@@ -1,64 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <meta name="description" content="Welcome to Dhiaan's portfolio. Explore my blog, projects, and contact information."> 
-  <meta name="keywords" content="Dhiaan Dave, portfolio, blog, projects, contact, Dhiaan, the-X-alien, Milpitas, California, Thomas Russell, Milpitas High School, MHS, TRMS, student"> 
-  <link rel="stylesheet" href="style.css"> 
-  <link rel="icon" href="favicon.ico" type="image/x-icon"> 
-  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dhiaan's Spotify</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
-  <style>
-    .repo-box {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      padding: 1.5rem;
-      max-width: 1000px;
-      margin: 2rem auto;
-      box-shadow: 0 10px 15px rgba(0,0,0,0.05);
-    }
-    .repo-box iframe {
-      width: 100%;
-      height: 380px;
-      border: none;
-      border-radius: 12px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music — Dhiaan Dave</title>
+<meta name="description" content="Dhiaan's Spotify playlists.">
+<meta name="author" content="Dhiaan Dave">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&family=Georgia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.music-page{min-height:100vh;display:flex;flex-direction:column}
+.music-main{flex:1;padding:var(--sp-96) var(--sp-24) var(--sp-48);max-width:800px;margin:0 auto;width:100%}
+@media(max-width:640px){.music-main{padding:var(--sp-80) var(--sp-16) var(--sp-32)}}
+.playlist-card{background:var(--color-card);border:1px solid var(--color-graphite);border-radius:var(--radius-sm);padding:var(--sp-20);margin-bottom:var(--sp-20)}
+.playlist-card h3{font-family:var(--font-mono);font-size:var(--text-sm);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:var(--sp-12);color:var(--color-white)}
+.playlist-card iframe{width:100%;height:380px;border:none;border-radius:4px}
+.playlist-note{font-family:var(--font-serif);font-size:var(--text-base);color:var(--color-steel);line-height:1.6;margin-bottom:var(--sp-32)}
+</style>
 </head>
-<body>
-  <header>
-    <h1>My Moosik!</h1>
-    <p>Listen to my favorite tracks and let me know what you think! (using the contact page)</p>
-  </header>
+<body class="music-page">
+<nav class="page-nav">
+  <a href="index.html" class="nav-logo">Dhiaan Dave</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Writing</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
 
-  <main>
-    <div class="repo-box">
-      <h3>My Spotify Playlist</h3>
-      <iframe 
-        src="https://open.spotify.com/embed/playlist/48owf52mZlGQacGll9Rk80?utm_source=generator&theme=0" 
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-        loading="lazy">
-      </iframe>
-    </div>
-    <div class="repo-box">
-      <h3>My Spotify Playlist Continued (Only 100 Songs Per Embed)</h3>
-      <iframe 
-        src="https://open.spotify.com/embed/playlist/01RBsUkFa3MInRzqM43bsB?utm_source=generator&theme=0" 
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-        loading="lazy">
-      </iframe>
-    </div>
-  </main>
+<main class="music-main">
+  <span class="label-tag" style="display:block;margin-bottom:var(--sp-12);letter-spacing:.15em">Music</span>
+  <h1 class="page-title">My Playlists</h1>
+  <p class="playlist-note">Tracks I've been listening to. Let me know what you think.</p>
 
-  <footer>
-    <p>Playlist put together with <3 by Dhiaan</p>
-  </footer>
+  <div class="playlist-card">
+    <h3>The Giant Collection</h3>
+    <iframe src="https://open.spotify.com/embed/playlist/01RBsUkFa3MInRzqM43bsB?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <div class="playlist-card">
+    <h3>The Overflow</h3>
+    <iframe src="https://open.spotify.com/embed/playlist/48owf52mZlGQacGll9Rk80?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+</main>
+
+<footer class="site-footer" style="border-top:none">
+  <div class="footer-inner">
+    <span>Curated with care</span>
+    <div class="footer-links">
+      <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</footer>
 </body>
 </html>

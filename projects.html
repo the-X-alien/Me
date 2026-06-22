@@ -1,64 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dhiaan's Projects</title>
-  <meta name="description" content="Check Out My Projects!" />
-  <meta name="keywords" content="Dhiaan Dave, portfolio, projects, contact, Dhiaan, the-X-alien" />
-  <meta name="author" content="Dhiaan Dave" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Dhiaan Dave</title>
+<meta name="description" content="Projects by Dhiaan Dave.">
+<meta name="author" content="Dhiaan Dave">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Georgia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.project-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:var(--sp-16);
+}
+@media(max-width:480px){.project-grid{grid-template-columns:1fr}}
+.project-card{
+  display:block;background:var(--color-card);
+  border:1px solid var(--color-graphite);
+  border-radius:var(--radius-sm);
+  padding:var(--sp-18);
+  transition:border-color .2s ease,transform .2s var(--ease-out);
+}
+.project-card:hover{
+  border-color:var(--color-white);
+  transform:translateY(-2px);
+}
+.project-card h3{
+  font-family:var(--font-mono);font-size:var(--text-sm);
+  font-weight:700;text-transform:uppercase;
+  letter-spacing:.03em;color:var(--color-white);
+  margin-bottom:var(--sp-8);
+}
+.project-card p{
+  font-family:var(--font-serif);font-size:var(--text-base);
+  line-height:var(--leading-normal);
+  color:var(--color-ash);
+  margin-bottom:var(--sp-12);
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.project-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--font-mono);font-size:var(--text-xs);
+  color:var(--color-graphite);
+}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Check out my projects!</h1>
-    <p>Explore my GitHub repositories below.</p>
-  </header>
+<nav class="page-nav">
+  <a href="index.html" class="nav-logo">Dhiaan Dave</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Writing</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
 
-  <main>
-    <section id="projects">
-      <h2>My GitHub Projects</h2>
-      <div id="repo-container" class="repo-grid"></div>
-    </section>
-  </main>
+<main class="page-main">
+  <div style="margin-bottom:var(--sp-48)">
+    <span class="label-tag" style="margin-bottom:var(--sp-12);display:block;letter-spacing:.15em">02 · Projects</span>
+    <h1 class="page-title">Things I've Built</h1>
+    <p class="page-subtitle">Open-source projects, hackathon builds, and experiments.</p>
+  </div>
+  <div id="repo-container" class="project-grid">
+    <div class="loading-text">Loading projects...</div>
+  </div>
+</main>
 
-  <footer>
-    <p>&copy; 2025 Dhiaan Dave — All rights reserved.</p>
-  </footer>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>&copy; 2026 Dhiaan Dave</span>
+    <div class="footer-links">
+      <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</footer>
 
-  <script>
-    const username = 'the-X-alien';
-
-    fetch(`https://api.github.com/users/${username}/repos?sort=updated`)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(repos) {
-        const container = document.getElementById('repo-container');
-
-        repos.forEach(function(repo) {
-          if (repo.fork) {
-            return;
-          }
-
-          const box = document.createElement('div');
-          box.className = 'repo-box';
-          box.innerHTML = `
-            <h3><a href="${repo.html_url}" target="_blank">${repo.name}</a></h3>
-            <p>${repo.description ? repo.description : "No description provided."}</p>
-            <div class="repo-meta">
-              <span>⭐ ${repo.stargazers_count}</span>
-              <span>📅 Created: ${new Date(repo.created_at).toLocaleDateString()}</span>
-            </div>
-          `;
-          container.appendChild(box);
-        });
-      })
-      .catch(function(error) {
-        console.log('Error:', error);
-        document.getElementById('repo-container').innerHTML = '<p>Sorry, something went wrong.</p>';
-      });
-  </script>
+<script>
+(async function() {
+  const container = document.getElementById('repo-container');
+  try {
+    const res = await fetch('https://api.github.com/users/the-X-alien/repos?sort=updated&per_page=50');
+    if (!res.ok) throw new Error('GitHub API error');
+    const repos = await res.json();
+    const filtered = repos.filter(r => !r.fork);
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="error-text">No projects yet.</div>';
+      return;
+    }
+    container.innerHTML = filtered.map(repo => `
+      <a href="${repo.html_url}" target="_blank" class="project-card" rel="noopener">
+        <h3>${repo.name}</h3>
+        <p>${repo.description || 'No description available.'}</p>
+        <div class="project-meta">
+          <span>★ ${repo.stargazers_count}</span>
+          <span>${new Date(repo.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</span>
+        </div>
+      </a>
+    `).join('');
+  } catch {
+    container.innerHTML = '<div class="error-text">Could not load projects. Try again later.</div>';
+  }
+})();
+</script>
 </body>
 </html>

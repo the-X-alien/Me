@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embed Eaglercraft Game</title>
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #000;
-        }
-        iframe {
-            border: none;
-            width: 80%;
-            height: 80%;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eaglercraft — Dhiaan Dave</title>
+<meta name="description" content="Eaglercraft Minecraft embed page.">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--void:#000;--white:#fff;--ash:#c6c6c6;--graphite:#4d4d4d;--steel:#808080;--font-mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--text-xs:10px;--text-sm:12px}
+body{background:var(--void);color:var(--white);font-family:var(--font-mono);height:100vh;display:flex;flex-direction:column}
+.embed-top{display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px solid var(--graphite);flex-shrink:0;height:48px}
+.embed-top a{color:var(--steel);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;text-decoration:none;transition:color .2s}
+.embed-top a:hover{color:var(--white)}
+.embed-top .title{font-size:var(--text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--steel)}
+iframe{flex:1;width:100%;border:none}
+</style>
 </head>
 <body>
-    <!-- Replace the src URL with the actual embed URL of the game -->
-    <iframe src="https://eaglercraft.ir" title="Eaglercraft"></iframe>
+<div class="embed-top">
+  <a href="index.html">&#8592; Home</a>
+  <span class="title">Eaglercraft</span>
+  <a href="https://eaglercraft.ir" target="_blank">Open</a>
+</div>
+<iframe src="https://eaglercraft.ir" title="Eaglercraft Minecraft" allow="cross-origin-isolated;clipboard-read;clipboard-write"></iframe>
 </body>
 </html>

@@ -3,306 +3,1276 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dhiaan's Portfolio</title>
-<meta name="description" content="Welcome to Dhiaan's portfolio. Explore my blog, projects, and contact information.">
-<meta name="keywords" content="Dhiaan Dave, portfolio, blog, projects, contact, Dhiaan, the-X-alien, Milpitas, California, Thomas Russell, Milpitas High School, MHS, TRMS, student">
+<title>Dhiaan Dave</title>
+<meta name="description" content="Dhiaan Dave — builder and hackathon organizer from California.">
 <meta name="author" content="Dhiaan Dave">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
-<link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
-<script type="module" src="analytics.js"></script>
-<style>
-body {
-  margin: 0;
-  font-family: 'Nunito', sans-serif;
-  background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
-  color: white;
-}
-header {
-  position: relative;
-  background: linear-gradient(to right, #1f2937, #4b5563);
-  color: white;
-  padding: 1rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-header h1 {
-  font-size: 1.5rem;
-  margin: 0;
-  flex: 1;
-  text-align: center;
-}
-.link-group {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  width: 100%;
-  margin-top: 0.5rem;
-}
-.link-group a {
-  color: white;
-  text-decoration: none;
-}
-.link-group a:hover {
-  text-decoration: underline;
-}
-.hamburger {
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  width: 25px;
-}
-.hamburger div {
-  height: 3px;
-  background-color: white;
-  border-radius: 2px;
-}
-.dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #1f2937;
-  width: 200px;
-  border-radius: 0 0 8px 8px;
-  flex-direction: column;
-  z-index: 10;
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.3s ease-out;
-}
-.dropdown.show {
-  display: flex;
-  max-height: 500px;
-  transition: max-height 0.5s ease-in;
-}
-.dropdown a {
-  color: white;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-.dropdown a:hover {
-  background-color: #374151;
-  color: #fff;
-}
-main {
-  padding: 2rem 1.5rem;
-  max-width: 1200px;
-  margin: auto;
-}
-.repo-box {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 1.5rem;
-  max-width: 1000px;
-  margin: 2rem auto;
-  box-shadow: 0 10px 15px rgba(0,0,0,0.05);
-  color: black;
-}
-.repo-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-footer {
-  background-color: #1f2937;
-  color: white;
-  text-align: center;
-  padding: 1.5rem;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-@media screen and (max-width: 768px) {
-  .link-group {
-    display: none;
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Georgia&display=swap" rel="stylesheet">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
   }
 }
+</script>
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --color-void:#000;
+  --color-white:#fff;
+  --color-graphite:#4d4d4d;
+  --color-steel:#808080;
+  --color-fog:#999;
+  --color-ash:#c6c6c6;
+  --color-violet:#343755;
+  --color-surface:#111;
+  --color-card:#181818;
+  --font-mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  --font-serif:Georgia,'Times New Roman',Times,serif;
+  --font-sans:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --text-xs:10px;
+  --text-sm:12px;
+  --text-base:14px;
+  --text-lg:16px;
+  --text-xl:20px;
+  --text-2xl:28px;
+  --text-3xl:36px;
+  --text-4xl:48px;
+  --text-5xl:64px;
+  --leading-tight:1.2;
+  --leading-normal:1.5;
+  --leading-loose:1.88;
+  --sp-2:2px;
+  --sp-4:4px;
+  --sp-6:6px;
+  --sp-8:8px;
+  --sp-12:12px;
+  --sp-13:13px;
+  --sp-14:14px;
+  --sp-16:16px;
+  --sp-18:18px;
+  --sp-20:20px;
+  --sp-24:24px;
+  --sp-28:28px;
+  --sp-32:32px;
+  --sp-40:40px;
+  --sp-48:48px;
+  --sp-56:56px;
+  --sp-64:64px;
+  --sp-80:80px;
+  --sp-96:96px;
+  --sp-128:128px;
+  --radius-sm:5px;
+  --radius-md:8px;
+  --radius-lg:12px;
+  --radius-xl:16px;
+  --radius-full:500px;
+  --ease-out:cubic-bezier(0.22,1,0.36,1);
+}
+html{scroll-behavior:smooth;background:var(--color-void)}
+body{
+  font-family:var(--font-mono);
+  background:var(--color-void);
+  color:var(--color-white);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+::selection{background:var(--color-violet);color:var(--color-white)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--color-void)}
+::-webkit-scrollbar-thumb{background:var(--color-graphite);border-radius:3px}
+a{color:inherit;text-decoration:none}
+
+/* === Nav fade-in (reused by hamburger) === */
+@keyframes navFadeIn{to{opacity:1;transform:translateY(0)}}
+
+/* === Label Tag === */
+.label-tag{
+  font-family:var(--font-mono);font-size:var(--text-xs);
+  font-weight:400;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--color-ash);
+  display:inline-block;
+}
+
+/* === Hero Section === */
+#hero{
+  position:relative;width:100%;height:100vh;
+  overflow:hidden;display:flex;align-items:center;justify-content:center;
+}
+#three-canvas{
+  position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;
+}
+.hero-overlay{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  background:radial-gradient(ellipse at center,transparent 40%,var(--color-void) 85%);
+  z-index:2;pointer-events:none;
+}
+.hero-content{
+  position:relative;z-index:3;text-align:center;
+  padding:var(--sp-20);
+  max-width:800px;
+}
+.hero-content .label-tag{
+  margin-bottom:var(--sp-16);
+  display:block;
+  font-size:var(--text-sm);
+  color:var(--color-ash);
+  letter-spacing:.15em;
+  opacity:0;
+  transform:translateY(8px);
+  animation:fadeUp .5s var(--ease-out) .6s forwards;
+}
+.hero-content h1{
+  font-family:var(--font-sans);font-weight:300;
+  font-size:clamp(28px,5vw,var(--text-5xl));
+  line-height:1.0;
+  letter-spacing:-.025em;
+  color:var(--color-white);
+  margin-bottom:var(--sp-16);
+  opacity:0;
+  transform:translateY(12px);
+  animation:fadeUp .6s var(--ease-out) .8s forwards;
+}
+.hero-content .hero-sub{
+  font-family:var(--font-serif);font-size:var(--text-lg);
+  line-height:var(--leading-loose);
+  color:var(--color-ash);
+  opacity:0;
+  transform:translateY(8px);
+  animation:fadeUp .5s var(--ease-out) 1s forwards;
+}
+.scroll-indicator{
+  position:absolute;bottom:var(--sp-32);left:50%;transform:translateX(-50%);
+  z-index:3;display:flex;flex-direction:column;align-items:center;gap:var(--sp-6);
+  opacity:0;
+  animation:fadeUp .5s var(--ease-out) 1.4s forwards;
+}
+.scroll-indicator span{
+  font-family:var(--font-mono);font-size:var(--text-xs);
+  text-transform:uppercase;letter-spacing:.1em;color:var(--color-graphite);
+}
+.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,var(--color-graphite),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+/* === Content Sections === */
+section.content-section{
+  position:relative;
+  padding:var(--sp-96) var(--sp-24);
+  border-top:1px solid var(--color-graphite);
+  background:var(--color-void);
+}
+.section-inner{
+  max-width:960px;margin:0 auto;
+}
+.section-header{
+  display:flex;align-items:center;gap:var(--sp-12);
+  margin-bottom:var(--sp-40);
+}
+.section-header .label-tag{
+  font-size:var(--text-sm);
+  letter-spacing:.1em;
+}
+.section-header .label-tag:first-child{
+  color:var(--color-graphite);
+}
+.section-title{
+  font-family:var(--font-sans);font-weight:300;
+  font-size:clamp(24px,3vw,var(--text-3xl));
+  line-height:1.1;
+  letter-spacing:-.02em;
+  color:var(--color-white);
+  margin-bottom:var(--sp-24);
+}
+
+/* === About === */
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-48);
+}
+@media(max-width:768px){.about-grid{grid-template-columns:1fr;gap:var(--sp-32)}}
+.about-text p{
+  font-family:var(--font-serif);font-size:var(--text-lg);
+  line-height:var(--leading-loose);
+  color:var(--color-ash);
+  margin-bottom:var(--sp-20);
+}
+.about-text p:last-child{margin-bottom:0}
+.about-text p strong{color:var(--color-white);font-weight:400}
+.about-labels{
+  display:flex;flex-direction:column;gap:var(--sp-24);
+}
+.label-group{
+  display:flex;flex-direction:column;gap:var(--sp-8);
+}
+.label-group .label-tag{
+  color:var(--color-graphite);
+  font-size:var(--text-xs);
+  letter-spacing:.1em;
+}
+.label-group .label-value{
+  font-family:var(--font-sans);
+  font-size:var(--text-base);
+  font-weight:400;
+  line-height:1.6;
+  color:var(--color-white);
+}
+.label-group .label-value a{
+  color:var(--color-ash);
+  border-bottom:1px solid var(--color-graphite);
+  transition:border-color .2s ease,color .2s ease;
+}
+.label-group .label-value a:hover{
+  color:var(--color-white);
+  border-color:var(--color-white);
+}
+
+/* === Projects === */
+.projects-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:var(--sp-16);
+}
+@media(max-width:480px){.projects-grid{grid-template-columns:1fr}}
+.project-card{
+  background:var(--color-card);
+  border:1px solid var(--color-graphite);
+  border-radius:var(--radius-md);
+  padding:var(--sp-18);
+  transition:border-color .2s ease,transform .2s var(--ease-out);
+  cursor:pointer;
+}
+.project-card:hover{
+  border-color:var(--color-white);
+  transform:translateY(-2px);
+}
+.project-card h3{
+  font-family:var(--font-mono);font-size:var(--text-sm);
+  font-weight:700;text-transform:uppercase;
+  letter-spacing:.03em;color:var(--color-white);
+  margin-bottom:var(--sp-8);
+}
+.project-card p{
+  font-family:var(--font-serif);font-size:var(--text-base);
+  line-height:var(--leading-normal);
+  color:var(--color-ash);
+  margin-bottom:var(--sp-12);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.project-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--font-mono);font-size:var(--text-xs);
+  color:var(--color-graphite);
+}
+.project-meta span{display:flex;align-items:center;gap:var(--sp-4)}
+
+/* === Skills Ribbon === */
+.skills-ribbon-wrap{
+  overflow:hidden;position:relative;
+  border:1px solid var(--color-graphite);
+  border-radius:var(--radius-md);
+  padding:var(--sp-12) 0;
+  background:var(--color-card);
+}
+.skills-ribbon{
+  display:flex;gap:var(--sp-6);white-space:nowrap;
+  animation:ribbonScroll 30s linear infinite;
+  width:fit-content;
+}
+.skills-ribbon span{
+  font-family:var(--font-mono);font-size:var(--text-sm);
+  text-transform:uppercase;letter-spacing:.04em;
+  color:var(--color-ash);
+  padding:var(--sp-2) var(--sp-8);
+}
+.skills-ribbon span:nth-child(odd){color:var(--color-white);font-weight:700}
+@keyframes ribbonScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* === Blog === */
+.blog-list{
+  display:flex;flex-direction:column;gap:var(--sp-16);
+}
+.blog-item{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:var(--sp-16) 0;
+  border-bottom:1px solid var(--color-graphite);
+  gap:var(--sp-20);
+  cursor:pointer;
+  transition:opacity .2s ease;
+}
+.blog-item:hover{opacity:.8}
+.blog-item:last-child{border-bottom:none}
+.blog-item-left{flex:1;min-width:0}
+.blog-item-title{
+  font-family:var(--font-sans);font-size:var(--text-xl);
+  font-weight:400;line-height:1.3;
+  color:var(--color-white);
+  margin-bottom:var(--sp-4);
+}
+.blog-item-date{
+  font-family:var(--font-mono);font-size:var(--text-xs);
+  color:var(--color-graphite);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.blog-item-arrow{
+  font-family:var(--font-mono);font-size:var(--text-lg);
+  color:var(--color-graphite);
+  flex-shrink:0;
+  margin-top:var(--sp-4);
+}
+
+/* === Contact === */
+.contact-links{
+  display:flex;flex-wrap:wrap;gap:var(--sp-16);
+  margin-bottom:var(--sp-32);
+}
+.contact-link{
+  display:flex;align-items:center;gap:var(--sp-8);
+  font-family:var(--font-mono);font-size:var(--text-base);
+  color:var(--color-ash);
+  border:1px solid var(--color-graphite);
+  border-radius:var(--radius-sm);
+  padding:var(--sp-8) var(--sp-16);
+  transition:border-color .2s ease,color .2s ease;
+}
+.contact-link:hover{
+  border-color:var(--color-white);
+  color:var(--color-white);
+}
+.contact-form{
+  max-width:480px;
+}
+.contact-form label{
+  display:block;
+  font-family:var(--font-mono);font-size:var(--text-xs);
+  text-transform:uppercase;letter-spacing:.1em;
+  color:var(--color-graphite);
+  margin-bottom:var(--sp-6);
+}
+.contact-form input,.contact-form textarea{
+  width:100%;
+  background:transparent;
+  border:1px solid var(--color-graphite);
+  border-radius:var(--radius-sm);
+  padding:var(--sp-12) var(--sp-14);
+  font-family:var(--font-serif);font-size:var(--text-lg);
+  color:var(--color-white);
+  outline:none;
+  transition:border-color .2s ease;
+  margin-bottom:var(--sp-16);
+}
+.contact-form input:focus,.contact-form textarea:focus{
+  border-color:var(--color-white);
+}
+.contact-form input::placeholder,.contact-form textarea::placeholder{
+  color:var(--color-steel);
+}
+.contact-form textarea{resize:vertical;min-height:100px}
+.contact-form button{
+  font-family:var(--font-mono);font-size:var(--text-sm);
+  text-transform:uppercase;letter-spacing:.08em;
+  color:var(--color-white);
+  background:var(--color-violet);
+  border:1px solid var(--color-violet);
+  border-radius:var(--radius-sm);
+  padding:var(--sp-10) var(--sp-24);
+  cursor:pointer;
+  transition:opacity .2s ease;
+}
+.contact-form button:hover{opacity:.85}
+
+/* === Footer === */
+.site-footer{
+  border-top:1px solid var(--color-graphite);
+  padding:var(--sp-32) var(--sp-24);
+  text-align:center;
+}
+.footer-inner{
+  max-width:960px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:var(--sp-16);
+}
+@media(max-width:480px){.footer-inner{flex-direction:column;text-align:center}}
+.footer-inner span,.footer-inner a{
+  font-family:var(--font-mono);font-size:var(--text-xs);
+  color:var(--color-steel);
+  text-transform:uppercase;letter-spacing:.08em;
+}
+.footer-inner a:hover{color:var(--color-white)}
+.footer-links{display:flex;gap:var(--sp-16)}
+
+/* === Utility === */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.loading-text{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-graphite);text-align:center;padding:var(--sp-24)}
+.error-text{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-steel);text-align:center;padding:var(--sp-24)}
+
+/* === Blog Post Page === */
+#blog-post-content{padding:var(--sp-48) var(--sp-24);max-width:720px;margin:0 auto}
+#blog-post-content h1{
+  font-family:var(--font-sans);font-weight:300;
+  font-size:var(--text-3xl);line-height:1.1;
+  letter-spacing:-.02em;
+  margin-bottom:var(--sp-12);
+}
+#blog-post-content .post-date{
+  font-family:var(--font-mono);font-size:var(--text-xs);
+  color:var(--color-graphite);text-transform:uppercase;
+  letter-spacing:.05em;margin-bottom:var(--sp-32);
+  display:block;
+}
+#blog-post-content p{
+  font-family:var(--font-serif);font-size:var(--text-lg);
+  line-height:var(--leading-loose);
+  color:var(--color-ash);
+  margin-bottom:var(--sp-20);
+}
+.back-link{
+  display:inline-flex;align-items:center;gap:var(--sp-4);
+  font-family:var(--font-mono);font-size:var(--text-sm);
+  color:var(--color-ash);
+  margin-bottom:var(--sp-32);
+  transition:color .2s ease;
+}
+.back-link:hover{color:var(--color-white)}
+
+/* === Parallax fade on scroll === */
+.fade-in{
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity .6s var(--ease-out),transform .6s var(--ease-out);
+}
+.fade-in.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* === Scroll Progress Bar === */
+.scroll-progress{
+  position:fixed;top:0;left:0;width:0;height:1px;
+  background:var(--color-white);z-index:999;
+  transition:width .1s linear;
+}
+
+/* === Loading Screen === */
+.loading-screen{
+  position:fixed;inset:0;z-index:2000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--color-void);
+  transition:opacity .8s var(--ease-out),visibility .8s var(--ease-out);
+}
+.loading-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loading-ring{width:32px;height:32px;border:1px solid var(--color-graphite);border-top-color:var(--color-white);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:var(--sp-12)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-label{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-steel);text-transform:uppercase;letter-spacing:.15em}
+
+/* === Custom Cursor === */
+.custom-cursor{
+  position:fixed;pointer-events:none;z-index:9999;
+  width:20px;height:20px;border:1px solid var(--color-white);
+  border-radius:50%;transform:translate(-50%,-50%);
+  transition:width .3s var(--ease-out),height .3s var(--ease-out),background .3s var(--ease-out),border-color .3s var(--ease-out);
+  mix-blend-mode:difference;
+}
+.custom-cursor.hovering{width:32px;height:32px;background:rgba(255,255,255,.08);border-color:var(--color-ash)}
+@media(hover:none),(pointer:coarse){.custom-cursor{display:none}}
+
+/* === Hamburger Nav === */
+.hamburger{
+  position:fixed;top:var(--sp-20);right:var(--sp-20);z-index:1100;
+  width:36px;height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;cursor:pointer;
+  border:1px solid var(--color-graphite);border-radius:var(--radius-full);
+  background:rgba(0,0,0,.85);backdrop-filter:blur(12px);
+  opacity:0;
+  transform:translateY(-12px);
+  animation:navFadeIn .6s var(--ease-out) .3s forwards;
+  transition:border-color .2s;
+}
+.hamburger:hover{border-color:var(--color-white)}
+.hamburger span{display:block;width:14px;height:1px;background:var(--color-white);transition:transform .3s var(--ease-out),opacity .2s}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+/* === Drawer === */
+.drawer-overlay{
+  position:fixed;inset:0;z-index:1050;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+  opacity:0;visibility:hidden;
+  transition:opacity .4s var(--ease-out),visibility .4s var(--ease-out);
+}
+.drawer-overlay.open{opacity:1;visibility:visible}
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:1060;
+  width:320px;max-width:85vw;
+  background:rgba(10,10,10,.98);backdrop-filter:blur(20px);
+  border-left:1px solid var(--color-graphite);
+  padding:var(--sp-24);
+  display:flex;flex-direction:column;
+  transform:translateX(100%);
+  transition:transform .4s var(--ease-out);
+  overflow-y:auto;
+}
+.drawer.open{transform:translateX(0)}
+.drawer-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--sp-24);padding-bottom:var(--sp-16);border-bottom:1px solid var(--color-graphite)}
+.drawer-logo{font-family:var(--font-mono);font-size:var(--text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--color-white)}
+.drawer-close{background:none;border:none;color:var(--color-steel);font-size:var(--text-lg);cursor:pointer;padding:var(--sp-4);font-family:var(--font-sans);transition:color .2s}
+.drawer-close:hover{color:var(--color-white)}
+.drawer-search{position:relative;margin-bottom:var(--sp-24)}
+.drawer-search input{
+  width:100%;background:transparent;border:1px solid var(--color-graphite);border-radius:var(--radius-sm);
+  padding:var(--sp-10) var(--sp-12);padding-left:var(--sp-32);
+  font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-white);
+  outline:none;transition:border-color .2s;
+}
+.drawer-search input:focus{border-color:var(--color-white)}
+.drawer-search input::placeholder{color:var(--color-steel)}
+.drawer-search .search-icon{position:absolute;left:var(--sp-10);top:50%;transform:translateY(-50%);color:var(--color-steel);font-family:var(--font-sans);font-size:var(--text-sm)}
+.drawer-search-results{margin-top:var(--sp-4);display:none;flex-direction:column;gap:var(--sp-2)}
+.drawer-search-results.show{display:flex}
+.drawer-search-results a{
+  font-family:var(--font-mono);font-size:var(--text-xs);
+  color:var(--color-steel);padding:var(--sp-6) var(--sp-10);
+  border-radius:var(--radius-sm);transition:background .2s,color .2s;
+}
+.drawer-search-results a:hover,.drawer-search-results a.highlighted{background:var(--color-card);color:var(--color-white)}
+.drawer-section-label{
+  font-family:var(--font-mono);font-size:10px;color:var(--color-graphite);
+  text-transform:uppercase;letter-spacing:.12em;
+  margin-bottom:var(--sp-8);margin-top:var(--sp-4);
+}
+.drawer-links{display:flex;flex-direction:column;gap:var(--sp-2);margin-bottom:var(--sp-20)}
+.drawer-links a{
+  font-family:var(--font-mono);font-size:var(--text-sm);
+  color:var(--color-ash);padding:var(--sp-8) var(--sp-10);
+  border-radius:var(--radius-sm);
+  transition:background .2s,color .2s;
+  display:flex;align-items:center;gap:var(--sp-8);
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.drawer-links a:hover{background:var(--color-card);color:var(--color-white)}
+.drawer-links a.active{color:var(--color-white)}
+.drawer-links a.active::before{content:'\25B6';color:var(--color-ash);font-size:10px;margin-right:var(--sp-4)}
+.drawer-links a .link-meta{font-size:10px;color:var(--color-graphite);margin-left:auto;font-weight:400;text-transform:none}
+.drawer-footer{margin-top:auto;padding-top:var(--sp-16);border-top:1px solid var(--color-graphite);display:flex;gap:var(--sp-12)}
+.drawer-footer a{font-family:var(--font-mono);font-size:10px;color:var(--color-steel);text-transform:uppercase;letter-spacing:.08em;transition:color .2s}
+.drawer-footer a:hover{color:var(--color-white)}
+
+/* === Bento About Section === */
+.about-bento{
+  display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-16);
+}
+@media(max-width:768px){.about-bento{grid-template-columns:1fr}}
+.bento-card{
+  background:var(--color-card);border:1px solid var(--color-graphite);
+  border-radius:var(--radius-md);padding:var(--sp-20);
+  transition:border-color .2s,transform .2s var(--ease-out);
+}
+.bento-card:hover{border-color:var(--color-white);transform:translateY(-2px)}
+.bento-card.bento-wide{grid-column:span 2}
+@media(max-width:768px){.bento-card.bento-wide{grid-column:span 1}}
+.bento-card .bento-label{
+  font-family:var(--font-mono);font-size:10px;
+  text-transform:uppercase;letter-spacing:.1em;
+  color:var(--color-graphite);margin-bottom:var(--sp-8);
+  display:flex;align-items:center;gap:var(--sp-6);
+}
+.bento-card .bento-value{
+  font-family:var(--font-sans);font-size:var(--text-base);
+  color:var(--color-white);line-height:1.6;font-weight:400;
+}
+.bento-card .bento-value a{color:var(--color-ash);border-bottom:1px solid var(--color-graphite);transition:color .2s,border-color .2s}
+.bento-card .bento-value a:hover{color:var(--color-white);border-color:var(--color-white)}
+.bento-card p{font-family:var(--font-serif);font-size:var(--text-lg);line-height:var(--leading-loose);color:var(--color-ash)}
+.bento-card p strong{color:var(--color-white);font-weight:400}
+
+/* === Hero Typewriter === */
+.typewriter-cursor{display:inline-block;width:1px;height:1em;background:var(--color-steel);margin-left:2px;vertical-align:text-bottom;animation:blink .8s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 </style>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": "https://dhiaandave.vercel.app/#person",
-  "name": "Dhiaan Dave",
-  "url": "https://dhiaandave.vercel.app",
-  "image": "https://dhiaandave.vercel.app/images/profile.jpg",
-  "mainEntityOfPage": "https://dhiaandave.vercel.app",
-  "sameAs": [
-    "https://www.wikidata.org/wiki/Q137364134",
-    "https://www.linkedin.com/in/dhiaan",
+  "@context":"https://schema.org",
+  "@type":"Person",
+  "name":"Dhiaan Dave",
+  "url":"https://dhiaandave.vercel.app",
+  "sameAs":[
     "https://github.com/the-X-alien",
-    "https://usatt.simplycompete.com/userAccount/up/186304?uai=186304"
+    "https://www.linkedin.com/in/dhiaan",
+    "https://www.wikidata.org/wiki/Q137364134",
+    "https://devpost.com/dhiaan-n-dave"
   ],
-  "birthDate": "2012-07",
-  "jobTitle": "Student; Hackathon Organizer",
-  "hasOccupation": {
-    "@type": "Occupation",
-    "name": "Student; Hackathon organizer; Student developer"
-  },
-  "affiliation": [
-    {
-      "@type": "Organization",
-      "@id": "https://dhiaandave.vercel.app/#trms",
-      "name": "Thomas Russell Middle School",
-      "url": "https://russell.musd.org"
-    },
-    {
-      "@type": "Organization",
-      "@id": "https://dhiaandave.vercel.app/#wolverine-hacks",
-      "name": "Wolverine Hacks",
-      "url": "https://wolverine-hacks.vercel.app/"
-    },
-    {
-      "@type": "Organization",
-      "@id": "https://dhiaandave.vercel.app/#trms-steam",
-      "name": "TRMS STEAM Club",
-      "url": "https://trms-steam-club.vercel.app/"
-    },
-    {
-      "@type": "SportsOrganization",
-      "@id": "https://dhiaandave.vercel.app/#usatt",
-      "name": "USA Table Tennis",
-      "url": "https://www.usatt.org",
-      "sameAs": "https://usatt.simplycompete.com/userAccount/up/186304?uai=186304"
-    }
-  ],
-  "knowsAbout": [
-    "Python",
-    "HTML",
-    "CSS",
-    "JavaScript",
-    "React.js",
-    "Next.js",
-    "PCB design",
-    "3D printing",
-    "Middle School",
-    "Technology",
-    "Hackathon organization",
-    "STEAM education"
-  ],
-  "description": "Founder of Wolverine Hacks and TRMS STEAM Club; student developer and hackathon organizer based in Milpitas, California.",
-  "award": [
-    "Hackathon organizer recognition",
-    "Student STEM awards"
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "personal",
-    "email": "dhiaan.n.d@gmail.com"
-  }
+  "jobTitle":"Student; Hackathon Organizer; Co-Founder",
+  "knowsAbout":["Software Engineering","Electronics","Hackathon Organization","Web Development"],
+  "alumniOf":"Milpitas High School"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Who is Dhiaan Dave?","acceptedAnswer":{"@type":"Answer","text":"Dhiaan Dave is a student and builder based in Milpitas, California. He is the Lead of Logistics & Operations at Cove Hacks and Co-Founder of Telos Tutoring."}},
+    {"@type":"Question","name":"What is Cove Hacks?","acceptedAnswer":{"@type":"Answer","text":"Cove Hacks is the world's largest in-person high school hackathon. Dhiaan serves as Lead of Logistics & Operations."}},
+    {"@type":"Question","name":"What is Telos Tutoring?","acceptedAnswer":{"@type":"Answer","text":"Telos Tutoring is a free peer-to-peer tutoring nonprofit for K-8 students, co-founded by Dhiaan Dave."}},
+    {"@type":"Question","name":"What does Dhiaan Dave build?","acceptedAnswer":{"@type":"Answer","text":"Dhiaan builds web apps, electronics projects, CAD designs, and 3D-printed hardware. He also organizes hackathons and tech communities."}},
+    {"@type":"Question","name":"Is Dhiaan Dave available for internships?","acceptedAnswer":{"@type":"Answer","text":"Yes, Dhiaan is open to unpaid internship opportunities for Summer 2026 to gain hands-on experience in software engineering and technology."}}
+  ]
 }
 </script>
 </head>
 <body>
-<header>
-  <div class="hamburger" onclick="toggleMenu()">
-    <div></div>
-    <div></div>
-    <div></div>
+
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-ring"></div>
+  <span class="loading-label">Loading</span>
+</div>
+
+<!-- Custom Cursor -->
+<div class="custom-cursor" id="customCursor"></div>
+
+<!-- Hamburger -->
+<div class="hamburger" id="hamburger" aria-label="Open navigation">
+  <span></span><span></span><span></span>
+</div>
+
+<!-- Drawer Overlay -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<!-- Navigation Drawer -->
+<nav class="drawer" id="drawer">
+  <div class="drawer-top">
+    <span class="drawer-logo">Dhiaan Dave</span>
+    <button class="drawer-close" id="drawerClose" aria-label="Close navigation">&#x2715;</button>
   </div>
-  <h1>Hey, glad you could make it! This is the humble corner of the internet they gave me!</h1>
-  <nav class="link-group">
-    <a href="blog.html">My Blog</a>
-    <a href="projects.html">See My Projects</a>
-    <a href="contact.html">Contact Me</a>
-  </nav>
-  <div class="dropdown" id="dropdownMenu">
-    <a href="index.html">Home</a>
-    <a href="blog.html">My Blog</a>
-    <a href="projects.html">See My Projects</a>
-    <a href="contact.html">Contact Me</a>
-    <a href="spotify.html">Spotify</a>
-    <a href="youtube.html">YouTube</a>
-    <a href="duolingo.html">Duolingo</a>
-    <a href="monkeytype.html">Monkeytype</a>
+
+  <div class="drawer-search">
+    <span class="search-icon">&#x2315;</span>
+    <input type="text" id="drawerSearchInput" placeholder="Search this site..." spellcheck="false" autocomplete="off">
+    <div class="drawer-search-results" id="drawerSearchResults"></div>
   </div>
-</header>
-<main>
-  <section id="I" style="text-align: center;">
-    <h2>Hi, I'm 13 year old named Dhiaan Dave</h2>
-    <p>I live the great state of California. I'm currently at Thomas Russell Middle School. I'm always open to suggestions be it about Github, coding, hardware, or just learning anything in general. Reach out to me by clicking Contact above, maybe read my latest blog by clicking blog, or check out all of my projects with links to their GitHub repos!</p>
-  </section>
-  <section id="latest-project" style="text-align: center;">
-    <h2>Check Out My Latest Project:</h2>
-    <div id="latest-project" style="display: flex; justify-content: center;"></div>
-  </section>
-  <section id="skills" style="text-align: center;">
-    <h2>What I Do:</h2>
-    <p>Coding</p>
-    <p>PCB-making</p>
-    <p>CADding</p>
-    <p>and other hacking :D</p>
-    <br>
-  </section>
-</main>
-<footer>
-  <p>&copy; Made with <3 by 2026 Dhiaan Dave.</p>
-</footer>
-<script>
-function toggleMenu() {
-  const menu = document.getElementById('dropdownMenu');
-  menu.classList.toggle('show');
-}
-const githubUsername = 'the-X-alien';
-fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated`)
-  .then(response => response.json())
-  .then(repos => {
-    const latestRepo = repos.find(repo => !repo.fork);
-    if (!latestRepo) return;
-    const container = document.getElementById('latest-project');
-    const box = document.createElement('div');
-    box.className = 'repo-box';
-    box.innerHTML = `
-      <h3><a href="${latestRepo.html_url}" target="_blank" style="color: #3b82f6;">${latestRepo.name}</a></h3>
-      <p>${latestRepo.description || 'No description available.'}</p>
-      <div class="repo-meta">
-        <span>⭐ ${latestRepo.stargazers_count}</span>
-        <span>📅 Last updated: ${new Date(latestRepo.updated_at).toLocaleDateString()}</span>
+
+  <span class="drawer-section-label">Pages</span>
+  <div class="drawer-links">
+    <a href="index.html" data-drawer-close>Home <span class="link-meta">&#x25B6;</span></a>
+    <a href="#about" data-drawer-close>About</a>
+    <a href="#projects" data-drawer-close>Projects</a>
+    <a href="#skills" data-drawer-close>Skills</a>
+    <a href="#blog" data-drawer-close>Writing</a>
+    <a href="#contact" data-drawer-close>Contact</a>
+  </div>
+
+  <span class="drawer-section-label">Apps</span>
+  <div class="drawer-links">
+    <a href="spotify.html" data-drawer-close>Spotify <span class="link-meta">Playlists</span></a>
+    <a href="youtube.html" data-drawer-close>YouTube <span class="link-meta">Channel</span></a>
+    <a href="duolingo.html" data-drawer-close>Duolingo <span class="link-meta">Stats</span></a>
+    <a href="monkeytype.html" data-drawer-close>Monkeytype <span class="link-meta">Typing</span></a>
+  </div>
+
+  <span class="drawer-section-label">Proxxies</span>
+  <div class="drawer-links">
+    <a href="jklm.html" data-drawer-close>Bomb Party <span class="link-meta">JKLM</span></a>
+    <a href="minecraft.html" data-drawer-close>Eaglercraft <span class="link-meta">Minecraft</span></a>
+    <a href="slope2.html" data-drawer-close>Slope 2 <span class="link-meta">Game</span></a>
+    <a href="cloudmoon.html" data-drawer-close>Cloud Moon <span class="link-meta">Games</span></a>
+    <a href="aliex.html" data-drawer-close>AliExpress <span class="link-meta">Store</span></a>
+  </div>
+
+  <span class="drawer-section-label">Tools</span>
+  <div class="drawer-links">
+    <a href="search.html" data-drawer-close>URL Browser <span class="link-meta">Iframe</span></a>
+  </div>
+
+  <div class="drawer-footer">
+    <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
+    <a href="mailto:dhiaan.n.d@gmail.com">Email</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div id="three-canvas"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="label-tag">Dhiaan Dave</span>
+    <h1>Student · Builder ·<br>Hackathon Organizer</h1>
+    <p class="hero-sub"><span id="typewriterText"></span><span class="typewriter-cursor"></span></p>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="content-section">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="label-tag">01</span>
+      <span class="label-tag">About</span>
+    </div>
+    <div class="about-bento">
+      <div class="bento-card bento-wide fade-in">
+        <span class="bento-label">&#x25B6; Bio</span>
+        <p>I'm Dhiaan — based in Milpitas, California. I'm headed to Milpitas High School and deeply curious about how things work: from <strong>code and circuits</strong> to <strong>CAD and community-building</strong>.</p>
       </div>
-    `;
-    container.appendChild(box);
-  })
-  .catch(error => {
-    console.error('Error fetching repos:', error);
-    document.getElementById('latest-project').innerHTML = `<p style="color: red;">Failed to load latest project.</p>`;
+      <div class="bento-card fade-in">
+        <span class="bento-label">&#x25B6; Role</span>
+        <div class="bento-value">Lead of Logistics &amp; Ops @ <a href="https://covehacks.dev" target="_blank">Cove Hacks</a></div>
+      </div>
+      <div class="bento-card fade-in">
+        <span class="bento-label">&#x25B6; Venture</span>
+        <div class="bento-value">Co-Founder @ <a href="https://telos-tutoring.vercel.app" target="_blank">Telos Tutoring</a></div>
+      </div>
+      <div class="bento-card fade-in">
+        <span class="bento-label">&#x25B6; Location</span>
+        <div class="bento-value">Milpitas, California</div>
+      </div>
+      <div class="bento-card fade-in">
+        <span class="bento-label">&#x25B6; School</span>
+        <div class="bento-value">Milpitas High School</div>
+      </div>
+      <div class="bento-card bento-wide fade-in">
+        <span class="bento-label">&#x25B6; Open</span>
+        <p>I'm always open to new ideas — whether it's a GitHub collaboration, a hardware project, or just a conversation about something cool. Available for <strong>unpaid Summer 2026 internships</strong> to gain real-world engineering experience. <a href="#contact" style="color:var(--color-ash);border-bottom:1px solid var(--color-graphite);transition:color .2s,border-color .2s">Reach out</a> anytime.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects" class="content-section">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="label-tag">02</span>
+      <span class="label-tag">Projects</span>
+    </div>
+    <div id="projects-container" class="projects-grid fade-in">
+      <div class="loading-text">Loading projects...</div>
+    </div>
+  </div>
+</section>
+
+<!-- Skills -->
+<section id="skills" class="content-section">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="label-tag">03</span>
+      <span class="label-tag">Toolkit</span>
+    </div>
+    <div class="skills-ribbon-wrap fade-in">
+      <div class="skills-ribbon" id="skillsRibbon">
+        <span>Python</span><span>·</span><span>JavaScript</span><span>·</span><span>TypeScript</span><span>·</span><span>React</span><span>·</span><span>Next.js</span><span>·</span><span>Node.js</span><span>·</span><span>HTML/CSS</span><span>·</span><span>PCB Design</span><span>·</span><span>3D Printing</span><span>·</span><span>CAD</span><span>·</span><span>Arduino</span><span>·</span><span>Git</span><span>·</span><span>Linux</span><span>·</span><span>Hackathon Ops</span>
+        <span>Python</span><span>·</span><span>JavaScript</span><span>·</span><span>TypeScript</span><span>·</span><span>React</span><span>·</span><span>Next.js</span><span>·</span><span>Node.js</span><span>·</span><span>HTML/CSS</span><span>·</span><span>PCB Design</span><span>·</span><span>3D Printing</span><span>·</span><span>CAD</span><span>·</span><span>Arduino</span><span>·</span><span>Git</span><span>·</span><span>Linux</span><span>·</span><span>Hackathon Ops</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Blog -->
+<section id="blog" class="content-section">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="label-tag">04</span>
+      <span class="label-tag">Writing</span>
+    </div>
+    <div id="blog-list" class="blog-list fade-in">
+      <div class="loading-text">Loading posts...</div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="content-section">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="label-tag">05</span>
+      <span class="label-tag">Contact</span>
+    </div>
+    <div class="contact-links fade-in">
+      <a href="mailto:dhiaan.n.d@gmail.com" class="contact-link">Email</a>
+      <a href="https://github.com/the-X-alien" target="_blank" class="contact-link">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaan" target="_blank" class="contact-link">LinkedIn</a>
+    </div>
+    <form class="contact-form fade-in" action="https://formspree.io/f/mblkejvj" method="POST">
+      <label for="contact-name">Name</label>
+      <input type="text" id="contact-name" name="name" required placeholder="Your name">
+      <label for="contact-email">Email</label>
+      <input type="email" id="contact-email" name="email" required placeholder="your@email.com">
+      <label for="contact-message">Message</label>
+      <textarea id="contact-message" name="message" required placeholder="What's on your mind?"></textarea>
+      <button type="submit">Send</button>
+      <p id="form-status" style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-graphite);margin-top:var(--sp-12);display:none"></p>
+    </form>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>&copy; 2026 Dhiaan Dave</span>
+    <div class="footer-links">
+      <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
+      <a href="blog.html">Blog</a>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+import * as THREE from 'three';
+
+// === Lenis Smooth Scroll ===
+const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+
+// === Three.js Scene ===
+const canvas = document.createElement('canvas');
+document.getElementById('three-canvas').appendChild(canvas);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+camera.position.z = 8;
+
+// === Lights ===
+const ambientLight = new THREE.AmbientLight(0x222244, 0.5);
+scene.add(ambientLight);
+const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+dirLight.position.set(1, 2, 3);
+scene.add(dirLight);
+const backLight = new THREE.DirectionalLight(0x6677ff, 0.4);
+backLight.position.set(-1, -1, -2);
+scene.add(backLight);
+
+// === Core Icosahedron ===
+const coreGeo = new THREE.IcosahedronGeometry(1.2, 1);
+const coreMat = new THREE.MeshPhysicalMaterial({
+  color: 0x666688,
+  wireframe: true,
+  emissive: 0x343755,
+  emissiveIntensity: 0.3,
+  transparent: true,
+  opacity: 0.6,
+  metalness: 0.4,
+  roughness: 0.3,
+});
+const core = new THREE.Mesh(coreGeo, coreMat);
+scene.add(core);
+
+// Inner glow sphere
+const glowGeo = new THREE.IcosahedronGeometry(0.8, 2);
+const glowMat = new THREE.MeshBasicMaterial({
+  color: 0x4455aa,
+  transparent: true,
+  opacity: 0.08,
+  wireframe: false,
+});
+const glow = new THREE.Mesh(glowGeo, glowMat);
+scene.add(glow);
+
+// === Concentric Rings ===
+const rings = [];
+const ringColors = [0x555577, 0x666688, 0x4455aa, 0x777799, 0x5566bb];
+const ringRadii = [1.8, 2.4, 3.2, 4.0, 4.8];
+
+ringRadii.forEach((radius, i) => {
+  const geo = new THREE.TorusGeometry(radius, 0.02, 16, 64);
+  const mat = new THREE.MeshBasicMaterial({
+    color: ringColors[i % ringColors.length],
+    transparent: true,
+    opacity: 0.3 + (i * 0.08),
   });
-if (!document.cookie.split('; ').find(row => row.startsWith('cookie_consent'))) {
-  alert("By using this website, you agree to our cookie policy.");
-  document.cookie = "cookie_consent=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-}
-function setCookie(name, value, days) {
-  let expires = "";
-  if (days) {
-    const date = new Date();
-    date.setTime(date.getTime() + (days*24*60*60*1000));
-    expires = "; expires=" + date.toUTCString();
+  const ring = new THREE.Mesh(geo, mat);
+  ring.rotation.x = Math.PI / 2 + (i * 0.15);
+  ring.rotation.y = i * 0.3;
+  ring.rotation.z = i * 0.1;
+  scene.add(ring);
+  rings.push(ring);
+
+  // Double ring at slight angle offset
+  if (i % 2 === 0) {
+    const geo2 = new THREE.TorusGeometry(radius + 0.15, 0.015, 16, 64);
+    const mat2 = new THREE.MeshBasicMaterial({
+      color: 0x7788cc,
+      transparent: true,
+      opacity: 0.15,
+    });
+    const ring2 = new THREE.Mesh(geo2, mat2);
+    ring2.rotation.x = Math.PI / 2 + (i * 0.15) + 0.3;
+    ring2.rotation.y = i * 0.3 + 0.5;
+    ring2.rotation.z = i * 0.1 + 0.2;
+    scene.add(ring2);
+    rings.push(ring2);
   }
-  document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+});
+
+// === Particle Field ===
+const particleCount = 800;
+const positions = new Float32Array(particleCount * 3);
+const sizes = new Float32Array(particleCount);
+for (let i = 0; i < particleCount; i++) {
+  const theta = Math.random() * Math.PI * 2;
+  const phi = Math.acos(2 * Math.random() - 1);
+  const r = 3 + Math.random() * 8;
+  positions[i*3] = r * Math.sin(phi) * Math.cos(theta);
+  positions[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+  positions[i*3+2] = r * Math.cos(phi);
+  sizes[i] = 0.5 + Math.random() * 1.5;
 }
-function getCookie(name) {
-  const nameEQ = name + "=";
-  const ca = document.cookie.split(';');
-  for(let i=0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+
+const particleGeo = new THREE.BufferGeometry();
+particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+particleGeo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+const particleMat = new THREE.PointsMaterial({
+  color: 0x8888bb,
+  size: 0.035,
+  transparent: true,
+  opacity: 0.5,
+  blending: THREE.AdditiveBlending,
+  sizeAttenuation: true,
+});
+const particles = new THREE.Points(particleGeo, particleMat);
+scene.add(particles);
+
+// === Spark Particles ===
+const sparkCount = 150;
+const sparkPos = new Float32Array(sparkCount * 3);
+const sparkVel = [];
+for (let i = 0; i < sparkCount; i++) {
+  const theta = Math.random() * Math.PI * 2;
+  const phi = Math.acos(2 * Math.random() - 1);
+  const r = 0.5 + Math.random() * 1.5;
+  sparkPos[i*3] = r * Math.sin(phi) * Math.cos(theta);
+  sparkPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+  sparkPos[i*3+2] = r * Math.cos(phi);
+  sparkVel.push({
+    x: (Math.random() - 0.5) * 0.008,
+    y: (Math.random() - 0.5) * 0.008,
+    z: (Math.random() - 0.5) * 0.008,
+  });
+}
+const sparkGeo = new THREE.BufferGeometry();
+sparkGeo.setAttribute('position', new THREE.BufferAttribute(sparkPos, 3));
+const sparkMat = new THREE.PointsMaterial({
+  color: 0xffaa55,
+  size: 0.025,
+  transparent: true,
+  opacity: 0.6,
+  blending: THREE.AdditiveBlending,
+  sizeAttenuation: true,
+});
+const sparks = new THREE.Points(sparkGeo, sparkMat);
+scene.add(sparks);
+
+// === Mouse Parallax ===
+let mouseX = 0, mouseY = 0;
+let targetX = 0, targetY = 0;
+document.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+  mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+// === Resize ===
+window.addEventListener('resize', () => {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+});
+
+// === Animation Loop ===
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  // Smooth mouse follow
+  targetX += (mouseX - targetX) * 0.05;
+  targetY += (mouseY - targetY) * 0.05;
+
+  // Rotate core
+  core.rotation.x = t * 0.2 + targetY * 0.3;
+  core.rotation.y = t * 0.3 + targetX * 0.3;
+  glow.rotation.x = -t * 0.15 + targetY * 0.2;
+  glow.rotation.y = t * 0.25 + targetX * 0.2;
+
+  // Rotate rings at different speeds
+  rings.forEach((ring, i) => {
+    ring.rotation.x += 0.002 * (1 + i * 0.05) + targetY * 0.0005;
+    ring.rotation.y += 0.003 * (1 + i * 0.03) + targetX * 0.0005;
+    ring.rotation.z += 0.001 * (1 + i * 0.02);
+  });
+
+  // Rotate particle field
+  particles.rotation.y = t * 0.02;
+  particles.rotation.x = Math.sin(t * 0.01) * 0.05;
+
+  // Animate sparks
+  const sparkPosAttr = sparks.geometry.attributes.position;
+  for (let i = 0; i < sparkCount; i++) {
+    sparkPosAttr.array[i*3] += sparkVel[i].x;
+    sparkPosAttr.array[i*3+1] += sparkVel[i].y;
+    sparkPosAttr.array[i*3+2] += sparkVel[i].z;
+    const dx = sparkPosAttr.array[i*3];
+    const dy = sparkPosAttr.array[i*3+1];
+    const dz = sparkPosAttr.array[i*3+2];
+    const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+    if (dist > 2.5) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const r = 0.5 + Math.random() * 1.5;
+      sparkPosAttr.array[i*3] = r * Math.sin(phi) * Math.cos(theta);
+      sparkPosAttr.array[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+      sparkPosAttr.array[i*3+2] = r * Math.cos(phi);
+    }
   }
-  return null;
+  sparkPosAttr.needsUpdate = true;
+
+  // Gentle camera sway
+  camera.position.x = Math.sin(t * 0.1) * 0.3 + targetX * 0.2;
+  camera.position.y = Math.sin(t * 0.08) * 0.2 - targetY * 0.2;
+  camera.lookAt(0, 0, 0);
+
+  renderer.render(scene, camera);
 }
-setCookie("user_id", "12345", 365);
-console.log("user_id cookie:", getCookie("user_id"));
+animate();
+
+// === Intersection Observer for fade-ins ===
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// === Hide Loading Screen ===
+setTimeout(() => document.getElementById('loadingScreen').classList.add('hidden'), 600);
+
+// === Custom Cursor ===
+const cursor = document.getElementById('customCursor');
+document.addEventListener('mousemove', (e) => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+document.querySelectorAll('a, button, .project-card, .bento-card, input, textarea, .contact-link').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+});
+
+// === Hamburger / Drawer ===
+const hamburger = document.getElementById('hamburger');
+const drawer = document.getElementById('drawer');
+const drawerOverlay = document.getElementById('drawerOverlay');
+
+function toggleDrawer(open) {
+  hamburger.classList.toggle('open', open);
+  drawer.classList.toggle('open', open);
+  drawerOverlay.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+
+hamburger.addEventListener('click', () => toggleDrawer(!drawer.classList.contains('open')));
+drawerOverlay.addEventListener('click', () => toggleDrawer(false));
+document.getElementById('drawerClose').addEventListener('click', () => toggleDrawer(false));
+document.querySelectorAll('[data-drawer-close]').forEach(el => {
+  el.addEventListener('click', () => toggleDrawer(false));
+});
+
+// === Drawer Search ===
+const searchData = [
+  { name:'Home', url:'index.html', cat:'Page' },
+  { name:'About', url:'#about', cat:'Page' },
+  { name:'Projects', url:'#projects', cat:'Page' },
+  { name:'Skills', url:'#skills', cat:'Page' },
+  { name:'Writing / Blog', url:'#blog', cat:'Page' },
+  { name:'Contact', url:'#contact', cat:'Page' },
+  { name:'Blog Page', url:'blog.html', cat:'Page' },
+  { name:'Project Archive', url:'projects.html', cat:'Page' },
+  { name:'Spotify Playlists', url:'spotify.html', cat:'Apps' },
+  { name:'YouTube Channel', url:'youtube.html', cat:'Apps' },
+  { name:'Duolingo Stats', url:'duolingo.html', cat:'Apps' },
+  { name:'Monkeytype Typing', url:'monkeytype.html', cat:'Apps' },
+  { name:'Bomb Party (JKLM)', url:'jklm.html', cat:'Games' },
+  { name:'Eaglercraft Minecraft', url:'minecraft.html', cat:'Games' },
+  { name:'Slope 2', url:'slope2.html', cat:'Games' },
+  { name:'Cloud Moon Games', url:'cloudmoon.html', cat:'Games' },
+  { name:'URL Browser', url:'search.html', cat:'Tools' },
+  { name:'AliExpress', url:'aliex.html', cat:'Proxxies' },
+];
+
+const searchInput = document.getElementById('drawerSearchInput');
+const searchResults = document.getElementById('drawerSearchResults');
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if (!q) { searchResults.classList.remove('show'); searchResults.innerHTML = ''; return; }
+  const matches = searchData.filter(d => d.name.toLowerCase().includes(q) || d.cat.toLowerCase().includes(q));
+  if (matches.length === 0) {
+    searchResults.innerHTML = '<a style="color:var(--color-graphite);font-size:10px;padding:8px 10px">No results found</a>';
+  } else {
+    searchResults.innerHTML = matches.slice(0, 8).map(d =>
+      `<a href="${d.url}" data-drawer-close>${d.name} <span class="link-meta">${d.cat}</span></a>`
+    ).join('');
+    searchResults.querySelectorAll('a[data-drawer-close]').forEach(el => {
+      el.addEventListener('click', () => toggleDrawer(false));
+    });
+  }
+  searchResults.classList.add('show');
+});
+
+// === Typewriter Effect ===
+(function typewriter() {
+  const phrases = [
+    'Building things, organizing communities, and learning what\'s next.',
+    'Lead of Logistics & Ops at Cove Hacks — the world\'s largest IRL high school hackathon.',
+    'Co-Founder of Telos Tutoring — free peer-to-peer tutoring for K-8 students.',
+    'Available for unpaid Summer 2026 internships — let\'s build something together.',
+  ];
+  let phraseIdx = 0, charIdx = 0, isDeleting = false;
+  const el = document.getElementById('typewriterText');
+  function tick() {
+    const current = phrases[phraseIdx];
+    if (!isDeleting) {
+      el.textContent = current.substring(0, charIdx + 1);
+      charIdx++;
+      if (charIdx === current.length) {
+        setTimeout(() => { isDeleting = true; tick(); }, 3000);
+        return;
+      }
+      setTimeout(tick, 30 + Math.random() * 40);
+    } else {
+      el.textContent = current.substring(0, charIdx - 1);
+      charIdx--;
+      if (charIdx === 0) {
+        isDeleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+        setTimeout(tick, 300);
+        return;
+      }
+      setTimeout(tick, 15 + Math.random() * 20);
+    }
+  }
+  setTimeout(tick, 1200);
+})();
+
+// === Scroll Progress Bar ===
+const progressBar = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = docHeight > 0 ? (scrollTop / docHeight * 100) + '%' : '0%';
+});
+
+// === Active Section for Drawer Links ===
+const drawerNavLinks = document.querySelectorAll('.drawer-links a[href^="#"]');
+const contentSections = document.querySelectorAll('.content-section');
+drawerNavLinks.forEach(l => l.classList.remove('active'));
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      drawerNavLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+contentSections.forEach(s => sectionObserver.observe(s));
+
+// === GitHub Projects ===
+(async function loadProjects() {
+  const container = document.getElementById('projects-container');
+  try {
+    const res = await fetch('https://api.github.com/users/the-X-alien/repos?sort=updated&per_page=12');
+    if (!res.ok) throw new Error('GitHub API error');
+    const repos = await res.json();
+    const filtered = repos.filter(r => !r.fork).slice(0, 6);
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="error-text">No projects yet.</div>';
+      return;
+    }
+    container.innerHTML = filtered.map(repo => `
+      <a href="${repo.html_url}" target="_blank" class="project-card" rel="noopener">
+        <h3>${repo.name}</h3>
+        <p>${repo.description || 'No description available.'}</p>
+        <div class="project-meta">
+          <span>★ ${repo.stargazers_count}</span>
+          <span>${new Date(repo.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</span>
+        </div>
+      </a>
+    `).join('');
+  } catch (err) {
+    container.innerHTML = '<div class="error-text">Could not load projects. Try again later.</div>';
+  }
+})();
+
+// === Blog Posts ===
+(async function loadPosts() {
+  const container = document.getElementById('blog-list');
+  try {
+    const res = await fetch('posts.json');
+    if (!res.ok) throw new Error('Failed to load posts');
+    const posts = await res.json();
+    if (posts.length === 0) {
+      container.innerHTML = '<div class="error-text">No posts yet.</div>';
+      return;
+    }
+    container.innerHTML = posts.slice(0, 3).map(post => `
+      <a href="post.html?id=${encodeURIComponent(post.id)}" class="blog-item">
+        <div class="blog-item-left">
+          <div class="blog-item-title">${post.title}</div>
+          <span class="blog-item-date">${post.date}</span>
+        </div>
+        <span class="blog-item-arrow">→</span>
+      </a>
+    `).join('');
+  } catch (err) {
+    container.innerHTML = '<div class="error-text">Could not load posts.</div>';
+  }
+})();
+
+// === Contact Form ===
+const form = document.querySelector('.contact-form');
+const formStatus = document.getElementById('form-status');
+if (form) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formStatus.style.display = 'block';
+    formStatus.textContent = 'Sending...';
+    formStatus.style.color = 'var(--color-steel)';
+    const data = new FormData(form);
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+      if (res.ok) {
+        formStatus.textContent = 'Message sent. Thank you.';
+        formStatus.style.color = 'var(--color-ash)';
+        form.reset();
+      } else throw new Error();
+    } catch {
+      formStatus.textContent = 'Something went wrong. Try emailing directly.';
+      formStatus.style.color = 'var(--color-steel)';
+    }
+  });
+}
 </script>
 </body>
 </html>
-
-
-
-
-

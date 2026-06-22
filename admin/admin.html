@@ -3,65 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blog Admin</title>
-<!-- TinyMCE CDN -->
+<title>Admin — Dhiaan Dave</title>
+<meta name="description" content="Blog editor (legacy).">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
-  body { font-family: 'Nunito', sans-serif; padding: 2rem; background: #f0f0f0; }
-  label { display:block; margin-top: 1rem; font-weight: bold; }
-  input, textarea { width: 100%; padding: 0.5rem; margin-top: 0.25rem; }
-  button { margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer; background: #3b82f6; color: white; border: none; border-radius: 0.25rem; }
-  button:hover { background: #2563eb; }
-  pre { background: #eee; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-top: 1rem; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--void:#000;--white:#fff;--graphite:#4d4d4d;--steel:#808080;--ash:#c6c6c6;--font-mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--font-sans:'Inter',system-ui,sans-serif;--text-xs:10px;--text-sm:12px}
+body{background:var(--void);color:var(--ash);font-family:var(--font-sans);padding:32px;max-width:700px;margin:0 auto;min-height:100vh}
+h1{font-family:var(--font-mono);font-size:var(--text-sm);font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.08em;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--graphite)}
+label{display:block;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--steel);text-transform:uppercase;letter-spacing:.1em;margin-top:16px;margin-bottom:4px}
+input[type="text"]{width:100%;background:#111;border:1px solid var(--graphite);border-radius:4px;padding:8px 12px;color:var(--white);font-family:var(--font-mono);font-size:var(--text-sm);outline:none}
+input[type="text"]:focus{border-color:var(--ash)}
+button{font-family:var(--font-mono);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;background:transparent;border:1px solid var(--graphite);border-radius:4px;color:var(--ash);padding:8px 18px;cursor:pointer;transition:border-color .2s,color .2s;margin-top:16px}
+button:hover{border-color:var(--white);color:var(--white)}
+pre{background:#0a0a0a;border:1px solid var(--graphite);border-radius:4px;padding:16px;color:var(--ash);font-family:var(--font-mono);font-size:var(--text-xs);overflow-x:auto;margin-top:8px;white-space:pre-wrap;word-break:break-all}
+.back-link{display:inline-block;margin-bottom:20px;color:var(--steel);font-family:var(--font-mono);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;text-decoration:none}
+.back-link:hover{color:var(--white)}
 </style>
 </head>
 <body>
+<a href="../index.html" class="back-link">&#8592; Home</a>
 <h1>Blog Post Editor</h1>
 
-<label>Post ID (unique): <input type="text" id="post-id" placeholder="first-blog"></label>
-<label>Title: <input type="text" id="post-title" placeholder="First Blog Post"></label>
-<label>Date: <input type="text" id="post-date" placeholder="August 25, 2025"></label>
-<label>Banner URL: <input type="text" id="post-banner" placeholder="your-image.jpg"></label>
-<label>Content:</label>
+<label>Post ID <span style="color:var(--graphite)">(unique, no spaces)</span></label>
+<input type="text" id="post-id" placeholder="first-blog">
+
+<label>Title</label>
+<input type="text" id="post-title" placeholder="First Blog Post">
+
+<label>Date</label>
+<input type="text" id="post-date" placeholder="August 25, 2025">
+
+<label>Banner URL <span style="color:var(--graphite)">(optional)</span></label>
+<input type="text" id="post-banner" placeholder="your-image.jpg">
+
+<label>Content</label>
 <textarea id="post-content"></textarea>
 
 <button onclick="generatePost()">Generate JSON</button>
 
-<h2>JSON Output:</h2>
+<h2>JSON Output</h2>
 <pre id="output"></pre>
 
 <script>
-  // Initialize TinyMCE editor
-  tinymce.init({
-    selector: '#post-content',
-    height: 400,
-    menubar: false,
-    plugins: 'lists link image code',
-    toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright | bullist numlist | link image | code',
-    branding: false
-  });
+tinymce.init({
+  selector:'#post-content',
+  height:400,
+  menubar:false,
+  plugins:'lists link image code',
+  toolbar:'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright | bullist numlist | link image | code',
+  branding:false,
+  content_style:"body{background:#111;color:#c6c6c6;font-family:Georgia,serif;font-size:14px;line-height:1.7;padding:16px}a{color:#fff}"
+});
 
-  function generatePost() {
-    const id = document.getElementById('post-id').value.trim();
-    const title = document.getElementById('post-title').value.trim();
-    const date = document.getElementById('post-date').value.trim();
-    const banner = document.getElementById('post-banner').value.trim();
-    const content = tinymce.get('post-content').getContent().trim();
-
-    if(!id || !title || !date || !content){
-      alert("Please fill out Post ID, Title, Date, and Content.");
-      return;
-    }
-
-    const jsonSnippet = `"${id}": {\n` +
-                        `  "title": "${title}",\n` +
-                        `  "date": "${date}",\n` +
-                        `  "banner": "${banner}",\n` +
-                        `  "content": "${content.replace(/\n/g,' ')}"\n` +
-                        `}`;
-
-    document.getElementById('output').textContent = jsonSnippet;
-  }
+function generatePost(){
+  const id=document.getElementById('post-id').value.trim();
+  const title=document.getElementById('post-title').value.trim();
+  const date=document.getElementById('post-date').value.trim();
+  const banner=document.getElementById('post-banner').value.trim();
+  const c=tinymce.get('post-content');
+  const content=c?c.getContent().trim():'';
+  if(!id||!title||!date||!content){alert("Please fill out Post ID, Title, Date, and Content.");return}
+  const json='"'+id+'": {\n  "title": "'+title+'",\n  "date": "'+date+'",\n  "banner": "'+banner+'",\n  "content": "'+content.replace(/\n/g,' ')+'"\n}';
+  document.getElementById('output').textContent=json;
+}
 </script>
 </body>
 </html>

@@ -1,112 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog Post</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      font-family: 'Nunito', sans-serif;
-      background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
-      color: #1f2937;
-    }
-
-    body {
-      flex: 1;
-    }
-
-    .blog-post {
-      max-width: 800px;
-      margin: 2rem auto;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      border-radius: 1rem;
-      border: 1px solid #e5e7eb;
-      padding: 2rem;
-      box-shadow: 0 10px 15px rgba(0,0,0,0.05);
-    }
-
-    .blog-banner {
-      width: 100%;
-      height: 300px;
-      border-radius: 0.75rem;
-      background-color: #e5e7eb;
-      background-size: cover;
-      background-position: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .blog-post h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .blog-post .date {
-      font-size: 0.9rem;
-      color: #6b7280;
-      margin-bottom: 1.5rem;
-    }
-
-    .blog-content {
-      font-size: 1rem;
-      color: #374151;
-      line-height: 1.6;
-    }
-
-    footer {
-      margin-top: auto;
-      text-align: center;
-      color: #d1d5db;
-      padding: 1.5rem;
-      font-size: 0.9rem;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post — Dhiaan Dave</title>
+<meta name="description" content="Blog post by Dhiaan Dave.">
+<meta name="author" content="Dhiaan Dave">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Georgia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.post-container{max-width:720px;margin:0 auto;padding:var(--sp-96) var(--sp-24) var(--sp-48)}
+@media(max-width:640px){.post-container{padding:var(--sp-80) var(--sp-16) var(--sp-32)}}
+.back-link{
+  display:inline-flex;align-items:center;gap:var(--sp-6);
+  font-family:var(--font-mono);font-size:var(--text-sm);
+  color:var(--color-ash);margin-bottom:var(--sp-32);
+  transition:color .2s ease;
+}
+.back-link:hover{color:var(--color-white)}
+.post-title{
+  font-family:var(--font-sans);font-weight:300;
+  font-size:var(--text-3xl);line-height:1.1;
+  letter-spacing:-.02em;color:var(--color-white);
+  margin-bottom:var(--sp-12);
+}
+.post-date{
+  font-family:var(--font-mono);font-size:var(--text-xs);
+  color:var(--color-graphite);text-transform:uppercase;
+  letter-spacing:.05em;display:block;margin-bottom:var(--sp-40);
+}
+.post-banner{
+  width:100%;height:240px;border-radius:var(--radius-sm);
+  background-color:var(--color-card);background-size:cover;
+  background-position:center;margin-bottom:var(--sp-40);
+  border:1px solid var(--color-graphite);
+}
+.post-body p{
+  font-family:var(--font-serif);font-size:var(--text-lg);
+  line-height:var(--leading-loose);color:var(--color-ash);
+  margin-bottom:var(--sp-20);
+}
+.post-body a{color:var(--color-ash);border-bottom:1px solid var(--color-graphite);transition:color .2s,border-color .2s}
+.post-body a:hover{color:var(--color-white);border-color:var(--color-white)}
+.post-body blockquote{
+  border-left:2px solid var(--color-graphite);
+  padding-left:var(--sp-16);margin:var(--sp-24) 0;
+  color:var(--color-steel);
+  font-style:italic;
+}
+.loading-text{text-align:center;padding:var(--sp-48)}
+</style>
 </head>
 <body>
-  <div class="blog-post">
-    <div id="post-banner" class="blog-banner"></div>
-    <h1 id="post-title"></h1>
-    <p class="date" id="post-date"></p>
-    <div id="post-content" class="blog-content"></div>
+<nav class="page-nav">
+  <a href="index.html" class="nav-logo">Dhiaan Dave</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Writing</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
   </div>
+</nav>
 
-  <footer>
-    &copy; 2025 Dhiaan Dave - All Rights Reserved.
-  </footer>
+<div id="post-content" class="post-container">
+  <div class="loading-text">Loading post...</div>
+</div>
 
-  <script>
-    // Get post ID from URL
-    const params = new URLSearchParams(window.location.search);
-    const postId = params.get('id');
+<footer class="site-footer" style="border-top:none">
+  <div class="footer-inner">
+    <span>&copy; 2026 Dhiaan Dave</span>
+    <div class="footer-links">
+      <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</footer>
 
-    fetch('posts.json')
-      .then(response => response.json())
-      .then(posts => {
-        // Find the post by ID
-        const post = posts.find(p => p.id === postId);
-        if (post) {
-          document.getElementById('post-title').textContent = post.title;
-          document.getElementById('post-date').textContent = post.date;
-          document.getElementById('post-banner').style.backgroundImage = `url('${post.banner}')`;
-          document.getElementById('post-content').innerHTML = post.content;
-        } else {
-          document.body.innerHTML = "<p style='text-align:center;margin-top:2rem;color:white;'>Post not found.</p>";
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        document.body.innerHTML = "<p style='text-align:center;margin-top:2rem;color:white;'>Error loading post data.</p>";
-      });
-  </script>
+<script>
+(async function() {
+  const container = document.getElementById('post-content');
+  const params = new URLSearchParams(window.location.search);
+  const postId = params.get('id');
+  if (!postId) {
+    container.innerHTML = '<div class="error-text">No post specified. <a href="blog.html" class="back-link" style="display:inline;margin:0">View all posts →</a></div>';
+    return;
+  }
+  try {
+    const res = await fetch('posts.json');
+    if (!res.ok) throw new Error('Failed');
+    const posts = await res.json();
+    const post = posts.find(p => p.id === postId);
+    if (!post) {
+      container.innerHTML = '<div class="error-text">Post not found. <a href="blog.html" class="back-link" style="display:inline;margin:0">View all posts →</a></div>';
+      return;
+    }
+    document.title = `${post.title} — Dhiaan Dave`;
+    const bannerHtml = post.banner ? `<div class="post-banner" style="background-image:url('${post.banner}')"></div>` : '';
+    container.innerHTML = `
+      <a href="blog.html" class="back-link">← Back</a>
+      <h1 class="post-title">${post.title}</h1>
+      <span class="post-date">${post.date}</span>
+      ${bannerHtml}
+      <div class="post-body">${post.content}</div>
+    `;
+  } catch {
+    container.innerHTML = '<div class="error-text">Could not load post. <a href="blog.html" class="back-link" style="display:inline;margin:0">View all posts →</a></div>';
+  }
+})();
+</script>
 </body>
 </html>
-
-
-

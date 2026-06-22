@@ -1,12 +1,258 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="searchstyle.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browser — Dhiaan Dave</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--void:#000;--white:#fff;--graphite:#4d4d4d;--steel:#808080;--ash:#c6c6c6;--surface:#111;--card:#181818;--font-mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--text-xs:10px;--text-sm:12px;--sp-4:4px;--sp-6:6px;--sp-8:8px;--sp-10:10px;--sp-12:12px;--sp-16:16px;--radius-sm:4px}
+body{background:var(--void);color:var(--white);font-family:var(--font-mono);height:100vh;display:flex;flex-direction:column;font-size:var(--text-sm)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--graphite);border-radius:2px}
+a{color:inherit;text-decoration:none}
+
+/* Top bar */
+.top-bar{display:flex;align-items:center;gap:var(--sp-8);padding:var(--sp-8) var(--sp-10);border-bottom:1px solid var(--graphite);flex-shrink:0}
+.top-bar a{color:var(--steel);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;transition:color .2s}
+.top-bar a:hover{color:var(--white)}
+.browser-title{color:var(--steel);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;flex-shrink:0;margin-right:var(--sp-4)}
+
+/* Tab bar */
+.tab-bar{display:flex;gap:2px;padding:var(--sp-6) var(--sp-8);border-bottom:1px solid var(--graphite);flex-shrink:0;overflow-x:auto;min-height:32px;align-items:flex-end}
+.tab{display:flex;align-items:center;gap:var(--sp-4);padding:var(--sp-4) var(--sp-8);background:var(--surface);border:1px solid var(--graphite);border-bottom:none;border-radius:var(--radius-sm) var(--radius-sm) 0 0;cursor:pointer;font-size:var(--text-xs);color:var(--steel);white-space:nowrap;max-width:160px;transition:background .2s,color .2s}
+.tab.active{background:var(--card);color:var(--white);border-color:var(--ash)}
+.tab .tab-close{margin-left:var(--sp-4);color:var(--graphite);font-size:10px;cursor:pointer;padding:0 2px;transition:color .2s}
+.tab .tab-close:hover{color:var(--white)}
+.tab-new{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border:1px solid var(--graphite);border-radius:var(--radius-sm);cursor:pointer;color:var(--steel);font-size:var(--text-sm);transition:border-color .2s,color .2s;margin-left:var(--sp-4)}
+.tab-new:hover{border-color:var(--white);color:var(--white)}
+
+/* URL bar */
+.url-bar{display:flex;align-items:center;gap:var(--sp-6);padding:var(--sp-6) var(--sp-8);border-bottom:1px solid var(--graphite);flex-shrink:0;flex-wrap:wrap}
+.nav-btn{background:transparent;border:1px solid var(--graphite);border-radius:var(--radius-sm);color:var(--steel);width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:var(--text-sm);transition:border-color .2s,color .2s;flex-shrink:0}
+.nav-btn:hover{border-color:var(--white);color:var(--white)}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.url-input-wrap{flex:1;display:flex;min-width:0}
+.url-input-wrap input{width:100%;background:var(--surface);border:1px solid var(--graphite);border-radius:var(--radius-sm);padding:var(--sp-6) var(--sp-8);color:var(--white);font-family:var(--font-mono);font-size:var(--text-xs);outline:none;transition:border-color .2s}
+.url-input-wrap input:focus{border-color:var(--ash)}
+.url-input-wrap input::placeholder{color:var(--steel)}
+.go-btn{font-family:var(--font-mono);font-size:var(--text-xs);background:transparent;border:1px solid var(--graphite);border-radius:var(--radius-sm);color:var(--ash);padding:var(--sp-4) var(--sp-12);cursor:pointer;text-transform:uppercase;letter-spacing:.08em;transition:border-color .2s,color .2s;flex-shrink:0}
+.go-btn:hover{border-color:var(--white);color:var(--white)}
+
+.loading-indicator{height:2px;background:var(--void);flex-shrink:0;transition:height .2s}
+.loading-indicator.active{height:2px;background:linear-gradient(90deg,var(--void),var(--ash),var(--void));background-size:200% 100%;animation:shimmer .8s linear infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Content area */
+.content-area{flex:1;position:relative;background:var(--void)}
+.content-area iframe{width:100%;height:100%;border:none;background:#fff}
+.start-page{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--sp-12);padding:var(--sp-20)}
+.start-page .big-icon{font-size:32px;color:var(--graphite);font-family:var(--font-mono)}
+.start-page p{font-size:var(--text-xs);color:var(--graphite);text-transform:uppercase;letter-spacing:.12em}
+</style>
 </head>
 <body>
-    <input type="text" id="urlInput" placeholder="Enter URL here">
-    <button onclick="loadURL()">Load URL</button>
-    <iframe id="myFrame"></iframe>
-    <script src="searchscript.js"></script>
+
+<div class="top-bar">
+  <a href="index.html">&#8592; Home</a>
+  <span class="browser-title">Browser</span>
+  <div style="flex:1"></div>
+</div>
+
+<div class="tab-bar" id="tabBar">
+  <div style="flex:1"></div>
+  <div class="tab-new" id="newTabBtn" title="New tab">+</div>
+</div>
+
+<div class="url-bar">
+  <button class="nav-btn" id="backBtn" disabled>&#8592;</button>
+  <button class="nav-btn" id="fwdBtn" disabled>&#8594;</button>
+  <button class="nav-btn" id="refreshBtn">&#x21BB;</button>
+  <div class="url-input-wrap">
+    <input type="text" id="urlInput" placeholder="Search or enter URL..." spellcheck="false" autocomplete="off">
+  </div>
+  <button class="go-btn" id="goBtn">Go</button>
+</div>
+
+<div class="loading-indicator" id="loadingIndicator"></div>
+
+<div class="content-area" id="contentArea">
+  <div class="start-page" id="startPage">
+    <div class="big-icon">&#x2315;</div>
+    <p>Enter a URL or search term above</p>
+  </div>
+</div>
+
+<script>
+// === Tab Manager ===
+let tabs = [];
+let activeTabId = null;
+let tabCounter = 0;
+
+function createTab(url) {
+  const id = ++tabCounter;
+  const tab = { id, url: url || '', title: 'New Tab', history: [], historyIdx: -1, iframe: null };
+  tabs.push(tab);
+  renderTabs();
+  if (url) navigateTab(id, url);
+  activateTab(id);
+  return id;
+}
+
+function activateTab(id) {
+  activeTabId = id;
+  renderTabs();
+  renderContent();
+}
+
+function closeTab(id) {
+  const idx = tabs.findIndex(t => t.id === id);
+  if (tabs.length <= 1) return;
+  tabs = tabs.filter(t => t.id !== id);
+  if (activeTabId === id) {
+    const next = tabs[Math.min(idx, tabs.length - 1)];
+    activateTab(next.id);
+  } else {
+    renderTabs();
+  }
+}
+
+function getActiveTab() { return tabs.find(t => t.id === activeTabId); }
+
+function renderTabs() {
+  const bar = document.getElementById('tabBar');
+  const newBtn = bar.querySelector('#newTabBtn');
+  bar.innerHTML = '';
+  tabs.forEach(t => {
+    const div = document.createElement('div');
+    div.className = 'tab' + (t.id === activeTabId ? ' active' : '');
+    div.textContent = t.title.length > 20 ? t.title.slice(0, 20) + '...' : t.title;
+    div.title = t.title;
+    div.addEventListener('click', () => activateTab(t.id));
+    const close = document.createElement('span');
+    close.className = 'tab-close';
+    close.textContent = '\u2715';
+    close.addEventListener('click', (e) => { e.stopPropagation(); closeTab(t.id); });
+    div.appendChild(close);
+    bar.appendChild(div);
+  });
+  bar.appendChild(newBtn);
+  updateNavButtons();
+}
+
+function renderContent() {
+  const tab = getActiveTab();
+  const area = document.getElementById('contentArea');
+  const start = document.getElementById('startPage');
+  area.innerHTML = '';
+  if (!tab || !tab.url) {
+    area.appendChild(start);
+    return;
+  }
+  const iframe = document.createElement('iframe');
+  iframe.src = tab.url;
+  iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups';
+  iframe.addEventListener('load', () => { setLoading(false); updateTabTitle(iframe); });
+  tab.iframe = iframe;
+  area.appendChild(iframe);
+  const inp = document.getElementById('urlInput');
+  inp.value = tab.url;
+  updateNavButtons();
+}
+
+function updateTabTitle(iframe) {
+  const tab = getActiveTab();
+  if (!tab) return;
+  try {
+    tab.title = iframe.contentDocument.title || 'Untitled';
+  } catch { tab.title = tab.url || 'Untitled'; }
+  renderTabs();
+}
+
+// === Navigation ===
+function navigateTab(id, url) {
+  const tab = tabs.find(t => t.id === id);
+  if (!tab) return;
+  const processed = processUrl(url);
+  tab.url = processed;
+  if (tab.historyIdx < tab.history.length - 1) tab.history = tab.history.slice(0, tab.historyIdx + 1);
+  tab.history.push(processed);
+  tab.historyIdx = tab.history.length - 1;
+  setLoading(true);
+  renderContent();
+  document.getElementById('urlInput').value = processed;
+}
+
+function setLoading(on) {
+  document.getElementById('loadingIndicator').className = 'loading-indicator' + (on ? ' active' : '');
+}
+
+function processUrl(input) {
+  const trimmed = input.trim();
+  if (!trimmed) return '';
+  if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) return trimmed;
+  if (trimmed.startsWith('//')) return 'https:' + trimmed;
+  if (/^[\w-]+\.\w+/.test(trimmed)) return 'https://' + trimmed;
+  return 'https://www.google.com/search?q=' + encodeURIComponent(trimmed);
+}
+
+function go() {
+  const inp = document.getElementById('urlInput');
+  const val = inp.value.trim();
+  if (!val) return;
+  if (!activeTabId) createTab(val);
+  else navigateTab(activeTabId, val);
+  inp.blur();
+}
+
+function goBack() {
+  const tab = getActiveTab();
+  if (!tab || tab.historyIdx <= 0) return;
+  tab.historyIdx--;
+  tab.url = tab.history[tab.historyIdx];
+  renderContent();
+  document.getElementById('urlInput').value = tab.url;
+}
+
+function goForward() {
+  const tab = getActiveTab();
+  if (!tab || tab.historyIdx >= tab.history.length - 1) return;
+  tab.historyIdx++;
+  tab.url = tab.history[tab.historyIdx];
+  renderContent();
+  document.getElementById('urlInput').value = tab.url;
+}
+
+function refresh() {
+  const tab = getActiveTab();
+  if (!tab || !tab.url) return;
+  setLoading(true);
+  renderContent();
+}
+
+function updateNavButtons() {
+  const tab = getActiveTab();
+  document.getElementById('backBtn').disabled = !tab || tab.historyIdx <= 0;
+  document.getElementById('fwdBtn').disabled = !tab || tab.historyIdx >= tab.history.length - 1;
+}
+
+// === URL Input: Enter key and smart detection ===
+document.getElementById('urlInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') go();
+});
+
+// === Event Listeners ===
+document.getElementById('goBtn').addEventListener('click', go);
+document.getElementById('backBtn').addEventListener('click', goBack);
+document.getElementById('fwdBtn').addEventListener('click', goForward);
+document.getElementById('refreshBtn').addEventListener('click', refresh);
+document.getElementById('newTabBtn').addEventListener('click', () => createTab(''));
+
+// === Init: create first tab ===
+createTab('');
+</script>
 </body>
 </html>

@@ -1,48 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dhiaan's Portfolio</title>
-  <meta name="description" content="Welcome to Dhiaan's portfolio. Explore my blog, projects, and contact information.">
-  <meta name="keywords" content="Dhiaan Dave, portfolio, blog, projects, contact, Dhiaan, the-X-alien, Milpitas, California, Thomas Russell, Milpitas High School, MHS, TRMS, student">
-  <meta name="author" content="Dhiaan Dave">
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language — Dhiaan Dave</title>
+<meta name="description" content="Dhiaan's Duolingo stats.">
+<meta name="author" content="Dhiaan Dave">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&family=Georgia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.stats-page{min-height:100vh;display:flex;flex-direction:column}
+.stats-main{flex:1;padding:var(--sp-96) var(--sp-24) var(--sp-48);max-width:600px;margin:0 auto;width:100%;text-align:center}
+@media(max-width:640px){.stats-main{padding:var(--sp-80) var(--sp-16) var(--sp-32)}}
+.stat-card{background:var(--color-card);border:1px solid var(--color-graphite);border-radius:var(--radius-sm);padding:var(--sp-32);margin-top:var(--sp-12)}
+.stat-display{font-family:var(--font-mono);font-size:var(--text-xl);color:var(--color-white);margin-bottom:var(--sp-8)}
+.stat-label{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-steel);text-transform:uppercase;letter-spacing:.1em}
+.stat-row{display:flex;justify-content:center;gap:var(--sp-32);flex-wrap:wrap;margin-top:var(--sp-20)}
+.stat-item{text-align:center}
+.stat-number{font-family:var(--font-sans);font-size:var(--text-3xl);font-weight:200;color:var(--color-white);line-height:1}
+.stat-sub{font-family:var(--font-mono);font-size:10px;color:var(--color-graphite);text-transform:uppercase;letter-spacing:.1em;margin-top:var(--sp-4)}
+.loading-dots::after{content:'...';animation:dots 1.2s steps(4) infinite}
+@keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+</style>
 </head>
-<body>
-  <header>
-    <h1>Duolingo Stats</h1>
-    <p>Language learning progress</p>
-  </header>
+<body class="stats-page">
+<nav class="page-nav">
+  <a href="index.html" class="nav-logo">Dhiaan Dave</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Writing</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
 
-  <main>
-    <div class="repo-grid">
-      <div class="repo-box">
-        <h3>My Duolingo Data</h3>
-        <p id="duolingoStats">Loading...</p>
+<main class="stats-main">
+  <span class="label-tag" style="display:block;margin-bottom:var(--sp-12);letter-spacing:.15em">Duolingo</span>
+  <h1 class="page-title">Language Stats</h1>
+  <p class="page-subtitle">Tracking my language learning journey.</p>
+
+  <div class="stat-card">
+    <div class="stat-display" id="duolingoStatus">Loading<span class="loading-dots"></span></div>
+    <div class="stat-label">Duolingo Profile</div>
+    <div class="stat-row">
+      <div class="stat-item">
+        <div class="stat-number" id="streakVal">—</div>
+        <div class="stat-sub">Day Streak</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="xpVal">—</div>
+        <div class="stat-sub">Total XP</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="crownsVal">—</div>
+        <div class="stat-sub">Crowns</div>
       </div>
     </div>
-  </main>
+  </div>
+</main>
 
-  <footer>
-    <p>🦉 Powered by Duolingo API</p>
-  </footer>
+<footer class="site-footer" style="border-top:none">
+  <div class="footer-inner">
+    <span>🦉 Data from Duolingo</span>
+    <div class="footer-links">
+      <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</footer>
 
-  <script>
-    async function loadDuolingo() {
-      try {
-        let res = await fetch("https://www.duolingo.com/profile/DhiaanDave");
-        let data = await res.json();
-        let user = data.users[0];
-        document.getElementById("duolingoStats").textContent =
-          `Streak: ${user.streak || 0} 🔥 | XP: ${user.totalXp || 0}`;
-      } catch {
-        document.getElementById("duolingoStats").textContent = "Error loading stats";
-      }
-    }
-    loadDuolingo();
-  </script>
+<script>
+(async function() {
+  try {
+    const res = await fetch('https://www.duolingo.com/2019-01-01/users?username=DhiaanDave');
+    const data = await res.json();
+    const user = data.users?.[0];
+    if (user) {
+      document.getElementById('duolingoStatus').textContent = user.name || 'Active';
+      document.getElementById('streakVal').textContent = user.streak || 0;
+      document.getElementById('xpVal').textContent = (user.totalXp || 0).toLocaleString();
+      document.getElementById('crownsVal').textContent = user.crowns || 0;
+    } else throw new Error();
+  } catch {
+    document.getElementById('duolingoStatus').textContent = 'Unavailable';
+  }
+})();
+</script>
 </body>
 </html>

@@ -1,104 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dhiaan's Portfolio</title>
-  <meta name="description" content="Welcome to Dhiaan's portfolio. Explore my blog, projects, and contact information.">
-  <meta name="keywords" content="Dhiaan Dave, portfolio, blog, projects, contact, Dhiaan, the-X-alien, Milpitas, California, Thomas Russell, Milpitas High School, MHS, TRMS, student">
-  <meta name="author" content="Dhiaan Dave">
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
-  <style>
-    .blog-post {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      border-radius: 1rem;
-      border: 1px solid #e5e7eb;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
-      cursor: pointer;
-    }
-
-    .blog-post h3 {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      color: #111827;
-    }
-
-    .blog-post .date {
-      font-size: 0.9rem;
-      color: #6b7280;
-      margin-bottom: 1rem;
-    }
-
-    .blog-banner {
-      width: 100%;
-      height: 200px;
-      border-radius: 0.75rem;
-      background-color: #e5e7eb;
-      background-size: cover;
-      background-position: center;
-      margin-bottom: 1rem;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing — Dhiaan Dave</title>
+<meta name="description" content="Blog posts by Dhiaan Dave.">
+<meta name="author" content="Dhiaan Dave">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Georgia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.blog-list{display:flex;flex-direction:column;gap:var(--sp-12)}
+.blog-item{
+  display:block;padding:var(--sp-20) 0;
+  border-bottom:1px solid var(--color-graphite);
+  transition:opacity .2s ease;
+}
+.blog-item:last-child{border-bottom:none}
+.blog-item:hover{opacity:.8}
+.blog-item-title{
+  font-family:var(--font-sans);font-size:var(--text-xl);
+  font-weight:400;line-height:1.3;
+  color:var(--color-white);
+  margin-bottom:var(--sp-6);
+}
+.blog-item-meta{
+  font-family:var(--font-mono);font-size:var(--text-xs);
+  color:var(--color-graphite);
+  text-transform:uppercase;letter-spacing:.05em;
+}
+</style>
 </head>
 <body>
-  <header>
-    <div class="hamburger" onclick="toggleMenu()">
-      <div></div>
-      <div></div>
-      <div></div>
+<nav class="page-nav">
+  <a href="index.html" class="nav-logo">Dhiaan Dave</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<main class="page-main">
+  <div style="margin-bottom:var(--sp-48)">
+    <span class="label-tag" style="margin-bottom:var(--sp-12);display:block;letter-spacing:.15em">Writing</span>
+    <h1 class="page-title">Blog</h1>
+    <p class="page-subtitle">Thoughts, experiences, and things I've learned along the way.</p>
+  </div>
+  <div id="posts-container" class="blog-list">
+    <div class="loading-text">Loading posts...</div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>&copy; 2026 Dhiaan Dave</span>
+    <div class="footer-links">
+      <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
     </div>
-    <h1>My Blog!</h1>
-    <p>Read my thoughts, ideas, and experiences</p>
-    <div class="dropdown" id="dropdownMenu">
-      <a href="index.html">Home</a>
-      <a href="blog.html">My Blog</a>
-      <a href="projects.html">See My Projects</a>
-      <a href="contact.html">Contact Me</a>
-      <a href="spotify.html">Spotify</a>
-      <a href="youtube.html">YouTube</a>
-      <a href="duolingo.html">Duolingo</a>
-      <a href="monkeytype.html">Monkeytype</a>
-    </div>
-  </header>
+  </div>
+</footer>
 
-  <main>
-    <h2>Latest Posts</h2>
-    <div id="posts-container"></div>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Dhiaan Dave - All Rights Reserved.</p>
-  </footer>
-
-  <script>
-    function toggleMenu() {
-      document.getElementById('dropdownMenu').classList.toggle('show');
+<script>
+(async function() {
+  const container = document.getElementById('posts-container');
+  try {
+    const res = await fetch('posts.json');
+    if (!res.ok) throw new Error('Failed');
+    const posts = await res.json();
+    if (posts.length === 0) {
+      container.innerHTML = '<div class="error-text">No posts yet.</div>';
+      return;
     }
-
-    // Load posts from posts.json
-    fetch('posts.json')
-      .then(response => response.json())
-      .then(posts => {
-        const container = document.getElementById('posts-container');
-        posts.forEach(post => {
-          const div = document.createElement('div');
-          div.className = 'blog-post';
-          div.onclick = () => { window.location.href = `post.html?id=${encodeURIComponent(post.id)}`; };
-          div.innerHTML = `
-            <div class="blog-banner" style="background-image: url('${post.banner}');"></div>
-            <h3>${post.title}</h3>
-            <p class="date">${post.date}</p>
-          `;
-          container.appendChild(div);
-        });
-      })
-      .catch(err => console.error(err));
-  </script>
+    container.innerHTML = posts.map(post => `
+      <a href="post.html?id=${encodeURIComponent(post.id)}" class="blog-item">
+        <div class="blog-item-title">${post.title}</div>
+        <span class="blog-item-meta">${post.date}</span>
+      </a>
+    `).join('');
+  } catch {
+    container.innerHTML = '<div class="error-text">Could not load posts.</div>';
+  }
+})();
+</script>
 </body>
 </html>

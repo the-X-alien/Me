@@ -3,115 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blog Admin</title>
+<title>Admin — Dhiaan Dave</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
 <script src="https://cdn.tiny.cloud/1/kdqzs5feny90bvou7nk4apvrdhphrdyscrp5qf2lc14mvrzq/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
-  body { font-family: 'Nunito', sans-serif; padding: 2rem; background: #f0f0f0; }
-  label { display:block; margin-top: 1rem; font-weight: bold; }
-  input, textarea { width: 100%; padding: 0.5rem; margin-top: 0.25rem; }
-  button { margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer; background: #3b82f6; color: white; border: none; border-radius: 0.25rem; }
-  button:hover { background: #2563eb; }
-  pre { background: #eee; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-top: 1rem; }
-  h2 { margin-top: 2rem; }
-  .preview { background: rgba(255,255,255,0.8); padding: 1rem; border-radius: 0.75rem; margin-top: 1rem; }
-  .blog-banner { width: 100%; height: 200px; border-radius: 0.5rem; background-size: cover; background-position: center; margin-bottom: 1rem; }
-  .blog-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; }
-  .blog-date { font-size: 0.9rem; color: #6b7280; margin-bottom: 1rem; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--void:#000;--white:#fff;--graphite:#4d4d4d;--steel:#808080;--ash:#c6c6c6;--surface:#111;--card:#181818;--font-mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--font-sans:'Inter',system-ui,sans-serif;--text-xs:10px;--text-sm:12px;--text-base:14px;--sp-8:8px;--sp-10:10px;--sp-12:12px;--sp-16:16px;--sp-18:18px;--sp-20:20px;--sp-24:24px;--sp-32:32px;--radius-sm:4px}
+body{background:var(--void);color:var(--ash);font-family:var(--font-sans);padding:var(--sp-24);max-width:800px;margin:0 auto;min-height:100vh}
+h1{font-family:var(--font-mono);font-size:var(--text-sm);font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--sp-20);padding-bottom:var(--sp-16);border-bottom:1px solid var(--graphite)}
+label{display:block;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--steel);text-transform:uppercase;letter-spacing:.1em;margin-top:var(--sp-16);margin-bottom:var(--sp-4)}
+input[type="text"]{width:100%;background:var(--surface);border:1px solid var(--graphite);border-radius:var(--radius-sm);padding:var(--sp-8) var(--sp-12);color:var(--white);font-family:var(--font-mono);font-size:var(--text-sm);outline:none;transition:border-color .2s}
+input[type="text"]:focus{border-color:var(--ash)}
+button{font-family:var(--font-mono);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;background:transparent;border:1px solid var(--graphite);border-radius:var(--radius-sm);color:var(--ash);padding:var(--sp-8) var(--sp-18);cursor:pointer;transition:border-color .2s,color .2s;margin-top:var(--sp-16)}
+button:hover{border-color:var(--white);color:var(--white)}
+.btn-primary{background:var(--steel);color:var(--void);border-color:var(--steel)}
+.btn-primary:hover{background:var(--white);border-color:var(--white);color:var(--void)}
+.btn-row{display:flex;gap:var(--sp-8);flex-wrap:wrap}
+pre{background:var(--surface);border:1px solid var(--graphite);border-radius:var(--radius-sm);padding:var(--sp-16);color:var(--ash);font-family:var(--font-mono);font-size:var(--text-xs);overflow-x:auto;margin-top:var(--sp-8);white-space:pre-wrap;word-break:break-all;max-height:300px;overflow-y:auto}
+.preview{background:var(--surface);border:1px solid var(--graphite);border-radius:var(--radius-sm);padding:var(--sp-20);margin-top:var(--sp-8)}
+.blog-banner{width:100%;height:200px;border-radius:var(--radius-sm);background-size:cover;background-position:center;margin-bottom:var(--sp-16);background-color:var(--card)}
+.blog-title{font-family:var(--font-sans);font-size:20px;font-weight:200;color:var(--white);margin-bottom:var(--sp-8)}
+.blog-date{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--steel);margin-bottom:var(--sp-16)}
+.blog-content{font-family:Georgia,serif;font-size:var(--text-base);color:var(--ash);line-height:1.7}
+.blog-content a{color:var(--white)}
+.blog-content img{max-width:100%;border-radius:var(--radius-sm)}
+.back-link{display:inline-block;margin-bottom:var(--sp-16);color:var(--steel);font-family:var(--font-mono);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;text-decoration:none;transition:color .2s}
+.back-link:hover{color:var(--white)}
 </style>
 </head>
 <body>
+<a href="index.html" class="back-link">&#8592; Home</a>
 <h1>Blog Post Editor</h1>
 
-<label>Post ID (unique): <input type="text" id="post-id" placeholder="first-blog"></label>
-<label>Title: <input type="text" id="post-title" placeholder="First Blog Post"></label>
-<label>Date: <input type="text" id="post-date" placeholder="August 25, 2025"></label>
-<label>Banner URL: <input type="text" id="post-banner" placeholder="your-image.jpg"></label>
-<label>Content:</label>
+<label>Post ID <span style="color:var(--graphite);font-weight:400">(unique, no spaces)</span></label>
+<input type="text" id="post-id" placeholder="first-blog">
+
+<label>Title</label>
+<input type="text" id="post-title" placeholder="First Blog Post">
+
+<label>Date</label>
+<input type="text" id="post-date" placeholder="August 25, 2025">
+
+<label>Banner URL <span style="color:var(--graphite);font-weight:400">(optional — drag-drop an image below to auto-fill)</span></label>
+<input type="text" id="post-banner" placeholder="your-image.jpg">
+
+<label>Content <span style="color:var(--graphite);font-weight:400">(drag-drop images directly into the editor)</span></label>
 <textarea id="post-content"></textarea>
 
-<button id="generateBtn">Generate JSON & Copy</button>
+<div class="btn-row">
+  <button class="btn-primary" id="publishBtn">&#x25B6; Generate JSON &amp; Copy</button>
+  <button id="openPostsBtn">Open posts.json</button>
+  <button id="clearBtn">Clear</button>
+</div>
 
-<h2>JSON Output:</h2>
+<h2>JSON Output</h2>
 <pre id="output"></pre>
 
-<h2>Live Preview:</h2>
+<h2>Live Preview</h2>
 <div class="preview">
   <div id="preview-banner" class="blog-banner"></div>
   <div id="preview-title" class="blog-title"></div>
   <div id="preview-date" class="blog-date"></div>
-  <div id="preview-content"></div>
+  <div id="preview-content" class="blog-content"></div>
 </div>
 
 <script>
-  // Initialize TinyMCE
-  tinymce.init({
-    selector: '#post-content',
-    height: 400,
-    menubar: false,
-    plugins: 'lists link image code',
-    toolbar: 'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright | bullist numlist | link image | code',
-    branding: false,
-    setup: function(editor) {
-      editor.on('input', updatePreview);
-      editor.on('change', updatePreview);
-    }
-  });
-
-  const titleInput = document.getElementById('post-title');
-  const dateInput = document.getElementById('post-date');
-  const bannerInput = document.getElementById('post-banner');
-
-  titleInput.addEventListener('input', updatePreview);
-  dateInput.addEventListener('input', updatePreview);
-  bannerInput.addEventListener('input', updatePreview);
-
-  function updatePreview() {
-    document.getElementById('preview-title').textContent = titleInput.value;
-    document.getElementById('preview-date').textContent = dateInput.value;
-    document.getElementById('preview-banner').style.backgroundImage = bannerInput.value ? `url('${bannerInput.value}')` : '';
-    const content = tinymce.get('post-content') ? tinymce.get('post-content').getContent() : '';
-    document.getElementById('preview-content').innerHTML = content;
-  }
-
-  document.getElementById('generateBtn').addEventListener('click', () => {
-    const id = document.getElementById('post-id').value.trim();
-    const title = titleInput.value.trim();
-    const date = dateInput.value.trim();
-    const banner = bannerInput.value.trim();
-    const content = tinymce.get('post-content') ? tinymce.get('post-content').getContent().trim() : '';
-
-    if(!id || !title || !date || !content){
-      alert("Please fill out Post ID, Title, Date, and Content.");
-      return;
-    }
-
-    const jsonSnippet = `"${id}": {\n` +
-                        `  "title": "${title}",\n` +
-                        `  "date": "${date}",\n` +
-                        `  "banner": "${banner}",\n` +
-                        `  "content": "${content.replace(/\n/g,' ')}"\n` +
-                        `}`;
-
-    const output = document.getElementById('output');
-    output.textContent = jsonSnippet;
-
-    // Auto-copy to clipboard
-    navigator.clipboard.writeText(jsonSnippet).then(() => {
-      alert("JSON copied to clipboard!");
+// === TinyMCE with drag-drop image support ===
+tinymce.init({
+  selector:'#post-content',
+  height:500,
+  menubar:false,
+  plugins:'lists link image code',
+  toolbar:'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright | bullist numlist | link image | code',
+  branding:false,
+  content_style:"body{background:#111;color:#c6c6c6;font-family:Georgia,serif;font-size:14px;line-height:1.7;padding:16px;max-width:700px;margin:0 auto}a{color:#fff}img{max-width:100%;border-radius:4px}",
+  automatic_uploads:true,
+  file_picker_types:'image',
+  images_upload_handler: (blobInfo) => new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => { resolve(e.target.result); };
+    reader.readAsDataURL(blobInfo.blob());
+  }),
+  setup:function(editor){
+    editor.on('input change', updatePreview);
+    // Drag-drop banner auto-fill
+    editor.on('drop', (e) => {
+      const files = e.dataTransfer && e.dataTransfer.files;
+      if (files && files.length > 0) {
+        const f = files[0];
+        if (f.type.startsWith('image/')) {
+          const r = new FileReader();
+          r.onload = (ev) => {
+            const bannerInput = document.getElementById('post-banner');
+            if (!bannerInput.value) bannerInput.value = ev.target.result;
+            updatePreview();
+          };
+          r.readAsDataURL(f);
+        }
+      }
     });
+  }
+});
 
-    // Clear fields
-    document.getElementById('post-id').value = '';
-    titleInput.value = '';
-    dateInput.value = '';
-    bannerInput.value = '';
-    tinymce.get('post-content').setContent('');
-    updatePreview();
-  });
+const titleInput = document.getElementById('post-title');
+const dateInput = document.getElementById('post-date');
+const bannerInput = document.getElementById('post-banner');
+titleInput.addEventListener('input', updatePreview);
+dateInput.addEventListener('input', updatePreview);
+bannerInput.addEventListener('input', updatePreview);
 
-  // Initialize preview on load
+// Drag-drop onto banner input
+bannerInput.addEventListener('dragover', (e) => { e.preventDefault(); bannerInput.style.borderColor = 'var(--white)'; });
+bannerInput.addEventListener('dragleave', () => { bannerInput.style.borderColor = ''; });
+bannerInput.addEventListener('drop', (e) => {
+  e.preventDefault();
+  bannerInput.style.borderColor = '';
+  const f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('image/')) {
+    const r = new FileReader();
+    r.onload = (ev) => { bannerInput.value = ev.target.result; updatePreview(); };
+    r.readAsDataURL(f);
+  }
+});
+
+function updatePreview(){
+  document.getElementById('preview-title').textContent = titleInput.value;
+  document.getElementById('preview-date').textContent = dateInput.value;
+  document.getElementById('preview-banner').style.backgroundImage = bannerInput.value ? "url('"+bannerInput.value+"')" : 'none';
+  const c = tinymce.get('post-content');
+  document.getElementById('preview-content').innerHTML = c ? c.getContent() : '';
+}
+
+document.getElementById('publishBtn').addEventListener('click', () => {
+  const id = document.getElementById('post-id').value.trim();
+  const title = titleInput.value.trim();
+  const date = dateInput.value.trim();
+  const banner = bannerInput.value.trim();
+  const c = tinymce.get('post-content');
+  const content = c ? c.getContent().trim() : '';
+  if (!id || !title || !date || !content) { alert('Please fill out Post ID, Title, Date, and Content.'); return; }
+
+  const json = '"' + id + '": {\n' +
+    '  "title": "' + title.replace(/"/g, '\\"') + '",\n' +
+    '  "date": "' + date.replace(/"/g, '\\"') + '",\n' +
+    (banner ? '  "banner": "' + banner.replace(/"/g, '\\"') + '",\n' : '') +
+    '  "content": "' + content.replace(/"/g, '\\"').replace(/\n/g, ' ') + '"\n}';
+
+  document.getElementById('output').textContent = json;
+  navigator.clipboard.writeText(json).then(() => { alert('JSON copied to clipboard!'); });
+});
+
+document.getElementById('openPostsBtn').addEventListener('click', () => {
+  window.open('posts.json', '_blank');
+});
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  document.getElementById('post-id').value = '';
+  titleInput.value = '';
+  dateInput.value = '';
+  bannerInput.value = '';
+  const c = tinymce.get('post-content');
+  if (c) c.setContent('');
+  document.getElementById('output').textContent = '';
   updatePreview();
+});
+
+updatePreview();
 </script>
 </body>
 </html>
-

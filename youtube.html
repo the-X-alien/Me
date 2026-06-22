@@ -1,57 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <meta name="description" content="Welcome to Dhiaan's portfolio. Explore my blog, projects, and contact information."> 
-  <meta name="keywords" content="Dhiaan Dave, portfolio, blog, projects, contact, Dhiaan, the-X-alien, Milpitas, California, Thomas Russell, Milpitas High School, MHS, TRMS, student"> 
-  <link rel="stylesheet" href="style.css"> 
-  <link rel="icon" href="favicon.ico" type="image/x-icon"> 
-  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dhiaan's YouTube Channel</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
-  <style>
-    .repo-box {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      padding: 1.5rem;
-      max-width: 1000px;
-      margin: 2rem auto;
-      box-shadow: 0 10px 15px rgba(0,0,0,0.05);
-    }
-    .repo-box iframe {
-      width: 100%;
-      height: 380px;
-      border: none;
-      border-radius: 12px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Videos — Dhiaan Dave</title>
+<meta name="description" content="Dhiaan's YouTube channel.">
+<meta name="author" content="Dhiaan Dave">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&family=Georgia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.video-page{min-height:100vh;display:flex;flex-direction:column}
+.video-main{flex:1;padding:var(--sp-96) var(--sp-24) var(--sp-48);max-width:800px;margin:0 auto;width:100%}
+@media(max-width:640px){.video-main{padding:var(--sp-80) var(--sp-16) var(--sp-32)}}
+.video-card{background:var(--color-card);border:1px solid var(--color-graphite);border-radius:var(--radius-sm);padding:var(--sp-20)}
+.video-card h3{font-family:var(--font-mono);font-size:var(--text-sm);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:var(--sp-4);color:var(--color-white)}
+.video-card .channel{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-steel);margin-bottom:var(--sp-16);display:block}
+.video-card iframe{width:100%;aspect-ratio:16/9;border:none;border-radius:4px}
+</style>
 </head>
-<body>
-  <header>
-    <h1>My YouTube Content!</h1>
-    <p>Pls check it out</p>
-  </header>
+<body class="video-page">
+<nav class="page-nav">
+  <a href="index.html" class="nav-logo">Dhiaan Dave</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Writing</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
 
-  <main>
-    <div class="repo-box">
-      <h3>Dhiaan Does Tech</h3>
-      <h4>@DhiaanDT</h4>
-      <h2>Latest Video</h2>
-      <iframe 
-        src="https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-        loading="lazy">
-      </iframe>
+<main class="video-main">
+  <span class="label-tag" style="display:block;margin-bottom:var(--sp-12);letter-spacing:.15em">Video</span>
+  <h1 class="page-title">My Channel</h1>
+  <p class="page-subtitle">Tech content, builds, and experiments.</p>
+
+  <div class="video-card">
+    <h3>Latest Video</h3>
+    <span class="channel">@I1Do1Stuff</span>
+    <iframe id="ytFrame" src="https://www.youtube.com/embed/yfjJfKQ7xHE" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+</main>
+
+<footer class="site-footer" style="border-top:none">
+  <div class="footer-inner">
+    <span>Content made with care</span>
+    <div class="footer-links">
+      <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
     </div>
-
-  <footer>
-    <p>Content created with lots and lots and lots of <3 by Dhiaan</p>
-  </footer>
+  </div>
+</footer>
+<script>
+(async function loadLatestVideo() {
+  try {
+    const res = await fetch('https://www.youtube.com/feeds/videos.xml?channel_id=UCKmwYbf9sdPxwqYgqKFL5iw');
+    if (!res.ok) throw new Error();
+    const text = await res.text();
+    const match = text.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+    if (match && match[1]) {
+      document.getElementById('ytFrame').src = 'https://www.youtube.com/embed/' + match[1];
+    }
+  } catch {}
+})();
+</script>
 </body>
 </html>

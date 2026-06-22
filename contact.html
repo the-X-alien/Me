@@ -1,148 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dhiaan's Portfolio</title>
-  <meta name="description" content="Welcome to Dhiaan's portfolio. Explore my blog, projects, and contact information.">
-  <meta name="keywords" content="Dhiaan Dave, portfolio, blog, projects, contact, Dhiaan, the-X-alien, Milpitas, California, Thomas Russell, Milpitas High School, MHS, TRMS, student, hacker, programmer, hack club">
-  <meta name="author" content="Dhiaan Dave">
-  <link rel="stylesheet" href="style.css">
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
-  <header>WIP</header>
-  <style>
-    body {
-      background: linear-gradient(135deg, #d1d5db, #ef4444, #8b5cf6, #3b82f6);
-      animation: gradientShift 15s ease infinite;
-      font-family: 'Nunito', sans-serif;
-      color: #1f2937;
-      line-height: 1.6;
-      margin: 0;
-      padding: 0;
-    }
-
-    .contact-container {
-      max-width: 600px;
-      margin: 4rem auto;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    h1 {
-      text-align: center;
-      color: #1f2937;
-      margin-bottom: 2rem;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1.5rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-    }
-
-    button {
-      background-color: #3b82f6;
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #2563eb;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 3rem;
-      padding: 1.5rem;
-      background-color: #1f2937;
-      color: #d1d5db;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Dhiaan Dave</title>
+<meta name="description" content="Get in touch with Dhiaan Dave.">
+<meta name="author" content="Dhiaan Dave">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Georgia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.contact-links{display:flex;flex-wrap:wrap;gap:var(--sp-16);margin-bottom:var(--sp-40)}
+.contact-link{
+  display:flex;align-items:center;gap:var(--sp-8);
+  font-family:var(--font-mono);font-size:var(--text-base);
+  color:var(--color-ash);
+  border:1px solid var(--color-graphite);
+  border-radius:var(--radius-sm);
+  padding:var(--sp-8) var(--sp-16);
+  transition:border-color .2s ease,color .2s ease;
+}
+.contact-link:hover{border-color:var(--color-white);color:var(--color-white)}
+.contact-form{max-width:480px}
+.contact-form label{
+  display:block;font-family:var(--font-mono);font-size:var(--text-xs);
+  text-transform:uppercase;letter-spacing:.1em;
+  color:var(--color-graphite);margin-bottom:var(--sp-6);
+}
+.contact-form input,.contact-form textarea{
+  width:100%;background:transparent;
+  border:1px solid var(--color-graphite);border-radius:var(--radius-sm);
+  padding:var(--sp-12) var(--sp-14);
+  font-family:var(--font-serif);font-size:var(--text-lg);
+  color:var(--color-white);outline:none;
+  transition:border-color .2s ease;margin-bottom:var(--sp-16);
+}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--color-white)}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:var(--color-steel)}
+.contact-form textarea{resize:vertical;min-height:120px}
+.contact-form button{
+  font-family:var(--font-mono);font-size:var(--text-sm);
+  text-transform:uppercase;letter-spacing:.08em;
+  color:var(--color-white);background:var(--color-violet);
+  border:1px solid var(--color-violet);border-radius:var(--radius-sm);
+  padding:var(--sp-10) var(--sp-24);cursor:pointer;
+  transition:opacity .2s ease;
+}
+.contact-form button:hover{opacity:.85}
+</style>
 </head>
 <body>
+<nav class="page-nav">
+  <a href="index.html" class="nav-logo">Dhiaan Dave</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Writing</a>
+    <a href="projects.html">Projects</a>
+  </div>
+</nav>
 
-<section class="contact-container">
-  <h1>Contact Me</h1>
-
-  <form action="https://formspree.io/f/mblkejvj" method="POST" enctype="multipart/form-data">
+<main class="page-main">
+  <div style="margin-bottom:var(--sp-48)">
+    <span class="label-tag" style="margin-bottom:var(--sp-12);display:block;letter-spacing:.15em">05 · Contact</span>
+    <h1 class="page-title">Get in Touch</h1>
+    <p class="page-subtitle">Have an idea, a question, or just want to say hi? Reach out anytime.</p>
+  </div>
+  <div class="contact-links">
+    <a href="mailto:dhiaan.n.d@gmail.com" class="contact-link">Email</a>
+    <a href="https://github.com/the-X-alien" target="_blank" class="contact-link">GitHub</a>
+    <a href="https://www.linkedin.com/in/dhiaan" target="_blank" class="contact-link">LinkedIn</a>
+  </div>
+  <form class="contact-form" action="https://formspree.io/f/mblkejvj" method="POST">
     <label for="name">Name</label>
-    <input type="text" name="name" id="name" required>
-
+    <input type="text" id="name" name="name" required placeholder="Your name">
     <label for="email">Email</label>
-    <input type="email" name="email" id="email" required>
-
+    <input type="email" id="email" name="email" required placeholder="your@email.com">
     <label for="message">Message</label>
-    <textarea name="message" id="message" rows="6" required></textarea>
-
-    <label for="file">Upload File</label>
-    <input type="file" name="file" id="file">
-
-    <div class="g-recaptcha" data-sitekey="6LelMagrAAAAAHnOvCmh2A8M8GsV9W6eDI2NNi-7"></div>
-    <br><br>
-
+    <textarea id="message" name="message" required placeholder="What's on your mind?"></textarea>
     <button type="submit">Send</button>
+    <p id="form-status" style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-graphite);margin-top:var(--sp-12);display:none"></p>
   </form>
-  <p id="form-status" style="color: green; display: none; text-align: center;">Thank you! Your message has been sent.</p>
-  <script>
-  const form = document.querySelector("form");
-  const status = document.getElementById("form-status");
+</main>
 
-  form.addEventListener("submit", function (e) {
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>&copy; 2026 Dhiaan Dave</span>
+    <div class="footer-links">
+      <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const form = document.querySelector('.contact-form');
+const status = document.getElementById('form-status');
+if (form) {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    status.style.display = 'block';
+    status.textContent = 'Sending...';
     const data = new FormData(form);
-    fetch(form.action, {
-      method: "POST",
-      body: data,
-      headers: { 'Accept': 'application/json' }
-    }).then(response => {
-      form.reset();
-      status.style.display = "block";
-    }).catch(error => {
-      status.textContent = "Sorry, There was a problem! :(";
-      status.style.color = "red";
-      status.style.display = "block";
-    });
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+      if (res.ok) {
+        status.textContent = 'Message sent. Thank you.';
+        form.reset();
+      } else throw new Error();
+    } catch {
+      status.textContent = 'Something went wrong. Try emailing directly.';
+    }
   });
+}
 </script>
-</section>
-
-
-  <footer>
-    <p>&copy; 2025 Dhiaan Dave — All rights reserved.</p>
-  </footer>
-
 </body>
 </html>
-
-
-
-
-
-
-
-

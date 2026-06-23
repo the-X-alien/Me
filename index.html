@@ -604,7 +604,10 @@ section.content-section{
 .faq-answer p{font-family:var(--font-serif);font-size:var(--text-base);line-height:var(--leading-loose);color:var(--color-ash)}
 
 /* === Top Tracks === */
-.tracks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--sp-16)}
+.tracks-grid{display:flex;flex-wrap:wrap;gap:var(--sp-16);justify-content:center}
+.track-item{width:280px;flex:0 0 auto}
+.track-item iframe{border-radius:12px;width:100%;height:80px;display:block}
+.track-label{font-family:var(--font-mono);font-size:10px;color:var(--color-ash);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--sp-6);display:block}
 .live-count{position:fixed;bottom:var(--sp-20);left:var(--sp-20);z-index:100;font-family:var(--font-mono);font-size:10px;color:var(--color-graphite);display:flex;align-items:center;gap:var(--sp-6);pointer-events:none;opacity:0;animation:fadeUp .5s var(--ease-out) 2s forwards}
 .live-count .live-dot{width:4px;height:4px;border-radius:50%;background:var(--color-steel)}
 .live-count .live-dot.active{background:#6bcb77;box-shadow:0 0 6px rgba(107,203,119,.6)}
@@ -856,11 +859,11 @@ section.content-section{
       <span class="label-tag">Top Tracks</span>
     </div>
     <div class="tracks-grid fade-in">
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0VjIjW4GlUuAMeMOeDPTMA?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Top Track"></iframe>
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2LBqCSwhJGcFQeTHMVGwy3?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Top Track"></iframe>
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4cOdK2wGLETKBW3PvgPWqT?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Top Track"></iframe>
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1q6IKYRZNYvMlS5w6LZPRI?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Top Track"></iframe>
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/53pcyf3d8m1ApzSp0ngWA7?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Top Track"></iframe>
+      <div class="track-item"><span class="track-label">&#x25B6; Not Like Us — Kendrick Lamar</span><iframe src="https://open.spotify.com/embed/track/0VjIjW4GlUuAMeMOeDPTMA?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Not Like Us"></iframe></div>
+      <div class="track-item"><span class="track-label">&#x25B6; Birds of a Feather — Billie Eilish</span><iframe src="https://open.spotify.com/embed/track/2LBqCSwhJGcFQeTHMVGwy3?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Birds of a Feather"></iframe></div>
+      <div class="track-item"><span class="track-label">&#x25B6; Too Sweet — Hozier</span><iframe src="https://open.spotify.com/embed/track/4cOdK2wGLETKBW3PvgPWqT?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Too Sweet"></iframe></div>
+      <div class="track-item"><span class="track-label">&#x25B6; Beautiful Things — Benson Boone</span><iframe src="https://open.spotify.com/embed/track/1q6IKYRZNYvMlS5w6LZPRI?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Beautiful Things"></iframe></div>
+      <div class="track-item"><span class="track-label">&#x25B6; Lose Control — Teddy Swims</span><iframe src="https://open.spotify.com/embed/track/53pcyf3d8m1ApzSp0ngWA7?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Lose Control"></iframe></div>
     </div>
   </div>
 </section>
@@ -951,28 +954,10 @@ section.content-section{
 <script type="module">
 import * as THREE from 'three';
 
-// === Lenis Smooth Scroll + Section Snap ===
+// === Lenis Smooth Scroll ===
 const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
 function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
 requestAnimationFrame(raf);
-const snapSections = document.querySelectorAll('#hero, .content-section');
-let snapGuard = false;
-lenis.on('scroll', () => {
-  if (snapGuard) return;
-  clearTimeout(window._snapTimer);
-  window._snapTimer = setTimeout(() => {
-    let closest = null, minDist = Infinity, center = window.innerHeight / 2;
-    snapSections.forEach(s => {
-      const r = s.getBoundingClientRect(), d = Math.abs(r.top - center);
-      if (d < minDist) { minDist = d; closest = s; }
-    });
-    if (closest && minDist > 5) {
-      snapGuard = true;
-      lenis.scrollTo(closest, { duration: 0.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-      setTimeout(() => { snapGuard = false; }, 700);
-    }
-  }, 200);
-});
 
 // === Three.js Scene ===
 const canvas = document.createElement('canvas');
@@ -1645,12 +1630,12 @@ if (form) {
   if (!svgEl || typeof d3 === 'undefined') return;
 
   const data = [
-    { axis:'Programming', value:0.85 },
-    { axis:'Web Dev', value:0.75 },
-    { axis:'Hardware', value:0.70 },
-    { axis:'Design', value:0.50 },
-    { axis:'Leadership', value:0.80 },
-    { axis:'AI/ML', value:0.40 },
+    { axis:'AI/ML', value:0.85 },
+    { axis:'Leadership', value:0.85 },
+    { axis:'Programming', value:0.80 },
+    { axis:'Hardware', value:0.65 },
+    { axis:'Web Dev', value:0.50 },
+    { axis:'Design', value:0.30 },
   ];
 
   const w = 440, h = 440;

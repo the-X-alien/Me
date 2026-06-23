@@ -13,11 +13,17 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields: id, title, date, content, password' });
   }
 
-  const adminPassHash = process.env.ADMIN_PASS_HASH;
+  const adminPassHash = (process.env.ADMIN_PASS_HASH || '').trim();
   if (!adminPassHash) return res.status(500).json({ error: 'Server not configured: ADMIN_PASS_HASH missing' });
 
-  const inputHash = crypto.createHash('sha256').update(password).digest('hex');
-  if (inputHash !== adminPassHash) return res.status(401).json({ error: 'Invalid password' });
+  const inputHash = crypto.createHash('sha256').update(password.trim()).digest('hex');
+  if (inputHash !== adminPassHash) {
+    return res.status(401).json({
+      error: 'Invalid password',
+      expectedPrefix: adminPassHash.slice(0, 8),
+      gotPrefix: inputHash.slice(0, 8),
+    });
+  }
 
   const ghToken = process.env.GH_TOKEN;
   if (!ghToken) return res.status(500).json({ error: 'Server not configured: GH_TOKEN missing' });

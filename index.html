@@ -604,10 +604,6 @@ section.content-section{
 .faq-answer p{font-family:var(--font-serif);font-size:var(--text-base);line-height:var(--leading-loose);color:var(--color-ash)}
 
 /* === Top Tracks === */
-.tracks-grid{display:flex;flex-wrap:wrap;gap:var(--sp-16);justify-content:center}
-.track-item{width:280px;flex:0 0 auto}
-.track-item iframe{border-radius:12px;width:100%;height:80px;display:block}
-.track-label{font-family:var(--font-mono);font-size:10px;color:var(--color-ash);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--sp-6);display:block}
 .radar-wrap{display:flex;justify-content:center;padding:var(--sp-20) 0}
 #radar-svg{max-width:100%;height:auto}
 .shelf-tooltip{position:fixed;pointer-events:none;z-index:9999;font-family:var(--font-mono);font-size:10px;color:var(--color-white);background:rgba(0,0,0,.85);border:1px solid var(--color-graphite);border-radius:4px;padding:4px 10px;opacity:0;transition:opacity .2s;white-space:nowrap;transform:translate(-50%,-100%);margin-top:-12px}
@@ -854,8 +850,9 @@ section.content-section{
       <span class="label-tag">&#x266B;</span>
       <span class="label-tag">Top Tracks</span>
     </div>
-    <div class="tracks-grid fade-in" id="tracksContainer">
-      <div class="track-item"><div class="track-label">&#x25B6; Connect Spotify to see your top tracks</div><div style="border:1px solid var(--color-graphite);border-radius:12px;padding:40px 20px;text-align:center;color:var(--color-steel);font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:.05em">Sign in with Spotify to load your top tracks</div></div>
+    <div class="fade-in" style="display:flex;flex-direction:column;gap:var(--sp-16)">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/01RBsUkFa3MInRzqM43bsB?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Dhiaan's Mooosik Part 2"></iframe>
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/48owf52mZlGQacGll9Rk80?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="The Overflow"></iframe>
     </div>
   </div>
 </section>

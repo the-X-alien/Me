@@ -608,9 +608,6 @@ section.content-section{
 .track-item{width:280px;flex:0 0 auto}
 .track-item iframe{border-radius:12px;width:100%;height:80px;display:block}
 .track-label{font-family:var(--font-mono);font-size:10px;color:var(--color-ash);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--sp-6);display:block}
-.live-count{position:fixed;bottom:var(--sp-20);left:var(--sp-20);z-index:100;font-family:var(--font-mono);font-size:10px;color:var(--color-graphite);display:flex;align-items:center;gap:var(--sp-6);pointer-events:none;opacity:0;animation:fadeUp .5s var(--ease-out) 2s forwards}
-.live-count .live-dot{width:4px;height:4px;border-radius:50%;background:var(--color-steel)}
-.live-count .live-dot.active{background:#6bcb77;box-shadow:0 0 6px rgba(107,203,119,.6)}
 .radar-wrap{display:flex;justify-content:center;padding:var(--sp-20) 0}
 #radar-svg{max-width:100%;height:auto}
 .shelf-tooltip{position:fixed;pointer-events:none;z-index:9999;font-family:var(--font-mono);font-size:10px;color:var(--color-white);background:rgba(0,0,0,.85);border:1px solid var(--color-graphite);border-radius:4px;padding:4px 10px;opacity:0;transition:opacity .2s;white-space:nowrap;transform:translate(-50%,-100%);margin-top:-12px}
@@ -766,7 +763,6 @@ section.content-section{
     <h1>Student · Builder ·<br>Hackathon Organizer</h1>
     <p class="hero-sub"><span id="typewriterText"></span><span class="typewriter-cursor"></span></p>
   </div>
-  <div class="live-count" id="liveCount"><span class="live-dot" id="liveDot"></span><span id="liveCountText">-- viewing</span></div>
   <div class="shelf-tooltip" id="shelfTooltip"></div>
 </section>
 
@@ -781,7 +777,7 @@ section.content-section{
       <div class="bento-card bento-wide fade-in">
         <span class="bento-label">&#x25B6; Bio</span>
         <p>I'm Dhiaan — based in Milpitas, California. I'm headed to Milpitas High School and deeply curious about how things work: from <strong>code and circuits</strong> to <strong>CAD and community-building</strong>.</p>
-        <p style="margin-top:var(--sp-12)">My journey started with tinkering — taking apart electronics, learning to solder, and writing my first Python scripts. That curiosity grew into building full-stack web apps with React and Next.js, designing PCBs in KiCad, modeling parts in CAD, and programming autonomous robots for Botball competitions. I've built everything from AI-powered stress detection apps (Shanti) to cinematic route optimizers (SuperRoute) to this very portfolio — a single-page site featuring Three.js 3D visualizations, serverless functions on Vercel, and a live visitor counter.</p>
+        <p style="margin-top:var(--sp-12)">My journey started with tinkering — taking apart electronics, learning to solder, and writing my first Python scripts. That curiosity grew into building full-stack web apps with React and Next.js, designing PCBs in KiCad, modeling parts in CAD, and programming autonomous robots for Botball competitions. I've built everything from AI-powered stress detection apps (Shanti) to cinematic route optimizers (SuperRoute) to this very portfolio — a single-page site featuring Three.js 3D visualizations and serverless functions on Vercel.</p>
         <p style="margin-top:var(--sp-12)">I'm just as passionate about organizing as I am about building. As Head of Logistics &amp; Operations at <strong>Cove Hacks</strong> — the world's largest in-person high school hardware hackathon — I helped scale the event to 400+ attendees, led sponsor outreach to companies like Yubico, iFixit, and Canva, and oversaw the entire operations budget. I also co-founded <strong>Telos Tutoring</strong>, a free peer-to-peer K-8 tutoring nonprofit, and organized <strong>Daydream Silicon Valley</strong>, a teen-led Game Jam with 100+ participants that raised $4,000+ in sponsorships from Vercel and Playdate. At <strong>Campfire San Jose</strong>, I single-handedly raised $5,000+ from Cadence, Framework, and Lawrence Livermore National Laboratory.</p>
         <p style="margin-top:var(--sp-12)">Across all of this, I've raised over $10,000 in sponsorship funding, sent more than 5,000 outreach emails, and built a network of 400+ students across the Bay Area. I run a <a href="youtube" style="color:var(--color-ash);border-bottom:1px solid var(--color-graphite)">YouTube channel</a> where I document builds and projects, and I'm always hacking on something — whether it's a PCB design, a web app, or a 3D-printed enclosure.</p>
       </div>
@@ -1590,33 +1586,6 @@ if (form) {
     }
   });
 }
-</script>
-
-<!-- === Live Visitor Count === -->
-<script>
-(function() {
-  const dot = document.getElementById('liveDot');
-  const text = document.getElementById('liveCountText');
-  const session = 's' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-  const api = '/api/visitors';
-
-  async function ping(action) {
-    try {
-      const r = await fetch(api + '?action=' + action + '&session=' + session);
-      const d = await r.json();
-      if (d.count !== undefined) {
-        text.textContent = d.count + ' viewing';
-        dot.classList.toggle('active', d.count > 0);
-      }
-    } catch {}
-  }
-
-  ping('enter');
-  setInterval(() => ping('heartbeat'), 60000);
-  window.addEventListener('beforeunload', () => {
-    navigator.sendBeacon(api + '?action=leave&session=' + session);
-  });
-})();
 </script>
 
 <!-- === D3 Radar Chart === -->

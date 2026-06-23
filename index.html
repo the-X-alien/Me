@@ -1117,7 +1117,7 @@ const sparkMat = new THREE.PointsMaterial({
 const sparks = new THREE.Points(sparkGeo, sparkMat);
 scene.add(sparks);
 
-// === Tech Stack Cubes ===
+// === Tech Stack Spheres ===
 const techData = [
   { name:'Python', color:0x3776AB, url:'https://python.org', r:2.8, h:1.5, s:0.4 },
   { name:'JS', color:0xF7DF1E, url:'https://javascript.info', r:3.2, h:0.7, s:-0.5 },
@@ -1137,6 +1137,12 @@ const pointer = new THREE.Vector2();
 let hoveredIdx = -1;
 let targetScale = 1;
 const tooltipEl = document.getElementById('shelfTooltip');
+
+// === Cursor Physics for Spheres ===
+const cursorWorldPos = new THREE.Vector3();
+const cursorPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+const pushOffsets = techData.map(() => new THREE.Vector3());
+const pushVelocities = techData.map(() => new THREE.Vector3());
 
 function makeLabelSprite(text) {
   const c = document.createElement('canvas');
@@ -1159,18 +1165,19 @@ function makeLabelSprite(text) {
 }
 
 techData.forEach((item, i) => {
-  const geo = new THREE.BoxGeometry(0.22, 0.22, 0.22);
+  const geo = new THREE.SphereGeometry(0.16, 16, 16);
   const mat = new THREE.MeshPhysicalMaterial({
     color: item.color,
-    metalness: 0.3, roughness: 0.4,
-    emissive: item.color, emissiveIntensity: 0.08,
+    metalness: 0.3, roughness: 0.3,
+    emissive: item.color, emissiveIntensity: 0.12,
+    clearcoat: 0.2,
   });
   const mesh = new THREE.Mesh(geo, mat);
   mesh.userData = { url: item.url, name: item.name, index: i };
   scene.add(mesh);
 
-  const g2 = new THREE.BoxGeometry(0.18, 0.18, 0.18);
-  const m2 = new THREE.MeshBasicMaterial({ color: item.color, transparent: true, opacity: 0.12 });
+  const g2 = new THREE.SphereGeometry(0.12, 12, 12);
+  const m2 = new THREE.MeshBasicMaterial({ color: item.color, transparent: true, opacity: 0.15 });
   const inner = new THREE.Mesh(g2, m2);
   mesh.add(inner);
 
@@ -1178,22 +1185,16 @@ techData.forEach((item, i) => {
   techMeshes.push(mesh);
 });
 
-function updateTechPositions(t) {
-  techMeshes.forEach((mesh, i) => {
-    const d = techData[i];
-    techAngles[i] += d.s * 0.006;
-    mesh.position.x = d.r * Math.cos(techAngles[i]);
-    mesh.position.z = d.r * Math.sin(techAngles[i]);
-    mesh.position.y = d.h + Math.sin(t + i) * 0.06;
-    mesh.rotation.x = t * 0.4 + i;
-    mesh.rotation.y = t * 0.6 + i * 0.5;
-  });
-}
-
 canvas.addEventListener('pointermove', (e) => {
   const rect = canvas.getBoundingClientRect();
   pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
   pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+  raycaster.setFromCamera(pointer, camera);
+  const planeHit = new THREE.Vector3();
+  if (raycaster.ray.intersectPlane(cursorPlane, planeHit)) {
+    cursorWorldPos.copy(planeHit);
+  }
 });
 
 canvas.addEventListener('click', () => {
@@ -1230,6 +1231,50 @@ function checkRaycaster() {
       tooltipEl.classList.remove('visible');
     }
   }
+}
+
+function updateTechPositions(t) {
+  techMeshes.forEach((mesh, i) => {
+    const d = techData[i];
+    techAngles[i] += d.s * 0.006;
+
+    const tx = d.r * Math.cos(techAngles[i]);
+    const tz = d.r * Math.sin(techAngles[i]);
+    const ty = d.h + Math.sin(t + i) * 0.06;
+
+    // Cursor repulsion
+    const dx = tx - cursorWorldPos.x;
+    const dy = ty - cursorWorldPos.y;
+    const dz = tz - cursorWorldPos.z;
+    const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+    const pushR = 1.8;
+    if (dist < pushR && dist > 0.01) {
+      const strength = (pushR - dist) / pushR * 0.6;
+      const inv = 1 / dist;
+      pushVelocities[i].x += dx * inv * strength;
+      pushVelocities[i].y += dy * inv * strength;
+      pushVelocities[i].z += dz * inv * strength;
+    }
+
+    pushVelocities[i].x *= 0.90;
+    pushVelocities[i].y *= 0.90;
+    pushVelocities[i].z *= 0.90;
+
+    pushOffsets[i].x += pushVelocities[i].x;
+    pushOffsets[i].y += pushVelocities[i].y;
+    pushOffsets[i].z += pushVelocities[i].z;
+
+    pushOffsets[i].x *= 0.94;
+    pushOffsets[i].y *= 0.94;
+    pushOffsets[i].z *= 0.94;
+
+    mesh.position.x = tx + pushOffsets[i].x;
+    mesh.position.y = ty + pushOffsets[i].y;
+    mesh.position.z = tz + pushOffsets[i].z;
+
+    mesh.rotation.x = t * 0.4 + i;
+    mesh.rotation.y = t * 0.6 + i * 0.5;
+  });
 }
 
 // === Mouse Parallax ===

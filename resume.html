@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resume — Dhiaan Dave</title>
+<title>Dhiaan Dave — Resume</title>
+<meta name="description" content="Resume for Dhiaan Dave — student leader and operations director experienced in hackathon logistics, sponsorship outreach, event management, and nonprofit operations. Cove Hacks, Telos Tutoring.">
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,134 +12,206 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@200;300;400;500;600&family=Georgia&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--void:#000;--white:#fff;--graphite:#4d4d4d;--steel:#808080;--ash:#c6c6c6;--violet:#343755;--surface:#111;--card:#181818;--font-mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--font-serif:Georgia,'Times New Roman',Times,serif;--font-sans:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--text-xs:10px;--text-sm:12px;--text-base:14px;--text-lg:16px;--text-xl:20px;--text-2xl:28px;--text-3xl:36px;--sp-8:8px;--sp-12:12px;--sp-14:14px;--sp-16:16px;--sp-18:18px;--sp-20:20px;--sp-24:24px;--sp-32:32px;--sp-40:40px;--sp-48:48px;--sp-64:64px;--sp-96:96px;--radius-sm:5px;--radius-md:8px;--ease-out:cubic-bezier(0.22,1,0.36,1)}
+:root{--void:#000;--white:#fff;--graphite:#4d4d4d;--steel:#808080;--ash:#c6c6c6;--violet:#343755;--surface:#111;--card:#181818;--font-mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--font-serif:Georgia,'Times New Roman',Times,serif;--font-sans:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--text-xs:10px;--text-sm:12px;--text-base:14px;--text-lg:16px;--text-xl:20px;--text-2xl:28px;--text-3xl:36px;--sp-8:8px;--sp-12:12px;--sp-14:14px;--sp-16:16px;--sp-18:18px;--sp-20:20px;--sp-24:24px;--sp-32:32px;--sp-40:40px;--sp-48:48px;--sp-64:64px;--sp-96:96px;--radius-sm:5px;--radius-md:8px;--radius-lg:12px;--ease-out:cubic-bezier(0.22,1,0.36,1)}
 body{background:var(--void);color:var(--ash);font-family:var(--font-mono);-webkit-font-smoothing:antialiased}
 ::selection{background:var(--violet);color:var(--white)}
-a{color:inherit;text-decoration:none}
-.container{max-width:680px;margin:0 auto;padding:var(--sp-40) var(--sp-24)}
+a{color:inherit;text-decoration:none;transition:color .2s}
+a:hover{color:var(--white)}
+.container{max-width:720px;margin:0 auto;padding:var(--sp-48) var(--sp-24)}
 .back-link{display:inline-flex;align-items:center;gap:var(--sp-8);font-size:var(--text-xs);color:var(--steel);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--sp-32);transition:color .2s}
 .back-link:hover{color:var(--white)}
+header{margin-bottom:var(--sp-40)}
 h1{font-family:var(--font-sans);font-weight:200;font-size:var(--text-3xl);color:var(--white);letter-spacing:-.02em;line-height:1;margin-bottom:var(--sp-8)}
-.subtitle{font-family:var(--font-serif);font-size:var(--text-lg);color:var(--steel);margin-bottom:var(--sp-24)}
-.contact-bar{display:flex;flex-wrap:wrap;gap:var(--sp-16);margin-bottom:var(--sp-40);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em}
-.contact-bar a{color:var(--steel);transition:color .2s}
-.contact-bar a:hover{color:var(--white)}
-h2{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--white);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--sp-16);margin-top:var(--sp-32);padding-bottom:var(--sp-8);border-bottom:1px solid var(--graphite)}
-.entry{margin-bottom:var(--sp-20)}
-.entry-header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:var(--sp-8);margin-bottom:var(--sp-4)}
-.entry-title{font-family:var(--font-sans);font-size:var(--text-base);font-weight:500;color:var(--white)}
-.entry-date{font-size:var(--text-xs);color:var(--steel)}
-.entry-sub{font-size:var(--text-xs);color:var(--steel);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--sp-4)}
-.entry p{font-family:var(--font-serif);font-size:var(--text-base);line-height:1.7;color:var(--ash)}
-.entry ul{list-style:none;padding:0;margin-top:var(--sp-8)}
-.entry ul li{font-family:var(--font-serif);font-size:var(--text-base);line-height:1.7;color:var(--ash);padding-left:var(--sp-16);position:relative}
-.entry ul li::before{content:'—';position:absolute;left:0;color:var(--graphite)}
-.skills-list{display:flex;flex-wrap:wrap;gap:var(--sp-8)}
-.skills-list span{font-size:var(--text-xs);color:var(--ash);border:1px solid var(--graphite);border-radius:var(--radius-sm);padding:var(--sp-4) var(--sp-12);text-transform:uppercase;letter-spacing:.06em}
-@media print{.back-link{display:none}.container{padding:var(--sp-16)}}
-@media(max-width:480px){.entry-header{flex-direction:column}}
+.subtitle{font-family:var(--font-serif);font-size:var(--text-lg);color:var(--steel);margin-bottom:var(--sp-20)}
+.contact-bar{display:flex;flex-wrap:wrap;gap:var(--sp-12);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.06em}
+.contact-bar a,.contact-bar span{color:var(--steel);padding:var(--sp-4) 0}
+.contact-bar .sep{color:var(--graphite)}
+.about-text{font-family:var(--font-serif);font-size:var(--text-base);line-height:1.8;color:var(--ash);margin-bottom:var(--sp-32);padding:var(--sp-20);background:var(--surface);border-radius:var(--radius-md);border-left:2px solid var(--violet)}
+h2{font-size:var(--text-sm);color:var(--white);text-transform:uppercase;letter-spacing:.12em;margin-bottom:var(--sp-16);margin-top:var(--sp-32);padding-bottom:var(--sp-8);border-bottom:1px solid var(--graphite);display:flex;align-items:center;gap:var(--sp-8)}
+h2::after{content:'';flex:1;height:1px;background:var(--graphite)}
+
+/* Experience timeline */
+.timeline{position:relative;padding-left:var(--sp-24)}
+.timeline::before{content:'';position:absolute;left:0;top:var(--sp-8);bottom:var(--sp-8);width:1px;background:var(--graphite)}
+.timeline-item{position:relative;margin-bottom:var(--sp-28);padding-left:var(--sp-20)}
+.timeline-item::before{content:'';position:absolute;left:-24px;top:6px;width:8px;height:8px;border-radius:50%;background:var(--violet);border:1px solid var(--steel)}
+.timeline-item.current::before{background:var(--white);border-color:var(--white);box-shadow:0 0 6px rgba(255,255,255,.3)}
+.tl-header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:var(--sp-8);margin-bottom:var(--sp-2)}
+.tl-title{font-family:var(--font-sans);font-size:var(--text-base);font-weight:500;color:var(--white)}
+.tl-date{font-size:var(--text-xs);color:var(--steel);white-space:nowrap}
+.tl-org{font-size:var(--text-xs);color:var(--violet);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--sp-6)}
+.timeline-item ul{list-style:none;padding:0}
+.timeline-item ul li{font-family:var(--font-serif);font-size:var(--text-sm);line-height:1.7;color:var(--ash);padding-left:var(--sp-14);position:relative}
+.timeline-item ul li::before{content:'–';position:absolute;left:0;color:var(--graphite)}
+
+/* Skills grid */
+.skills-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--sp-16);margin-bottom:var(--sp-8)}
+.skills-cat h3{font-size:var(--text-xs);color:var(--steel);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--sp-10)}
+.skill-tags{display:flex;flex-wrap:wrap;gap:var(--sp-6)}
+.skill-tags span{font-size:10px;color:var(--ash);border:1px solid var(--graphite);border-radius:var(--radius-sm);padding:var(--sp-4) var(--sp-10);text-transform:uppercase;letter-spacing:.04em}
+.skill-tags span:hover{border-color:var(--violet);color:var(--white)}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-12);margin-bottom:var(--sp-32)}
+.metric{text-align:center;padding:var(--sp-16);background:var(--surface);border-radius:var(--radius-md);border:1px solid var(--graphite)}
+.metric-val{font-family:var(--font-sans);font-size:var(--text-xl);font-weight:300;color:var(--white);line-height:1}
+.metric-label{font-size:8px;color:var(--steel);text-transform:uppercase;letter-spacing:.1em;margin-top:var(--sp-6)}
+@media(max-width:640px){.skills-grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.contact-bar{gap:var(--sp-8)}}
+@media print{.back-link{display:none}.container{padding:var(--sp-16)}.timeline-item{margin-bottom:var(--sp-16)}}
 </style>
 </head>
 <body>
 <div class="container">
 <a href="index.html" class="back-link">&#x2190; Home</a>
-<h1>Dhiaan Dave</h1>
-<p class="subtitle">Student &middot; Builder &middot; Hackathon Organizer</p>
-<div class="contact-bar">
-<a href="mailto:dhiaan.n.d@gmail.com">Email</a>
-<a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
-<a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
-<a href="https://devpost.com/dhiaan-n-dave" target="_blank">Devpost</a>
-<span>Milpitas, CA</span>
+
+<header>
+  <h1>Dhiaan Dave</h1>
+  <p class="subtitle">Student Leader &middot; Operations Director &middot; Hackathon Organizer</p>
+  <div class="contact-bar">
+    <a href="mailto:dhiaan.n.d@gmail.com">dhiaan.n.d@gmail.com</a>
+    <span class="sep">/</span>
+    <a href="https://github.com/the-X-alien" target="_blank">github.com/the-X-alien</a>
+    <span class="sep">/</span>
+    <a href="https://www.linkedin.com/in/dhiaan" target="_blank">linkedin.com/in/dhiaan</a>
+    <span class="sep">/</span>
+    <span>Milpitas, CA</span>
+  </div>
+</header>
+
+<div class="about-text">
+A driven student leader and operations director with a proven record of organizing large-scale student-led hackathons and STEAM initiatives. Experienced in sponsorship outreach, event logistics, and nonprofit management. Raised and managed over $10,000 in sponsorship funds, sent 5,000+ outreach emails, and built 20+ corporate sponsorship contacts across companies like Yubico, iFixit, Canva, Framework, Vercel, and Playdate.
 </div>
 
-<h2>Education</h2>
-<div class="entry">
-<div class="entry-header">
-<span class="entry-title">Milpitas High School</span>
-<span class="entry-date">2026 &ndash; 2030</span>
-</div>
-<div class="entry-sub">Milpitas, California</div>
-<p>Pursuing coursework in computer science, engineering, and mathematics.</p>
+<div class="metrics">
+  <div class="metric"><div class="metric-val">$10K+</div><div class="metric-label">Sponsorship Raised</div></div>
+  <div class="metric"><div class="metric-val">5,000+</div><div class="metric-label">Outreach Emails</div></div>
+  <div class="metric"><div class="metric-val">20+</div><div class="metric-label">Sponsor Contacts</div></div>
+  <div class="metric"><div class="metric-val">400+</div><div class="metric-label">Student Network</div></div>
 </div>
 
 <h2>Experience</h2>
-<div class="entry">
-<div class="entry-header">
-<span class="entry-title">Lead of Logistics &amp; Operations</span>
-<span class="entry-date">2025 &ndash; Present</span>
-</div>
-<div class="entry-sub">Cove Hacks &mdash; the world&rsquo;s largest in-person high school hackathon</div>
-<ul>
-<li>Coordinate venue logistics, sponsor procurement, and event operations for 500+ attendees</li>
-<li>Manage food service, prize distribution, and vendor relationships</li>
-<li>Lead operations team across all event phases from planning to execution</li>
-</ul>
-</div>
-<div class="entry">
-<div class="entry-header">
-<span class="entry-title">Co-Founder</span>
-<span class="entry-date">2025 &ndash; Present</span>
-</div>
-<div class="entry-sub">Telos Tutoring &mdash; free peer-to-peer K-8 tutoring nonprofit</div>
-<ul>
-<li>Built and deployed the tutoring platform website</li>
-<li>Coordinate tutor recruitment, scheduling, and curriculum development</li>
-<li>Serve K-8 students with free academic support across multiple subjects</li>
-</ul>
-</div>
-<div class="entry">
-<div class="entry-header">
-<span class="entry-title">Organizer</span>
-<span class="entry-date">September 2025</span>
-</div>
-<div class="entry-sub">Daydream Silicon Valley &mdash; game jam</div>
-<ul>
-<li>Organized the first Daydream event in Silicon Valley with 50+ participants</li>
-<li>Managed venue, sponsors, food, prizes, and activities end-to-end</li>
-<li>Secured partnerships and handled community outreach</li>
-</ul>
+<div class="timeline">
+  <div class="timeline-item current">
+    <div class="tl-header">
+      <span class="tl-title">Head of Logistics &amp; Operations</span>
+      <span class="tl-date">Dec 2025 &ndash; Present</span>
+    </div>
+    <div class="tl-org">Cove Hacks &mdash; world's largest in-person high school hardware hackathon</div>
+    <ul>
+      <li>Founding member; oversee logistics, operations, and budget for 400+ attendee hackathon</li>
+      <li>Manage and close sponsorships with companies including Yubico, iFixit, Canva, and Algoverse</li>
+      <li>Lead volunteer coordination, event structure planning, and day-of execution</li>
+    </ul>
+  </div>
+
+  <div class="timeline-item current">
+    <div class="tl-header">
+      <span class="tl-title">Co-Founder</span>
+      <span class="tl-date">Oct 2025 &ndash; Present</span>
+    </div>
+    <div class="tl-org">Telos Tutoring &mdash; free peer-to-peer K-8 tutoring nonprofit</div>
+    <ul>
+      <li>Built and deployed the tutoring platform website serving K-8 students</li>
+      <li>Coordinate tutor recruitment, scheduling, and curriculum development</li>
+      <li>Manage nonprofit operations and community outreach</li>
+    </ul>
+  </div>
+
+  <div class="timeline-item">
+    <div class="tl-header">
+      <span class="tl-title">Founder</span>
+      <span class="tl-date">Sep 2025 &ndash; Present</span>
+    </div>
+    <div class="tl-org">TRMS STEAM Club &mdash; student-run STEAM organization</div>
+    <ul>
+      <li>Founded and led a 20+ member club promoting hands-on STEAM learning</li>
+      <li>Organized workshops in coding, 3D modeling, and PCB design</li>
+      <li>Led club operations, member recruitment, and event planning</li>
+    </ul>
+  </div>
+
+  <div class="timeline-item">
+    <div class="tl-header">
+      <span class="tl-title">Event Organizer &mdash; Outreach &amp; Marketing</span>
+      <span class="tl-date">Dec 2025 &ndash; Mar 2026</span>
+    </div>
+    <div class="tl-org">Campfire San Jose</div>
+    <ul>
+      <li>Raised and managed over $5,000 in sponsorships from Cadence, Framework, and LLNL</li>
+      <li>Solely managed event budgeting, prize planning, and food logistics</li>
+      <li>Coordinated day-of operations, announcements, and volunteer management</li>
+    </ul>
+  </div>
+
+  <div class="timeline-item">
+    <div class="tl-header">
+      <span class="tl-title">Event Organizer &mdash; Finance, Outreach, Design</span>
+      <span class="tl-date">Jul 2025 &ndash; Sep 2025</span>
+    </div>
+    <div class="tl-org">Daydream Silicon Valley &mdash; teen-led Game Jam</div>
+    <ul>
+      <li>Co-organized a teen-led Game Jam with 14 team members and 100+ participants</li>
+      <li>Raised $4,000+ in sponsorships from Vercel, Framework, and Playdate</li>
+      <li>Designed marketing materials and coordinated event branding</li>
+    </ul>
+  </div>
+
+  <div class="timeline-item current">
+    <div class="tl-header">
+      <span class="tl-title">Team Lead</span>
+      <span class="tl-date">Dec 2025 &ndash; Present</span>
+    </div>
+    <div class="tl-org">TRMS Botball #902 &mdash; competitive robotics</div>
+    <ul>
+      <li>Lead school's Botball robotics team through tournament season</li>
+      <li>Design, build, and program autonomous robots with sensor integration</li>
+      <li>Mentor team members on mechanical design and iterative prototyping</li>
+    </ul>
+  </div>
 </div>
 
-<h2>Projects</h2>
-<div class="entry">
-<div class="entry-header">
-<span class="entry-title">Shanti &mdash; AI Wellness Companion</span>
-</div>
-<p>AI-powered desktop application that detects stress from computer activity in real time and helps users maintain balance. Built with Python, computer vision, and LLM integration.</p>
-</div>
-<div class="entry">
-<div class="entry-header">
-<span class="entry-title">SuperRoute &mdash; AI Cinematic Route Optimizer</span>
-</div>
-<p>AI-driven route planning system that optimizes for cinematic value alongside efficiency. Built for Milpitas Hacks 3.0.</p>
-</div>
-<div class="entry">
-<div class="entry-header">
-<span class="entry-title">Personal Portfolio</span>
-</div>
-<p>Single-page portfolio with Three.js 3D visualizations, hamburger navigation, Lenis smooth scroll, custom cursor, and serverless infrastructure on Vercel.</p>
+<h2>Education</h2>
+<div class="timeline">
+  <div class="timeline-item current">
+    <div class="tl-header">
+      <span class="tl-title">Milpitas High School</span>
+      <span class="tl-date">2026 &ndash; 2030</span>
+    </div>
+    <div class="tl-org">Milpitas, California</div>
+    <ul>
+      <li>Pursuing coursework in computer science, engineering, and mathematics</li>
+    </ul>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-header">
+      <span class="tl-title">Thomas Russell Middle School</span>
+      <span class="tl-date">2022 &ndash; 2026</span>
+    </div>
+    <div class="tl-org">Milpitas, California &mdash; GPA 4.0</div>
+    <ul>
+      <li>Accelerated Integrated Math 1 and 2, Art, Coding, Robotics</li>
+    </ul>
+  </div>
 </div>
 
 <h2>Skills</h2>
-<div class="skills-list">
-<span>Python</span><span>JavaScript</span><span>TypeScript</span><span>React</span><span>Next.js</span><span>Node.js</span><span>HTML/CSS</span><span>PCB Design</span><span>3D Printing</span><span>CAD</span><span>Arduino</span><span>Git</span><span>Linux</span><span>Electronics</span><span>Hackathon Ops</span>
-</div>
-
-<h2>Awards &amp; Recognition</h2>
-<div class="entry">
-<div class="entry-header">
-<span class="entry-title">Science Olympiad</span>
-<span class="entry-date">2024 &ndash; Present</span>
-</div>
-<p>Member of Thomas Russell Middle School Science Olympiad team. Events include Circuit Lab, Codebusters, and Hovercraft.</p>
-</div>
-<div class="entry">
-<div class="entry-header">
-<span class="entry-title">Makerhacks II</span>
-<span class="entry-date">October 2025</span>
-</div>
-<p>Semifinalist in robotics competition. Built a 4WD ESP32-powered robot with UDP-based Wi-Fi controls.</p>
+<div class="skills-grid">
+  <div class="skills-cat">
+    <h3>Technical</h3>
+    <div class="skill-tags">
+      <span>Excel</span><span>Sheets</span><span>Canva</span><span>Event Budgeting</span><span>Logistics</span><span>Python</span><span>JavaScript</span><span>HTML/CSS</span>
+    </div>
+  </div>
+  <div class="skills-cat">
+    <h3>Leadership</h3>
+    <div class="skill-tags">
+      <span>Project Management</span><span>Team Coordination</span><span>Sponsorship Outreach</span><span>Nonprofit Ops</span><span>Volunteer Management</span>
+    </div>
+  </div>
+  <div class="skills-cat">
+    <h3>Creative</h3>
+    <div class="skill-tags">
+      <span>Marketing Design</span><span>Branding</span><span>Public Speaking</span><span>Strategic Comms</span><span>Sponsor Comms</span>
+    </div>
+  </div>
 </div>
 </div>
 </body>

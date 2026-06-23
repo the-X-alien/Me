@@ -52,11 +52,15 @@ pre{background:var(--surface);border:1px solid var(--graphite);border-radius:var
 <label>Content <span style="color:var(--graphite);font-weight:400">(drag-drop images directly into the editor)</span></label>
 <textarea id="post-content"></textarea>
 
+<label>Password <span style="color:var(--graphite);font-weight:400">(posts are signed &amp; committed instantly)</span></label>
+<input type="password" id="post-password" placeholder="Enter admin password">
+
 <div class="btn-row">
-  <button class="btn-primary" id="publishBtn">&#x25B6; Generate JSON &amp; Copy</button>
-  <button id="openPostsBtn">Open posts.json</button>
+  <button class="btn-primary" id="publishBtn">&#x25B6; Publish Post</button>
   <button id="clearBtn">Clear</button>
 </div>
+
+<div id="publishStatus" style="display:none;margin-top:var(--sp-12);padding:var(--sp-12);border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:var(--text-xs)"></div>
 
 <h2>JSON Output</h2>
 <pre id="output"></pre>
@@ -136,27 +140,50 @@ function updatePreview(){
   document.getElementById('preview-content').innerHTML = c ? c.getContent() : '';
 }
 
-document.getElementById('publishBtn').addEventListener('click', () => {
+const statusEl = document.getElementById('publishStatus');
+
+function setStatus(msg, ok) {
+  statusEl.style.display = 'block';
+  statusEl.textContent = msg;
+  statusEl.style.background = ok ? 'rgba(76,175,80,0.15)' : 'rgba(244,67,54,0.15)';
+  statusEl.style.color = ok ? '#4CAF50' : '#f44336';
+  statusEl.style.border = ok ? '1px solid rgba(76,175,80,0.3)' : '1px solid rgba(244,67,54,0.3)';
+}
+
+document.getElementById('publishBtn').addEventListener('click', async () => {
   const id = document.getElementById('post-id').value.trim();
   const title = titleInput.value.trim();
   const date = dateInput.value.trim();
   const banner = bannerInput.value.trim();
+  const password = document.getElementById('post-password').value;
   const c = tinymce.get('post-content');
   const content = c ? c.getContent().trim() : '';
-  if (!id || !title || !date || !content) { alert('Please fill out Post ID, Title, Date, and Content.'); return; }
+  if (!id || !title || !date || !content) { setStatus('Missing: Post ID, Title, Date, or Content', false); return; }
+  if (!password) { setStatus('Enter your password', false); return; }
 
-  const json = '"' + id + '": {\n' +
-    '  "title": "' + title.replace(/"/g, '\\"') + '",\n' +
-    '  "date": "' + date.replace(/"/g, '\\"') + '",\n' +
-    (banner ? '  "banner": "' + banner.replace(/"/g, '\\"') + '",\n' : '') +
-    '  "content": "' + content.replace(/"/g, '\\"').replace(/\n/g, ' ') + '"\n}';
+  setStatus('Publishing...', true);
+  document.getElementById('publishBtn').disabled = true;
 
+  const json = JSON.stringify({ id, title, date, banner, content }, null, 2);
   document.getElementById('output').textContent = json;
-  navigator.clipboard.writeText(json).then(() => { alert('JSON copied to clipboard!'); });
-});
 
-document.getElementById('openPostsBtn').addEventListener('click', () => {
-  window.open('posts.json', '_blank');
+  try {
+    const res = await fetch('/api/publish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, title, date, banner, content, password }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      setStatus('Published: ' + data.title + ' is live!', true);
+    } else {
+      setStatus('Error: ' + (data.error || 'unknown'), false);
+    }
+  } catch (err) {
+    setStatus('Network error: ' + err.message, false);
+  } finally {
+    document.getElementById('publishBtn').disabled = false;
+  }
 });
 
 document.getElementById('clearBtn').addEventListener('click', () => {

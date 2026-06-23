@@ -21,7 +21,6 @@ module.exports = (req, res) => {
     ['/jklm', '0.3', 'monthly'],
     ['/search', '0.5', 'monthly'],
     ['/sitemap', '0.6', 'monthly'],
-    ['/admin', '0.2', 'monthly'],
     ['/resume', '0.4', 'monthly'],
   ];
 

@@ -155,18 +155,6 @@ a{color:inherit;text-decoration:none}
   transform:translateY(8px);
   animation:fadeUp .5s var(--ease-out) 1s forwards;
 }
-.scroll-indicator{
-  position:absolute;bottom:var(--sp-32);left:50%;transform:translateX(-50%);
-  z-index:3;display:flex;flex-direction:column;align-items:center;gap:var(--sp-6);
-  opacity:0;
-  animation:fadeUp .5s var(--ease-out) 1.4s forwards;
-}
-.scroll-indicator span{
-  font-family:var(--font-mono);font-size:var(--text-xs);
-  text-transform:uppercase;letter-spacing:.1em;color:var(--color-graphite);
-}
-.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,var(--color-graphite),transparent);animation:scrollPulse 2s ease-in-out infinite}
-@keyframes scrollPulse{0%,100%{opacity:.3}50%{opacity:1}}
 @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 
 /* === Content Sections === */
@@ -773,10 +761,6 @@ section.content-section{
     <span class="label-tag">Dhiaan Dave</span>
     <h1>Student · Builder ·<br>Hackathon Organizer</h1>
     <p class="hero-sub"><span id="typewriterText"></span><span class="typewriter-cursor"></span></p>
-  </div>
-  <div class="scroll-indicator">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
   </div>
   <div class="live-count" id="liveCount"><span class="live-dot" id="liveDot"></span><span id="liveCountText">-- viewing</span></div>
   <div class="shelf-tooltip" id="shelfTooltip"></div>

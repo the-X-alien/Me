@@ -1247,26 +1247,26 @@ function updateTechPositions(t) {
     const dy = ty - cursorWorldPos.y;
     const dz = tz - cursorWorldPos.z;
     const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
-    const pushR = 1.8;
+    const pushR = 1.2;
     if (dist < pushR && dist > 0.01) {
-      const strength = (pushR - dist) / pushR * 0.6;
+      const strength = (pushR - dist) / pushR * 0.15;
       const inv = 1 / dist;
       pushVelocities[i].x += dx * inv * strength;
       pushVelocities[i].y += dy * inv * strength;
       pushVelocities[i].z += dz * inv * strength;
     }
 
-    pushVelocities[i].x *= 0.90;
-    pushVelocities[i].y *= 0.90;
-    pushVelocities[i].z *= 0.90;
+    pushVelocities[i].x *= 0.85;
+    pushVelocities[i].y *= 0.85;
+    pushVelocities[i].z *= 0.85;
 
     pushOffsets[i].x += pushVelocities[i].x;
     pushOffsets[i].y += pushVelocities[i].y;
     pushOffsets[i].z += pushVelocities[i].z;
 
-    pushOffsets[i].x *= 0.94;
-    pushOffsets[i].y *= 0.94;
-    pushOffsets[i].z *= 0.94;
+    pushOffsets[i].x *= 0.96;
+    pushOffsets[i].y *= 0.96;
+    pushOffsets[i].z *= 0.96;
 
     mesh.position.x = tx + pushOffsets[i].x;
     mesh.position.y = ty + pushOffsets[i].y;

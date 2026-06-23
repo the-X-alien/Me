@@ -75,7 +75,7 @@
       container.innerHTML = '<div class="error-text">No posts yet.</div>';
       return;
     }
-    container.innerHTML = posts.map(post => `
+    container.innerHTML = [...posts].reverse().map(post => `
       <a href="post.html?id=${encodeURIComponent(post.id)}" class="blog-item">
         <div class="blog-item-title">${post.title}</div>
         <span class="blog-item-meta">${post.date}</span>

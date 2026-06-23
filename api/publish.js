@@ -5,16 +5,18 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
-
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
-
-  const { id, title, date, banner, content, password } = req.body;
-  if (!id || !title || !date || !content || !password) {
-    return res.status(400).json({ error: 'Missing required fields: id, title, date, content, password' });
-  }
 
   const adminPassHash = (process.env.ADMIN_PASS_HASH || '').trim();
   if (!adminPassHash) return res.status(500).json({ error: 'Server not configured: ADMIN_PASS_HASH missing' });
+
+  const ghToken = process.env.GH_TOKEN;
+  if (!ghToken) return res.status(500).json({ error: 'Server not configured: GH_TOKEN missing' });
+
+  const { action, id, password } = req.body;
+  if (!action || !id || !password) {
+    return res.status(400).json({ error: 'Missing required fields: action, id, password' });
+  }
 
   const inputHash = crypto.createHash('sha256').update(password.trim()).digest('hex');
   if (inputHash !== adminPassHash) {
@@ -24,9 +26,6 @@ module.exports = async (req, res) => {
       gotPrefix: inputHash.slice(0, 8),
     });
   }
-
-  const ghToken = process.env.GH_TOKEN;
-  if (!ghToken) return res.status(500).json({ error: 'Server not configured: GH_TOKEN missing' });
 
   const owner = 'the-X-alien';
   const repo = 'Me';
@@ -42,12 +41,38 @@ module.exports = async (req, res) => {
     const currentContent = JSON.parse(Buffer.from(fileData.content, 'base64').toString('utf8'));
     const sha = fileData.sha;
 
+    if (action === 'delete') {
+      const index = currentContent.findIndex(p => p.id === id);
+      if (index === -1) return res.status(404).json({ error: 'Post not found', id });
+      const removed = currentContent.splice(index, 1)[0];
+      const updatedJson = JSON.stringify(currentContent, null, 2);
+      const encoded = Buffer.from(updatedJson, 'utf8').toString('base64');
+      const commitRes = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${ghToken}`,
+          'User-Agent': 'dhiaan-admin',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: `Delete post: ${removed.title}`,
+          content: encoded,
+          sha,
+        }),
+      });
+      if (!commitRes.ok) throw new Error(`GitHub commit failed: ${commitRes.status}`);
+      return res.status(200).json({ success: true, action: 'delete', id, title: removed.title });
+    }
+
+    // Default: publish
+    const { title, date, banner, content } = req.body;
+    if (!title || !date || !content) {
+      return res.status(400).json({ error: 'Missing required fields for publish: title, date, content' });
+    }
     const newPost = { id, title, date, banner: banner || '', content };
     currentContent.push(newPost);
-
     const updatedJson = JSON.stringify(currentContent, null, 2);
     const encoded = Buffer.from(updatedJson, 'utf8').toString('base64');
-
     const commitRes = await fetch(apiUrl, {
       method: 'PUT',
       headers: {
@@ -61,10 +86,8 @@ module.exports = async (req, res) => {
         sha,
       }),
     });
-
     if (!commitRes.ok) throw new Error(`GitHub commit failed: ${commitRes.status}`);
-
-    res.status(200).json({ success: true, id, title });
+    res.status(200).json({ success: true, action: 'publish', id, title });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

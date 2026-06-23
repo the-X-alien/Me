@@ -128,7 +128,21 @@ button:disabled{opacity:.35;cursor:not-allowed}
 
 <div id="publishStatus"></div>
 
-<h2 style="margin-top:var(--sp-32);font-family:var(--font-mono);font-size:var(--text-xs);color:var(--steel);text-transform:uppercase;letter-spacing:.1em;border:none;padding:0">Live Preview</h2>
+<hr style="border:none;border-top:1px solid var(--graphite);margin:var(--sp-32) 0">
+
+<h2 style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--steel);text-transform:uppercase;letter-spacing:.1em;border:none;padding:0;margin-bottom:var(--sp-16)">Delete a Post</h2>
+<label>Post ID to delete</label>
+<input type="text" id="delete-id" placeholder="makerhacksii">
+<label>Password</label>
+<input type="password" id="delete-password" placeholder="Enter admin password">
+<div class="btn-row">
+  <button id="deleteBtn" style="border-color:#f44336;color:#f44336">&#x2715; Delete Post</button>
+</div>
+<div id="deleteStatus" style="margin-top:var(--sp-12);padding:var(--sp-12);border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:var(--text-xs);display:none"></div>
+
+<hr style="border:none;border-top:1px solid var(--graphite);margin:var(--sp-32) 0">
+
+<h2 style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--steel);text-transform:uppercase;letter-spacing:.1em;border:none;padding:0">Live Preview</h2>
 <div class="editor-split">
   <div>
     <div class="preview-pane" id="previewPane">
@@ -315,6 +329,45 @@ document.getElementById('publishBtn').addEventListener('click', async () => {
     setStatus('Network error: ' + err.message, false);
   } finally {
     document.getElementById('publishBtn').disabled = false;
+  }
+});
+
+// === Delete ===
+const delStatusEl = document.getElementById('deleteStatus');
+function setDelStatus(msg, ok) {
+  delStatusEl.style.display = 'block';
+  delStatusEl.textContent = msg;
+  delStatusEl.style.background = ok ? 'rgba(244,67,54,0.15)' : 'rgba(244,67,54,0.15)';
+  delStatusEl.style.color = ok ? '#f44336' : '#f44336';
+  delStatusEl.style.border = ok ? '1px solid rgba(244,67,54,0.3)' : '1px solid rgba(244,67,54,0.3)';
+}
+
+document.getElementById('deleteBtn').addEventListener('click', async () => {
+  const id = document.getElementById('delete-id').value.trim();
+  const password = document.getElementById('delete-password').value;
+  if (!id) { setDelStatus('Enter the Post ID to delete', false); return; }
+  if (!password) { setDelStatus('Enter your password', false); return; }
+  if (!confirm('Delete post "' + id + '"? This cannot be undone.')) return;
+
+  setDelStatus('Deleting...', true);
+  document.getElementById('deleteBtn').disabled = true;
+
+  try {
+    const res = await fetch('/api/publish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'delete', id, password }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      setDelStatus('Deleted: "' + data.title + '" removed from posts.json', true);
+    } else {
+      setDelStatus('Error: ' + (data.error || 'unknown'), false);
+    }
+  } catch (err) {
+    setDelStatus('Network error: ' + err.message, false);
+  } finally {
+    document.getElementById('deleteBtn').disabled = false;
   }
 });
 

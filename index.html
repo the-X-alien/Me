@@ -793,6 +793,9 @@ section.content-section{
       <div class="bento-card bento-wide fade-in">
         <span class="bento-label">&#x25B6; Bio</span>
         <p>I'm Dhiaan — based in Milpitas, California. I'm headed to Milpitas High School and deeply curious about how things work: from <strong>code and circuits</strong> to <strong>CAD and community-building</strong>.</p>
+        <p style="margin-top:var(--sp-12)">My journey started with tinkering — taking apart electronics, learning to solder, and writing my first Python scripts. That curiosity grew into building full-stack web apps with React and Next.js, designing PCBs in KiCad, modeling parts in CAD, and programming autonomous robots for Botball competitions. I've built everything from AI-powered stress detection apps (Shanti) to cinematic route optimizers (SuperRoute) to this very portfolio — a single-page site featuring Three.js 3D visualizations, serverless functions on Vercel, and a live visitor counter.</p>
+        <p style="margin-top:var(--sp-12)">I'm just as passionate about organizing as I am about building. As Head of Logistics &amp; Operations at <strong>Cove Hacks</strong> — the world's largest in-person high school hardware hackathon — I helped scale the event to 400+ attendees, led sponsor outreach to companies like Yubico, iFixit, and Canva, and oversaw the entire operations budget. I also co-founded <strong>Telos Tutoring</strong>, a free peer-to-peer K-8 tutoring nonprofit, and organized <strong>Daydream Silicon Valley</strong>, a teen-led Game Jam with 100+ participants that raised $4,000+ in sponsorships from Vercel and Playdate. At <strong>Campfire San Jose</strong>, I single-handedly raised $5,000+ from Cadence, Framework, and Lawrence Livermore National Laboratory.</p>
+        <p style="margin-top:var(--sp-12)">Across all of this, I've raised over $10,000 in sponsorship funding, sent more than 5,000 outreach emails, and built a network of 400+ students across the Bay Area. I run a <a href="youtube" style="color:var(--color-ash);border-bottom:1px solid var(--color-graphite)">YouTube channel</a> where I document builds and projects, and I'm always hacking on something — whether it's a PCB design, a web app, or a 3D-printed enclosure.</p>
       </div>
       <div class="bento-card fade-in">
         <span class="bento-label">&#x25B6; Role</span>
@@ -963,10 +966,28 @@ section.content-section{
 <script type="module">
 import * as THREE from 'three';
 
-// === Lenis Smooth Scroll ===
+// === Lenis Smooth Scroll + Section Snap ===
 const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
 function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
 requestAnimationFrame(raf);
+const snapSections = document.querySelectorAll('#hero, .content-section');
+let snapGuard = false;
+lenis.on('scroll', () => {
+  if (snapGuard) return;
+  clearTimeout(window._snapTimer);
+  window._snapTimer = setTimeout(() => {
+    let closest = null, minDist = Infinity, center = window.innerHeight / 2;
+    snapSections.forEach(s => {
+      const r = s.getBoundingClientRect(), d = Math.abs(r.top - center);
+      if (d < minDist) { minDist = d; closest = s; }
+    });
+    if (closest && minDist > 5) {
+      snapGuard = true;
+      lenis.scrollTo(closest, { duration: 0.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+      setTimeout(() => { snapGuard = false; }, 700);
+    }
+  }, 200);
+});
 
 // === Three.js Scene ===
 const canvas = document.createElement('canvas');

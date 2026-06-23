@@ -23,9 +23,5 @@
     { "source": "/manifesto", "destination": "/manifesto.html" },
     { "source": "/sitemap", "destination": "/sitemap.html" },
     { "source": "/debug", "destination": "/api/debug" }
-  ],
-  "crons": [{
-    "path": "/api/ping-index",
-    "schedule": "0 */6 * * *"
-  }]
+  ]
 }

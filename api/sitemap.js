@@ -18,6 +18,7 @@ module.exports = (req, res) => {
     ['/slope2', '0.3', 'monthly'],
     ['/cloudmoon', '0.3', 'monthly'],
     ['/aliex', '0.3', 'monthly'],
+    ['/jklm', '0.3', 'monthly'],
     ['/search', '0.5', 'monthly'],
     ['/sitemap', '0.6', 'monthly'],
   ];

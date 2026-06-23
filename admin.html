@@ -6,119 +6,194 @@
 <title>Admin — Dhiaan Dave</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
-<script src="https://cdn.tiny.cloud/1/kdqzs5feny90bvou7nk4apvrdhphrdyscrp5qf2lc14mvrzq/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@200;300;400;500&family=Georgia&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--void:#000;--white:#fff;--graphite:#4d4d4d;--steel:#808080;--ash:#c6c6c6;--surface:#111;--card:#181818;--font-mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--font-sans:'Inter',system-ui,sans-serif;--text-xs:10px;--text-sm:12px;--text-base:14px;--sp-8:8px;--sp-10:10px;--sp-12:12px;--sp-16:16px;--sp-18:18px;--sp-20:20px;--sp-24:24px;--sp-32:32px;--radius-sm:4px}
-body{background:var(--void);color:var(--ash);font-family:var(--font-sans);padding:var(--sp-24);max-width:800px;margin:0 auto;min-height:100vh}
+:root{--void:#000;--white:#fff;--graphite:#4d4d4d;--steel:#808080;--ash:#c6c6c6;--surface:#111;--card:#181818;--font-mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--font-sans:'Inter',system-ui,sans-serif;--font-serif:Georgia,'Times New Roman',serif;--text-xs:10px;--text-sm:12px;--text-base:14px;--sp-4:4px;--sp-6:6px;--sp-8:8px;--sp-10:10px;--sp-12:12px;--sp-16:16px;--sp-18:18px;--sp-20:20px;--sp-24:24px;--sp-32:32px;--sp-40:40px;--radius-sm:4px;--radius-md:6px}
+body{background:var(--void);color:var(--ash);font-family:var(--font-sans);padding:var(--sp-24);max-width:960px;margin:0 auto;min-height:100vh}
 h1{font-family:var(--font-mono);font-size:var(--text-sm);font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--sp-20);padding-bottom:var(--sp-16);border-bottom:1px solid var(--graphite)}
 label{display:block;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--steel);text-transform:uppercase;letter-spacing:.1em;margin-top:var(--sp-16);margin-bottom:var(--sp-4)}
-input[type="text"]{width:100%;background:var(--surface);border:1px solid var(--graphite);border-radius:var(--radius-sm);padding:var(--sp-8) var(--sp-12);color:var(--white);font-family:var(--font-mono);font-size:var(--text-sm);outline:none;transition:border-color .2s}
-input[type="text"]:focus{border-color:var(--ash)}
-button{font-family:var(--font-mono);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;background:transparent;border:1px solid var(--graphite);border-radius:var(--radius-sm);color:var(--ash);padding:var(--sp-8) var(--sp-18);cursor:pointer;transition:border-color .2s,color .2s;margin-top:var(--sp-16)}
+input[type="text"],input[type="password"]{width:100%;background:var(--surface);border:1px solid var(--graphite);border-radius:var(--radius-sm);padding:var(--sp-8) var(--sp-12);color:var(--white);font-family:var(--font-mono);font-size:var(--text-sm);outline:none;transition:border-color .2s}
+input[type="text"]:focus,input[type="password"]:focus{border-color:var(--ash)}
+button{font-family:var(--font-mono);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;background:transparent;border:1px solid var(--graphite);border-radius:var(--radius-sm);color:var(--ash);padding:var(--sp-8) var(--sp-18);cursor:pointer;transition:border-color .2s,color .2s}
 button:hover{border-color:var(--white);color:var(--white)}
+button:disabled{opacity:.35;cursor:not-allowed}
 .btn-primary{background:var(--steel);color:var(--void);border-color:var(--steel)}
 .btn-primary:hover{background:var(--white);border-color:var(--white);color:var(--void)}
-.btn-row{display:flex;gap:var(--sp-8);flex-wrap:wrap}
-pre{background:var(--surface);border:1px solid var(--graphite);border-radius:var(--radius-sm);padding:var(--sp-16);color:var(--ash);font-family:var(--font-mono);font-size:var(--text-xs);overflow-x:auto;margin-top:var(--sp-8);white-space:pre-wrap;word-break:break-all;max-height:300px;overflow-y:auto}
-.preview{background:var(--surface);border:1px solid var(--graphite);border-radius:var(--radius-sm);padding:var(--sp-20);margin-top:var(--sp-8)}
-.blog-banner{width:100%;height:200px;border-radius:var(--radius-sm);background-size:cover;background-position:center;margin-bottom:var(--sp-16);background-color:var(--card)}
-.blog-title{font-family:var(--font-sans);font-size:20px;font-weight:200;color:var(--white);margin-bottom:var(--sp-8)}
-.blog-date{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--steel);margin-bottom:var(--sp-16)}
-.blog-content{font-family:Georgia,serif;font-size:var(--text-base);color:var(--ash);line-height:1.7}
-.blog-content a{color:var(--white)}
-.blog-content img{max-width:100%;border-radius:var(--radius-sm)}
+.btn-publish{background:#4CAF50;color:#fff;border-color:#4CAF50;font-weight:700}
+.btn-publish:hover{background:#66BB6A;border-color:#66BB6A;color:#fff}
+.btn-row{display:flex;gap:var(--sp-8);flex-wrap:wrap;margin-top:var(--sp-20)}
 .back-link{display:inline-block;margin-bottom:var(--sp-16);color:var(--steel);font-family:var(--font-mono);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;text-decoration:none;transition:color .2s}
 .back-link:hover{color:var(--white)}
+
+/* === Toolbar === */
+.toolbar{display:flex;flex-wrap:wrap;gap:2px;padding:var(--sp-8);background:var(--surface);border:1px solid var(--graphite);border-bottom:none;border-radius:var(--radius-md) var(--radius-md) 0 0}
+.toolbar button{font-size:13px;padding:var(--sp-4) var(--sp-8);min-width:28px;text-align:center;margin:0;border-color:transparent;background:transparent;color:var(--steel);border-radius:3px;line-height:1}
+.toolbar button:hover{background:var(--card);color:var(--white);border-color:transparent}
+.toolbar .sep{width:1px;background:var(--graphite);margin:var(--sp-4) var(--sp-4)}
+.toolbar .tool-label{font-family:var(--font-mono);font-size:9px;color:var(--graphite);text-transform:uppercase;letter-spacing:.08em;padding:var(--sp-4) var(--sp-6);line-height:1;align-self:center}
+
+/* === Editor === */
+.editor-wrap{position:relative}
+#editor{width:100%;min-height:320px;background:var(--surface);border:1px solid var(--graphite);border-radius:0 0 var(--radius-md) var(--radius-md);padding:var(--sp-20);color:var(--ash);font-family:var(--font-serif);font-size:var(--text-base);line-height:1.8;outline:none;overflow-y:auto;transition:border-color .2s}
+#editor:focus{border-color:var(--steel)}
+#editor:empty:before{content:'Start writing...';color:var(--graphite);font-style:italic}
+#editor img{max-width:100%;border-radius:var(--radius-sm);margin:var(--sp-12) 0;display:block}
+#editor blockquote{border-left:2px solid var(--graphite);padding-left:var(--sp-16);margin:var(--sp-12) 0;color:var(--steel);font-style:italic}
+#editor pre{background:var(--card);padding:var(--sp-12);border-radius:var(--radius-sm);overflow-x:auto;font-family:var(--font-mono);font-size:var(--text-xs);margin:var(--sp-12) 0}
+#editor a{color:var(--white)}
+#editor ul,#editor ol{padding-left:var(--sp-24);margin:var(--sp-8) 0}
+#editor h2{font-family:var(--font-sans);font-size:20px;font-weight:300;color:var(--white);margin:var(--sp-20) 0 var(--sp-8)}
+#editor h3{font-family:var(--font-sans);font-size:16px;font-weight:400;color:var(--white);margin:var(--sp-16) 0 var(--sp-6)}
+
+/* === Split layout === */
+.editor-split{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-20);margin-top:var(--sp-8)}
+@media(max-width:768px){.editor-split{grid-template-columns:1fr}}
+.split-label{font-family:var(--font-mono);font-size:9px;color:var(--graphite);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--sp-8)}
+.preview-pane{background:var(--surface);border:1px solid var(--graphite);border-radius:var(--radius-md);padding:var(--sp-20);min-height:320px}
+.preview-pane .p-title{font-family:var(--font-sans);font-size:20px;font-weight:200;color:var(--white);margin-bottom:var(--sp-8)}
+.preview-pane .p-date{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--steel);margin-bottom:var(--sp-16)}
+.preview-pane .p-banner{width:100%;height:180px;border-radius:var(--radius-sm);background-size:cover;background-position:center;margin-bottom:var(--sp-16);background-color:var(--card)}
+.preview-pane .p-body{font-family:var(--font-serif);font-size:var(--text-base);line-height:1.8;color:var(--ash)}
+.preview-pane .p-body a{color:var(--white)}
+.preview-pane .p-body img{max-width:100%;border-radius:var(--radius-sm)}
+.preview-pane .p-body blockquote{border-left:2px solid var(--graphite);padding-left:var(--sp-16);margin:var(--sp-12) 0;color:var(--steel);font-style:italic}
+
+/* === Publish status === */
+#publishStatus{margin-top:var(--sp-12);padding:var(--sp-12);border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:var(--text-xs);display:none}
 </style>
 </head>
 <body>
 <a href="index.html" class="back-link">&#8592; Home</a>
 <h1>Blog Post Editor</h1>
 
-<label>Post ID <span style="color:var(--graphite);font-weight:400">(unique, no spaces)</span></label>
-<input type="text" id="post-id" placeholder="first-blog">
+<label>Post ID <span>(unique, no spaces)</span></label>
+<input type="text" id="post-id" placeholder="my-new-post">
 
 <label>Title</label>
-<input type="text" id="post-title" placeholder="First Blog Post">
+<input type="text" id="post-title" placeholder="My New Post">
 
 <label>Date</label>
-<input type="text" id="post-date" placeholder="August 25, 2025">
+<input type="text" id="post-date" placeholder="March 15, 2026">
 
-<label>Banner URL <span style="color:var(--graphite);font-weight:400">(optional — drag-drop an image below to auto-fill)</span></label>
-<input type="text" id="post-banner" placeholder="your-image.jpg">
+<label>Banner URL <span>(drag-drop an image to auto-fill)</span></label>
+<input type="text" id="post-banner" placeholder="images/my-banner.jpg">
 
-<label>Content <span style="color:var(--graphite);font-weight:400">(drag-drop images directly into the editor)</span></label>
-<textarea id="post-content"></textarea>
+<label>Content</label>
+<div class="toolbar" id="toolbar">
+  <span class="tool-label">Format</span>
+  <button data-cmd="bold" title="Bold"><strong>B</strong></button>
+  <button data-cmd="italic" title="Italic"><em>I</em></button>
+  <button data-cmd="underline" title="Underline"><u>U</u></button>
+  <span class="sep"></span>
+  <button data-cmd="h2" title="Heading">H2</button>
+  <button data-cmd="h3" title="Subheading">H3</button>
+  <span class="sep"></span>
+  <button data-cmd="insertUnorderedList" title="Bullet list">&#8226;&#8211;</button>
+  <button data-cmd="insertOrderedList" title="Numbered list">1.</button>
+  <button data-cmd="blockquote" title="Quote">&ldquo;&rdquo;</button>
+  <button data-cmd="pre" title="Code block">&lt;/&gt;</button>
+  <span class="sep"></span>
+  <button data-cmd="link" title="Insert link">&#128279;</button>
+  <button data-cmd="image" title="Insert image">&#128247;</button>
+  <button data-cmd="removeFormat" title="Clear formatting">&otimes;</button>
+</div>
+<div class="editor-wrap">
+  <div id="editor" contenteditable="true"></div>
+</div>
 
-<label>Password <span style="color:var(--graphite);font-weight:400">(posts are signed &amp; committed instantly)</span></label>
+<label>Password <span>(posts are signed &amp; committed instantly)</span></label>
 <input type="password" id="post-password" placeholder="Enter admin password">
 
 <div class="btn-row">
-  <button class="btn-primary" id="publishBtn">&#x25B6; Publish Post</button>
-  <button id="clearBtn">Clear</button>
+  <button class="btn-publish" id="publishBtn">&#x25B6; Publish Post</button>
+  <button id="clearBtn">Clear All</button>
 </div>
 
-<div id="publishStatus" style="display:none;margin-top:var(--sp-12);padding:var(--sp-12);border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:var(--text-xs)"></div>
+<div id="publishStatus"></div>
 
-<h2>JSON Output</h2>
-<pre id="output"></pre>
-
-<h2>Live Preview</h2>
-<div class="preview">
-  <div id="preview-banner" class="blog-banner"></div>
-  <div id="preview-title" class="blog-title"></div>
-  <div id="preview-date" class="blog-date"></div>
-  <div id="preview-content" class="blog-content"></div>
+<h2 style="margin-top:var(--sp-32);font-family:var(--font-mono);font-size:var(--text-xs);color:var(--steel);text-transform:uppercase;letter-spacing:.1em;border:none;padding:0">Live Preview</h2>
+<div class="editor-split">
+  <div>
+    <div class="preview-pane" id="previewPane">
+      <div class="p-title" id="preview-title"></div>
+      <div class="p-date" id="preview-date"></div>
+      <div class="p-banner" id="preview-banner"></div>
+      <div class="p-body" id="preview-body"></div>
+    </div>
+  </div>
+  <div>
+    <div class="split-label">HTML Output</div>
+    <pre id="output" style="background:var(--surface);border:1px solid var(--graphite);border-radius:var(--radius-md);padding:var(--sp-16);color:var(--ash);font-family:var(--font-mono);font-size:var(--text-xs);overflow:auto;white-space:pre-wrap;word-break:break-all;max-height:400px;margin:0"></pre>
+  </div>
 </div>
 
 <script>
-// === TinyMCE with drag-drop image support ===
-tinymce.init({
-  selector:'#post-content',
-  height:500,
-  menubar:false,
-  plugins:'lists link image code',
-  toolbar:'undo redo | formatselect | bold italic underline strikethrough | alignleft aligncenter alignright | bullist numlist | link image | code',
-  branding:false,
-  content_style:"body{background:#111;color:#c6c6c6;font-family:Georgia,serif;font-size:14px;line-height:1.7;padding:16px;max-width:700px;margin:0 auto}a{color:#fff}img{max-width:100%;border-radius:4px}",
-  automatic_uploads:true,
-  file_picker_types:'image',
-  images_upload_handler: (blobInfo) => new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = (e) => { resolve(e.target.result); };
-    reader.readAsDataURL(blobInfo.blob());
-  }),
-  setup:function(editor){
-    editor.on('input change', updatePreview);
-    // Drag-drop banner auto-fill
-    editor.on('drop', (e) => {
-      const files = e.dataTransfer && e.dataTransfer.files;
-      if (files && files.length > 0) {
-        const f = files[0];
-        if (f.type.startsWith('image/')) {
-          const r = new FileReader();
-          r.onload = (ev) => {
-            const bannerInput = document.getElementById('post-banner');
-            if (!bannerInput.value) bannerInput.value = ev.target.result;
-            updatePreview();
-          };
-          r.readAsDataURL(f);
-        }
-      }
-    });
-  }
-});
-
+const editor = document.getElementById('editor');
 const titleInput = document.getElementById('post-title');
 const dateInput = document.getElementById('post-date');
 const bannerInput = document.getElementById('post-banner');
+const previewTitle = document.getElementById('preview-title');
+const previewDate = document.getElementById('preview-date');
+const previewBanner = document.getElementById('preview-banner');
+const previewBody = document.getElementById('preview-body');
+const outputEl = document.getElementById('output');
+
+// === Toolbar commands ===
+document.getElementById('toolbar').addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-cmd]');
+  if (!btn) return;
+  const cmd = btn.dataset.cmd;
+  if (cmd === 'h2' || cmd === 'h3') {
+    document.execCommand('formatBlock', false, cmd);
+  } else if (cmd === 'pre') {
+    document.execCommand('formatBlock', false, 'pre');
+  } else if (cmd === 'link') {
+    const url = prompt('Enter URL:');
+    if (url) document.execCommand('createLink', false, url);
+  } else if (cmd === 'image') {
+    const url = prompt('Enter image URL:');
+    if (url) document.execCommand('insertImage', false, url);
+  } else {
+    document.execCommand(cmd, false, null);
+  }
+  editor.focus();
+  updatePreview();
+});
+
+// === Live preview ===
+function updatePreview() {
+  previewTitle.textContent = titleInput.value;
+  previewDate.textContent = dateInput.value;
+  previewBanner.style.backgroundImage = bannerInput.value ? "url('" + bannerInput.value.replace(/'/g, "\\'") + "')" : 'none';
+  previewBody.innerHTML = editor.innerHTML;
+  outputEl.textContent = editor.innerHTML;
+}
+editor.addEventListener('input', updatePreview);
+editor.addEventListener('keyup', updatePreview);
 titleInput.addEventListener('input', updatePreview);
 dateInput.addEventListener('input', updatePreview);
 bannerInput.addEventListener('input', updatePreview);
 
-// Drag-drop onto banner input
+// === Drag-drop images into editor ===
+editor.addEventListener('dragover', (e) => { e.preventDefault(); editor.style.borderColor = 'var(--white)'; });
+editor.addEventListener('dragleave', () => { editor.style.borderColor = ''; });
+editor.addEventListener('drop', (e) => {
+  e.preventDefault();
+  editor.style.borderColor = '';
+  const files = e.dataTransfer.files;
+  for (const f of files) {
+    if (!f.type.startsWith('image/')) continue;
+    const r = new FileReader();
+    r.onload = (ev) => {
+      document.execCommand('insertImage', false, ev.target.result);
+      updatePreview();
+    };
+    r.readAsDataURL(f);
+  }
+});
+
+// === Drag-drop onto banner input ===
 bannerInput.addEventListener('dragover', (e) => { e.preventDefault(); bannerInput.style.borderColor = 'var(--white)'; });
 bannerInput.addEventListener('dragleave', () => { bannerInput.style.borderColor = ''; });
 bannerInput.addEventListener('drop', (e) => {
@@ -132,16 +207,8 @@ bannerInput.addEventListener('drop', (e) => {
   }
 });
 
-function updatePreview(){
-  document.getElementById('preview-title').textContent = titleInput.value;
-  document.getElementById('preview-date').textContent = dateInput.value;
-  document.getElementById('preview-banner').style.backgroundImage = bannerInput.value ? "url('"+bannerInput.value+"')" : 'none';
-  const c = tinymce.get('post-content');
-  document.getElementById('preview-content').innerHTML = c ? c.getContent() : '';
-}
-
+// === Publish ===
 const statusEl = document.getElementById('publishStatus');
-
 function setStatus(msg, ok) {
   statusEl.style.display = 'block';
   statusEl.textContent = msg;
@@ -156,16 +223,15 @@ document.getElementById('publishBtn').addEventListener('click', async () => {
   const date = dateInput.value.trim();
   const banner = bannerInput.value.trim();
   const password = document.getElementById('post-password').value;
-  const c = tinymce.get('post-content');
-  const content = c ? c.getContent().trim() : '';
-  if (!id || !title || !date || !content) { setStatus('Missing: Post ID, Title, Date, or Content', false); return; }
+  const content = editor.innerHTML.trim();
+  if (!id) { setStatus('Post ID is required', false); return; }
+  if (!title) { setStatus('Title is required', false); return; }
+  if (!date) { setStatus('Date is required', false); return; }
+  if (!content || content === '<br>') { setStatus('Content is required', false); return; }
   if (!password) { setStatus('Enter your password', false); return; }
 
   setStatus('Publishing...', true);
   document.getElementById('publishBtn').disabled = true;
-
-  const json = JSON.stringify({ id, title, date, banner, content }, null, 2);
-  document.getElementById('output').textContent = json;
 
   try {
     const res = await fetch('/api/publish', {
@@ -175,7 +241,7 @@ document.getElementById('publishBtn').addEventListener('click', async () => {
     });
     const data = await res.json();
     if (data.success) {
-      setStatus('Published: ' + data.title + ' is live!', true);
+      setStatus('Published: "' + data.title + '" is live!', true);
     } else {
       setStatus('Error: ' + (data.error || 'unknown'), false);
     }
@@ -186,14 +252,16 @@ document.getElementById('publishBtn').addEventListener('click', async () => {
   }
 });
 
+// === Clear ===
 document.getElementById('clearBtn').addEventListener('click', () => {
   document.getElementById('post-id').value = '';
   titleInput.value = '';
   dateInput.value = '';
   bannerInput.value = '';
-  const c = tinymce.get('post-content');
-  if (c) c.setContent('');
-  document.getElementById('output').textContent = '';
+  document.getElementById('post-password').value = '';
+  editor.innerHTML = '';
+  outputEl.textContent = '';
+  document.getElementById('publishStatus').style.display = 'none';
   updatePreview();
 });
 

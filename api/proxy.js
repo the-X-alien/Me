@@ -1,13 +1,13 @@
 module.exports = async (req, res) => {
-  const url = req.query.url;
-  if (!url) return res.status(400).send('Missing ?url= parameter');
+  const raw = req.query.url;
+  if (!raw) return res.status(400).send('Missing ?url=');
 
   let targetUrl;
   try {
-    const trimmed = url.trim();
-    if (/^https?:\/\//i.test(trimmed)) targetUrl = trimmed;
-    else if (/^[\w-]+\.\w+/i.test(trimmed)) targetUrl = 'https://' + trimmed;
-    else targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(trimmed);
+    const t = raw.trim();
+    if (/^https?:\/\//i.test(t)) targetUrl = t;
+    else if (/^[\w-]+\.[a-z]{2,}/i.test(t)) targetUrl = 'https://' + t;
+    else targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(t);
     new URL(targetUrl);
   } catch {
     return res.status(400).send('Invalid URL');
@@ -24,30 +24,53 @@ module.exports = async (req, res) => {
     });
 
     const contentType = resp.headers.get('content-type') || '';
-    if (!contentType.includes('text/html') && !contentType.includes('text/plain') && !contentType.includes('application/xhtml')) {
-      return res.status(400).send('Cannot proxy non-HTML content: ' + contentType);
+    if (!contentType.includes('html') && !contentType.includes('text/plain') && !contentType.includes('xml')) {
+      return res.status(400).send('Only HTML pages can be proxied (got: ' + contentType + ')');
     }
 
     let body = await resp.text();
+    const baseUrl = new URL(targetUrl);
+    const proxyBase = '/api/proxy?url=';
+    const proxyEnc = (u) => proxyBase + encodeURIComponent(u);
 
-    const base = new URL(targetUrl);
-    const baseTag = `<base href="${base.origin}/">`;
+    // Rewrite <a href>, <form action>, <area href> through proxy
+    body = body.replace(
+      /(<(?:a|area)\s[^>]*href\s*=\s*["'])([^"']+)(["'][^>]*>)/gi,
+      (m, pre, url, post) => {
+        try {
+          const abs = new URL(url, baseUrl.origin).href;
+          if (abs.startsWith(baseUrl.origin) || abs.startsWith('http')) {
+            return pre + proxyEnc(abs) + post;
+          }
+        } catch {}
+        return m;
+      }
+    );
 
-    if (body.includes('</head>')) {
-      body = body.replace('</head>', baseTag + '</head>');
-    } else if (body.includes('<head>')) {
-      body = body.replace('<head>', '<head>' + baseTag);
-    } else {
-      body = baseTag + body;
-    }
+    body = body.replace(
+      /(<form\s[^>]*action\s*=\s*["'])([^"']+)(["'][^>]*>)/gi,
+      (m, pre, url, post) => {
+        try {
+          const abs = new URL(url, baseUrl.origin).href;
+          if (abs.startsWith(baseUrl.origin) || abs.startsWith('http')) {
+            return pre + proxyEnc(abs) + post;
+          }
+        } catch {}
+        return m;
+      }
+    );
 
-    body = body.replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, '');
-    body = body.replace(/<object[^>]*>[\s\S]*?<\/object>/gi, '');
+    // Inject <base> so relative resources still load
+    body = body.replace('</head>', `<base href="${baseUrl.origin}/"></head>`);
+
+    // Strip content security policy that might block us
+    body = body.replace(/<meta[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/gi, '');
+
+    // Strip iframes that would fail
+    body = body.replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, '<p style="color:gray;font-style:italic">[iframe blocked]</p>');
+    body = body.replace(/<object[^>]*>[\s\S]*?<\/object>/gi, '<p style="color:gray;font-style:italic">[object blocked]</p>');
 
     res.setHeader('Content-Type', contentType);
-    res.setHeader('X-Robots-Tag', 'noindex');
-    res.setHeader('X-Frame-Options', '');
-    res.removeHeader('X-Frame-Options');
     res.status(200).send(body);
   } catch (err) {
     res.status(502).send('Proxy error: ' + err.message);

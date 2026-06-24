@@ -234,7 +234,44 @@ function go() {
   inp.blur();
 }
 
-// Render search results client-side using DDG Instant Answer API (JSONP)
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+
+function buildSearchPage(query, data) {
+  var h = '', q = esc(query);
+  if (data.Abstract && data.AbstractURL) {
+    h += '<div class=result><a href="' + esc(data.AbstractURL) + '"><b>' + esc(data.Heading || q) + '</b><div class=url>' + esc(data.AbstractURL) + '</div><div class=snippet>' + esc(data.AbstractText) + '</div></a></div>';
+  }
+  if (data.Answer && data.AnswerType) {
+    h += '<div class=result><b>Answer:</b> ' + esc(data.Answer) + '</div>';
+  }
+  if (data.RelatedTopics && data.RelatedTopics.length) {
+    (function walk(topics) {
+      topics.forEach(function(t) {
+        if (t.FirstURL && t.Text) h += '<div class=result><a href="' + esc(t.FirstURL) + '">' + esc(t.Text) + '</a></div>';
+        if (t.Topics) walk(t.Topics);
+      });
+    })(data.RelatedTopics);
+  }
+  var body = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">' +
+    '<style>body{font-family:Arial,sans-serif;background:#f5f5f5;margin:0;padding:16px;color:#222}' +
+    'h1{font-size:18px;color:#333;margin:0 0 12px}' +
+    '.result{padding:10px 12px;margin:0 0 8px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.1)}' +
+    '.result a{color:#1a0dab;text-decoration:none;font-size:14px;display:block}' +
+    '.result a:hover{text-decoration:underline}' +
+    '.result .snippet{font-size:12px;color:#545454;margin:4px 0 0}' +
+    '.result .url{font-size:11px;color:#006621;margin:2px 0 0}' +
+    '</style></head><body>' +
+    '<h1>' + q + '</h1>';
+  if (h) {
+    body += '<div id=results>' + h + '</div>';
+  } else {
+    body += '<div style="text-align:center;padding:40px 16px;color:#888;font-size:13px">No search results for <b>' + q + '</b>.</div>';
+  }
+  body += '<script>document.addEventListener("click",function(e){var a=e.target.closest("a");if(a&&a.href&&!a.target){e.preventDefault();parent.postMessage({nav:a.href},"*")}});<\/script>' +
+    '</body></html>';
+  return body;
+}
+
 function doSearch(tabId, query) {
   const tab = tabs.find(t => t.id === tabId);
   if (!tab) return;
@@ -243,7 +280,6 @@ function doSearch(tabId, query) {
   if (tab.historyIdx < tab.history.length - 1) tab.history = tab.history.slice(0, tab.historyIdx + 1);
   tab.history.push(query);
   tab.historyIdx = tab.history.length - 1;
-  setLoading(true);
   renderTabs();
 
   const area = document.getElementById('contentArea');
@@ -255,47 +291,42 @@ function doSearch(tabId, query) {
   document.getElementById('urlInput').value = query;
   updateNavButtons();
 
-  setLoading(false);
-  iframe.srcdoc = buildSearchPage(query);
-}
-
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
-
-function buildSearchPage(query) {
-  var e = encodeURIComponent(query);
-  return '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">' +
-  '<style>body{font-family:Arial,sans-serif;background:#f5f5f5;margin:0;padding:16px;color:#222}' +
-  'h1{font-size:18px;color:#333;margin:0 0 12px}' +
-  '.result{padding:10px 12px;margin:0 0 8px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.1)}' +
-  '.result a{color:#1a0dab;text-decoration:none;font-size:14px;display:block}' +
-  '.result a:hover{text-decoration:underline}' +
-  '.result .snippet{font-size:12px;color:#545454;margin:4px 0 0}' +
-  '.result .url{font-size:11px;color:#006621;margin:2px 0 0}' +
-  '.info{text-align:center;padding:40px 16px;color:#888;font-size:13px}' +
-  '</style></head><body>' +
-  '<h1>' + esc(query) + '</h1>' +
-  '<div class=info id=status>Searching...</div>' +
-  '<div id=results></div>' +
-  '<script>function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\u0022/g,"&quot;")}' +
-  'function cb(d){try{' +
-  'var h="",s=document.getElementById("status"),r=document.getElementById("results");' +
-  'if(d.Abstract&&d.AbstractURL){h+="<div class=result><a href=\\u0022"+esc(d.AbstractURL)+"\\u0022>"+esc(d.Heading||"")+"<div class=url>"+esc(d.AbstractURL)+"</div><div class=snippet>"+esc(d.AbstractText)+"</div></a></div>"}' +
-  'if(d.Answer&&d.AnswerType){h+="<div class=result><b>Answer:</b> "+esc(d.Answer)+"</div>"}' +
-  'if(d.RelatedTopics&&d.RelatedTopics.length){d.RelatedTopics.forEach(function(t){' +
-  'if(t.FirstURL&&t.Text){h+="<div class=result><a href=\\u0022"+esc(t.FirstURL)+"\\u0022>"+esc(t.Text)+"</a></div>"}' +
-  'if(t.Topics){t.Topics.forEach(function(st){if(st.FirstURL&&st.Text){h+="<div class=result><a href=\\u0022"+esc(st.FirstURL)+"\\u0022>"+esc(st.Text)+"</a></div>"}})' +
-  '})}' +
-  'if(h){s.style.display="none";r.innerHTML=h}else{' +
-  's.innerHTML="No search results for <b>'+esc(query)+'</b>. Try opening in a new tab."}' +
-  '}catch(e){document.getElementById("status").textContent="Search error: "+e.message}}' +
-  '<\/script>' +
-  '<script src="https://api.duckduckgo.com/?q=' + e + '&format=json&callback=cb"><\/script>' +
-  '<script>document.addEventListener("click",function(e){var a=e.target.closest("a");if(a&&a.href&&!a.target){e.preventDefault();parent.postMessage({nav:a.href},"*")}});<\/script>' +
-  '</body></html>';
-}
-
-function htmlEscape(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  // Load DDG API results via JSONP from the PARENT page (not inside the sandboxed iframe)
+  setLoading(true);
+  var script = document.createElement('script');
+  script.src = 'https://api.duckduckgo.com/?q=' + encodeURIComponent(query) + '&format=json&callback=handleDDG';
+  window._ddgQ = query;
+  window._ddgF = iframe;
+  var tmr = setTimeout(function() {
+    if (window.handleDDG) {
+      delete window.handleDDG;
+      delete window._ddgQ;
+      delete window._ddgF;
+      setLoading(false);
+      iframe.srcdoc = buildSearchPage(query, {});
+    }
+  }, 8000);
+  window.handleDDG = function(data) {
+    clearTimeout(tmr);
+    var q = window._ddgQ || query;
+    var f = window._ddgF || iframe;
+    delete window.handleDDG;
+    delete window._ddgQ;
+    delete window._ddgF;
+    setLoading(false);
+    f.srcdoc = buildSearchPage(q, data);
+  };
+  script.onerror = function() {
+    clearTimeout(tmr);
+    if (window.handleDDG) {
+      delete window.handleDDG;
+      delete window._ddgQ;
+      delete window._ddgF;
+      setLoading(false);
+      iframe.srcdoc = buildSearchPage(query, {});
+    }
+  };
+  document.head.appendChild(script);
 }
 
 function goBack() {

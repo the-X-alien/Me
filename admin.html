@@ -316,7 +316,7 @@ document.getElementById('publishBtn').addEventListener('click', async () => {
     const res = await fetch('/api/publish', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, title, date, banner, content, password }),
+      body: JSON.stringify({ action: 'publish', id, title, date, banner, content, password }),
     });
     const data = await res.json();
     if (data.success) {

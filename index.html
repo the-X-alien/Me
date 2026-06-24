@@ -19,15 +19,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Georgia&display=swap" rel="stylesheet">
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
-  }
-}
-</script>
-<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" defer></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -738,7 +731,7 @@ section.content-section{
 <!-- Loading Screen -->
 <div class="loading-screen" id="loadingScreen">
   <div class="loading-ring"></div>
-  <span class="loading-label">Loading</span>
+  <span style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10px;color:#808080;text-transform:uppercase;letter-spacing:.15em">Loading</span>
 </div>
 
 <!-- Custom Cursor -->
@@ -753,7 +746,7 @@ section.content-section{
 <audio id="bgMusic" src="rocky.mp3" loop preload="auto"></audio>
 
 <!-- Hamburger -->
-<div class="hamburger" id="hamburger" aria-label="Open navigation">
+<div class="hamburger" id="hamburger" role="button" tabindex="0" aria-label="Open navigation">
   <span></span><span></span><span></span>
 </div>
 
@@ -1542,58 +1535,67 @@ const sectionObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.3 });
 contentSections.forEach(s => sectionObserver.observe(s));
 
-// === GitHub Projects ===
-(async function loadProjects() {
+// === GitHub Projects (lazy: fetch when section is visible) ===
+function loadProjects() {
   const container = document.getElementById('projects-container');
-  try {
-    const res = await fetch('https://api.github.com/users/the-X-alien/repos?sort=updated&per_page=12');
-    if (!res.ok) throw new Error('GitHub API error');
-    const repos = await res.json();
-    const filtered = repos.filter(r => !r.fork).slice(0, 6);
-    if (filtered.length === 0) {
-      container.innerHTML = '<div class="error-text">No projects yet.</div>';
-      return;
-    }
-    container.innerHTML = filtered.map(repo => `
-      <a href="${repo.html_url}" target="_blank" class="project-card" rel="noopener">
-        <h3>${repo.name}</h3>
-        <p>${repo.description || 'No description available.'}</p>
-        <div class="project-meta">
-          <span>★ ${repo.stargazers_count}</span>
-          <span>${new Date(repo.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</span>
-        </div>
-      </a>
-    `).join('');
-  } catch (err) {
-    container.innerHTML = '<div class="error-text">Could not load projects. Try again later.</div>';
-  }
-})();
+  if (!container || container.dataset.loaded) return;
+  container.dataset.loaded = '1';
+  fetch('https://api.github.com/users/the-X-alien/repos?sort=updated&per_page=12')
+    .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+    .then(repos => {
+      const f = repos.filter(r => !r.fork).slice(0, 6);
+      if (!f.length) { container.innerHTML = '<div class="error-text">No projects yet.</div>'; return; }
+      container.innerHTML = f.map(repo => `
+        <a href="${repo.html_url}" target="_blank" class="project-card" rel="noopener">
+          <h3>${repo.name}</h3>
+          <p>${repo.description || 'No description available.'}</p>
+          <div class="project-meta">
+            <span>★ ${repo.stargazers_count}</span>
+            <span>${new Date(repo.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</span>
+          </div>
+        </a>
+      `).join('');
+    })
+    .catch(() => { container.innerHTML = '<div class="error-text">Could not load projects.</div>'; });
+}
 
-// === Blog Posts ===
-(async function loadPosts() {
+// === Blog Posts (lazy) ===
+function loadPosts() {
   const container = document.getElementById('blog-list');
-  try {
-    const res = await fetch('posts.json');
-    if (!res.ok) throw new Error('Failed to load posts');
-    const posts = await res.json();
-    if (posts.length === 0) {
-      container.innerHTML = '<div class="error-text">No posts yet.</div>';
-      return;
-    }
-    const sorted = [...posts].reverse();
-    container.innerHTML = sorted.slice(0, 3).map(post => `
-      <a href="post.html?id=${encodeURIComponent(post.id)}" class="blog-item">
-        <div class="blog-item-left">
-          <div class="blog-item-title">${post.title}</div>
-          <span class="blog-item-date">${post.date}</span>
-        </div>
-        <span class="blog-item-arrow">→</span>
-      </a>
-    `).join('');
-  } catch (err) {
-    container.innerHTML = '<div class="error-text">Could not load posts.</div>';
-  }
-})();
+  if (!container || container.dataset.loaded) return;
+  container.dataset.loaded = '1';
+  fetch('posts.json')
+    .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+    .then(posts => {
+      if (!posts.length) { container.innerHTML = '<div class="error-text">No posts yet.</div>'; return; }
+      const sorted = [...posts].reverse().slice(0, 3);
+      container.innerHTML = sorted.map(post => `
+        <a href="post.html?id=${encodeURIComponent(post.id)}" class="blog-item">
+          <div class="blog-item-left">
+            <div class="blog-item-title">${post.title}</div>
+            <span class="blog-item-date">${post.date}</span>
+          </div>
+          <span class="blog-item-arrow">→</span>
+        </a>
+      `).join('');
+    })
+    .catch(() => { container.innerHTML = '<div class="error-text">Could not load posts.</div>'; });
+}
+
+// Lazy init via IntersectionObserver
+const lazyObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (!entry.isIntersecting) return;
+    var id = entry.target.id;
+    if (id === 'projects') loadProjects();
+    if (id === 'blog') loadPosts();
+    lazyObs.unobserve(entry.target);
+  });
+}, { threshold: 0.1 });
+var projSec = document.getElementById('projects');
+var blogSec = document.getElementById('blog');
+if (projSec) lazyObs.observe(projSec);
+if (blogSec) lazyObs.observe(blogSec);
 
 // === Konami Code Easter Egg ===
 (function() {

@@ -12,7 +12,8 @@ module.exports = async (req, res) => {
   } catch {
     return res.status(400).send('Invalid URL');
   }
-  // Forward any extra query params (e.g. form submissions)
+
+  // Forward extra query params (form submissions)
   const extra = Object.fromEntries(Object.entries(req.query).filter(([k]) => k !== 'url'));
   const extraStr = new URLSearchParams(extra).toString();
   if (extraStr) targetUrl += (targetUrl.includes('?') ? '&' : '?') + extraStr;
@@ -35,42 +36,46 @@ module.exports = async (req, res) => {
     let body = await resp.text();
     const baseUrl = new URL(targetUrl);
     const proxyBase = '/api/proxy?url=';
-    const proxyEnc = (u) => proxyBase + encodeURIComponent(u);
 
-    // Rewrite <a href>, <form action>, <area href> through proxy
+    // Use full path as base href so relative links resolve correctly (e.g. ?query, ../path)
+    const baseHref = baseUrl.origin + baseUrl.pathname;
+    body = body.replace(/<\/head>/i, `<base href="${baseHref}"></head>`);
+
+    // Rewrite <a href> and <area href> through proxy
     body = body.replace(
       /(<(?:a|area)\s[^>]*href\s*=\s*["'])([^"']+)(["'][^>]*>)/gi,
       (m, pre, url, post) => {
         try {
-          const abs = new URL(url, baseUrl.origin).href;
-          if (abs.startsWith(baseUrl.origin) || abs.startsWith('http')) {
-            return pre + proxyEnc(abs) + post;
+          const abs = new URL(url, baseHref).href;
+          if (abs.startsWith('http')) {
+            return pre + proxyBase + encodeURIComponent(abs) + post;
           }
         } catch {}
         return m;
       }
     );
 
+    // Rewrite forms: put target URL in hidden input instead of action query string.
+    // GET forms REPLACE the action's query string with form fields — so the url param would be lost.
     body = body.replace(
-      /(<form\s[^>]*action\s*=\s*["'])([^"']+)(["'][^>]*>)/gi,
-      (m, pre, url, post) => {
+      /(<form[^>]*?)(?:\saction\s*=\s*["'])([^"']*)(["'])([^>]*>)/gi,
+      (m, before, actionUrl, quote, after) => {
         try {
-          const abs = new URL(url, baseUrl.origin).href;
-          if (abs.startsWith(baseUrl.origin) || abs.startsWith('http')) {
-            return pre + proxyEnc(abs) + post;
+          const abs = new URL(actionUrl, baseHref).href;
+          if (abs.startsWith('http')) {
+            // Convert POST to GET so form data arrives as query params
+            const cleaned = after.replace(/\smethod\s*=\s*["']post["']/gi, ' method="GET"');
+            return `${before} action="/api/proxy"${cleaned}<input type="hidden" name="url" value="${encodeURIComponent(abs)}">`;
           }
         } catch {}
         return m;
       }
     );
 
-    // Inject <base> so relative resources still load
-    body = body.replace('</head>', `<base href="${baseUrl.origin}/"></head>`);
-
-    // Strip content security policy that might block us
+    // Strip CSP meta tags
     body = body.replace(/<meta[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/gi, '');
 
-    // Strip iframes that would fail
+    // Strip iframes/objects
     body = body.replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, '<p style="color:gray;font-style:italic">[iframe blocked]</p>');
     body = body.replace(/<object[^>]*>[\s\S]*?<\/object>/gi, '<p style="color:gray;font-style:italic">[object blocked]</p>');
 

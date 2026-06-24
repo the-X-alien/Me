@@ -42,6 +42,7 @@ a{color:inherit;text-decoration:none}
 .url-input-wrap input::placeholder{color:var(--steel)}
 .go-btn{font-family:var(--font-mono);font-size:var(--text-xs);background:transparent;border:1px solid var(--graphite);border-radius:var(--radius-sm);color:var(--ash);padding:var(--sp-4) var(--sp-12);cursor:pointer;text-transform:uppercase;letter-spacing:.08em;transition:border-color .2s,color .2s;flex-shrink:0}
 .go-btn:hover{border-color:var(--white);color:var(--white)}
+.go-btn:disabled{opacity:.3;cursor:default}
 
 .loading-indicator{height:2px;background:var(--void);flex-shrink:0;transition:height .2s}
 .loading-indicator.active{height:2px;background:linear-gradient(90deg,var(--void),var(--ash),var(--void));background-size:200% 100%;animation:shimmer .8s linear infinite}
@@ -155,36 +156,17 @@ function renderContent() {
     return;
   }
   const iframe = document.createElement('iframe');
-  iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups';
-  area.appendChild(iframe);
-
-  setLoading(true);
-  fetch('/api/proxy?url=' + encodeURIComponent(tab.url))
-    .then(r => r.ok ? r.text() : r.text().then(t => { throw new Error(t) }))
-    .then(html => {
-      iframe.srcdoc = html;
-      setLoading(false);
-      try { iframe.contentDocument.title = tab.url; } catch {}
-      renderTabs();
-    })
-    .catch(err => {
-      iframe.srcdoc = '<div style="padding:24px;font-family:sans-serif;color:#f44336">Proxy error: ' + err.message + '</div>';
-      setLoading(false);
-    });
-
+  iframe.src = '/api/proxy?url=' + encodeURIComponent(tab.url);
+  iframe.sandbox = 'allow-scripts allow-forms allow-popups';
+  iframe.addEventListener('load', () => {
+    setLoading(false);
+    try { tab.title = iframe.contentDocument.title || tab.url; } catch { tab.title = tab.url; }
+    renderTabs();
+  });
   tab.iframe = iframe;
-  const inp = document.getElementById('urlInput');
-  inp.value = tab.url;
+  area.appendChild(iframe);
+  document.getElementById('urlInput').value = tab.url;
   updateNavButtons();
-}
-
-function updateTabTitle(iframe) {
-  const tab = getActiveTab();
-  if (!tab) return;
-  try {
-    tab.title = iframe.contentDocument.title || 'Untitled';
-  } catch { tab.title = tab.url || 'Untitled'; }
-  renderTabs();
 }
 
 // === Navigation ===

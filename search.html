@@ -188,13 +188,6 @@ function setLoading(on) {
   document.getElementById('loadingIndicator').className = 'loading-indicator' + (on ? ' active' : '');
 }
 
-function isUrl(input) {
-  if (input.startsWith('https://') || input.startsWith('http://')) return true;
-  if (input.startsWith('//')) return true;
-  if (/^[\w-]+\.\w+/.test(input)) return true;
-  return false;
-}
-
 function processUrl(input) {
   const trimmed = input.trim();
   if (!trimmed) return '';

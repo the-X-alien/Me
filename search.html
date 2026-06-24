@@ -155,19 +155,42 @@ function renderContent() {
     area.appendChild(start);
     return;
   }
+  setLoading(true);
   const iframe = document.createElement('iframe');
-  iframe.src = '/api/proxy?url=' + encodeURIComponent(tab.url);
   iframe.sandbox = 'allow-scripts allow-forms allow-popups';
-  iframe.addEventListener('load', () => {
-    setLoading(false);
-    try { tab.title = iframe.contentDocument.title || tab.url; } catch { tab.title = tab.url; }
-    renderTabs();
-  });
   tab.iframe = iframe;
+  tab._title = tab.url;
   area.appendChild(iframe);
   document.getElementById('urlInput').value = tab.url;
   updateNavButtons();
+
+  fetch('/api/proxy?url=' + encodeURIComponent(tab.url))
+    .then(r => {
+      if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
+      return r.text();
+    })
+    .then(html => {
+      iframe.srcdoc = html;
+      setLoading(false);
+      // Extract title from the proxied page's <title> tag
+      var m = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+      tab._title = m ? m[1].trim() : tab.url;
+      tab.title = tab._title;
+      renderTabs();
+    })
+    .catch(err => {
+      setLoading(false);
+      iframe.srcdoc = '<div style="padding:24px;font-family:sans-serif;color:#f44336;background:#111">' +
+        '<h2>Proxy error</h2><p style="color:#999">' + err.message + '</p></div>';
+    });
 }
+
+// Listen for navigation requests from the proxied srcdoc iframe
+window.addEventListener('message', function(e) {
+  if (e.data && e.data.nav) {
+    navigateTab(activeTabId, e.data.nav);
+  }
+});
 
 // === Navigation ===
 function navigateTab(id, url) {
@@ -190,26 +213,89 @@ function setLoading(on) {
 
 function processUrl(input) {
   const trimmed = input.trim();
-  if (!trimmed) return '';
+  if (!trimmed) return null;
   if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) return trimmed;
   if (trimmed.startsWith('//')) return 'https:' + trimmed;
   if (/^[\w-]+\.\w+/.test(trimmed)) return 'https://' + trimmed;
-  return ''; // search query
+  return null; // search query
 }
 
 function go() {
   const inp = document.getElementById('urlInput');
   const val = inp.value.trim();
   if (!val) return;
-  const processed = processUrl(val);
-  if (!processed) {
-    // Search query — open in popout (proxy can't serve search engines)
-    window.open('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(val), '_blank');
+  const url = processUrl(val);
+  const tabId = activeTabId || createTab('');
+  if (url) {
+    navigateTab(tabId, url);
   } else {
-    if (!activeTabId) createTab(processed);
-    else navigateTab(activeTabId, processed);
+    doSearch(tabId, val);
   }
   inp.blur();
+}
+
+// Render search results client-side using DDG Instant Answer API (JSONP)
+function doSearch(tabId, query) {
+  const tab = tabs.find(t => t.id === tabId);
+  if (!tab) return;
+  tab.url = query;
+  tab.title = 'Search: ' + query.slice(0, 20);
+  if (tab.historyIdx < tab.history.length - 1) tab.history = tab.history.slice(0, tab.historyIdx + 1);
+  tab.history.push(query);
+  tab.historyIdx = tab.history.length - 1;
+  setLoading(true);
+  renderTabs();
+
+  const area = document.getElementById('contentArea');
+  area.innerHTML = '';
+  const iframe = document.createElement('iframe');
+  iframe.sandbox = 'allow-scripts allow-forms allow-popups';
+  area.appendChild(iframe);
+  tab.iframe = iframe;
+  document.getElementById('urlInput').value = query;
+  updateNavButtons();
+
+  setLoading(false);
+  iframe.srcdoc = buildSearchPage(query);
+}
+
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+
+function buildSearchPage(query) {
+  var e = encodeURIComponent(query);
+  return '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">' +
+  '<style>body{font-family:Arial,sans-serif;background:#f5f5f5;margin:0;padding:16px;color:#222}' +
+  'h1{font-size:18px;color:#333;margin:0 0 12px}' +
+  '.result{padding:10px 12px;margin:0 0 8px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.1)}' +
+  '.result a{color:#1a0dab;text-decoration:none;font-size:14px;display:block}' +
+  '.result a:hover{text-decoration:underline}' +
+  '.result .snippet{font-size:12px;color:#545454;margin:4px 0 0}' +
+  '.result .url{font-size:11px;color:#006621;margin:2px 0 0}' +
+  '.info{text-align:center;padding:40px 16px;color:#888;font-size:13px}' +
+  '</style></head><body>' +
+  '<h1>' + esc(query) + '</h1>' +
+  '<div class=info id=status>Searching...</div>' +
+  '<div id=results></div>' +
+  '<script>function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\u0022/g,"&quot;")}' +
+  'function cb(d){try{' +
+  'var h="",s=document.getElementById("status"),r=document.getElementById("results");' +
+  'if(d.Abstract&&d.AbstractURL){h+="<div class=result><a href=\\u0022"+esc(d.AbstractURL)+"\\u0022>"+esc(d.Heading||"")+"<div class=url>"+esc(d.AbstractURL)+"</div><div class=snippet>"+esc(d.AbstractText)+"</div></a></div>"}' +
+  'if(d.Answer&&d.AnswerType){h+="<div class=result><b>Answer:</b> "+esc(d.Answer)+"</div>"}' +
+  'if(d.RelatedTopics&&d.RelatedTopics.length){d.RelatedTopics.forEach(function(t){' +
+  'if(t.FirstURL&&t.Text){h+="<div class=result><a href=\\u0022"+esc(t.FirstURL)+"\\u0022>"+esc(t.Text)+"</a></div>"}' +
+  'if(t.Topics){t.Topics.forEach(function(st){if(st.FirstURL&&st.Text){h+="<div class=result><a href=\\u0022"+esc(st.FirstURL)+"\\u0022>"+esc(st.Text)+"</a></div>"}})' +
+  '})}' +
+  'if(h){s.style.display="none";r.innerHTML=h}else{' +
+  's.innerHTML="No search results for <b>'+esc(query)+'</b>. Try opening in a new tab."}' +
+  '}catch(e){document.getElementById("status").textContent="Search error: "+e.message}}' +
+  '<\/script>' +
+  '<script src="https://api.duckduckgo.com/?q=' + e + '&format=json&callback=cb"><\/script>' +
+  '<script>document.addEventListener("click",function(e){var a=e.target.closest("a");if(a&&a.href&&!a.target){e.preventDefault();parent.postMessage({nav:a.href},"*")}});<\/script>' +
+  '</body></html>';
+}
+
+function htmlEscape(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function goBack() {

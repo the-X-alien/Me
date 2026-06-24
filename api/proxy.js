@@ -90,6 +90,13 @@ module.exports = async (req, res) => {
     body = body.replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, '<p style="color:gray;font-style:italic">[iframe blocked]</p>');
     body = body.replace(/<object[^>]*>[\s\S]*?<\/object>/gi, '<p style="color:gray;font-style:italic">[object blocked]</p>');
 
+    // Inject navigation script so users can click links / submit forms inside the srcdoc iframe
+    const navScript = `<script>
+document.addEventListener('click',function(e){var a=e.target.closest('a');if(a&&a.href&&!a.target){e.preventDefault();parent.postMessage({nav:a.href},'*')}});
+document.addEventListener('submit',function(e){e.preventDefault();var f=e.target,u=f.action||location.href,d=new FormData(f),q=new URLSearchParams(d).toString();if(q)u+=(u.includes('?')?'&':'?')+q;parent.postMessage({nav:u},'*')});
+<\/script>`;
+    body = body.replace('</body>', navScript + '</body>');
+
     res.setHeader('Content-Type', contentType);
     res.setHeader('X-Frame-Options', 'SAMEORIGIN');
     res.status(200).send(body);

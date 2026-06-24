@@ -76,6 +76,7 @@ a{color:inherit;text-decoration:none}
     <input type="text" id="urlInput" placeholder="Search or enter URL..." spellcheck="false" autocomplete="off">
   </div>
   <button class="go-btn" id="goBtn">Go</button>
+  <button class="go-btn" id="popoutBtn" title="Open in new tab" style="font-size:14px;padding:var(--sp-4) var(--sp-8)">&#x2197;</button>
 </div>
 
 <div class="loading-indicator" id="loadingIndicator"></div>
@@ -154,7 +155,7 @@ function renderContent() {
     return;
   }
   const iframe = document.createElement('iframe');
-  iframe.src = tab.url;
+  iframe.src = '/api/proxy?url=' + encodeURIComponent(tab.url);
   iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups';
   iframe.addEventListener('load', () => { setLoading(false); updateTabTitle(iframe); });
   tab.iframe = iframe;
@@ -247,6 +248,10 @@ document.getElementById('urlInput').addEventListener('keydown', (e) => {
 
 // === Event Listeners ===
 document.getElementById('goBtn').addEventListener('click', go);
+document.getElementById('popoutBtn').addEventListener('click', () => {
+  const tab = getActiveTab();
+  if (tab && tab.url) window.open(tab.url, '_blank');
+});
 document.getElementById('backBtn').addEventListener('click', goBack);
 document.getElementById('fwdBtn').addEventListener('click', goForward);
 document.getElementById('refreshBtn').addEventListener('click', refresh);

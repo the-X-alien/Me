@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
     const t = raw.trim();
     if (/^https?:\/\//i.test(t)) targetUrl = t;
     else if (/^[\w-]+\.[a-z]{2,}/i.test(t)) targetUrl = 'https://' + t;
-    else targetUrl = 'https://lite.duckduckgo.com/lite/?q=' + encodeURIComponent(t);
+    else targetUrl = 'https://html.duckduckgo.com/html/?q=' + encodeURIComponent(t);
     new URL(targetUrl);
   } catch {
     return res.status(400).send('Invalid URL');

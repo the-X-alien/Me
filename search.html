@@ -193,7 +193,7 @@ function processUrl(input) {
   if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) return trimmed;
   if (trimmed.startsWith('//')) return 'https:' + trimmed;
   if (/^[\w-]+\.\w+/.test(trimmed)) return 'https://' + trimmed;
-  return 'https://lite.duckduckgo.com/lite/?q=' + encodeURIComponent(trimmed);
+  return 'https://html.duckduckgo.com/html/?q=' + encodeURIComponent(trimmed);
 }
 
 function go() {

@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
     const t = raw.trim();
     if (/^https?:\/\//i.test(t)) targetUrl = t;
     else if (/^[\w-]+\.[a-z]{2,}/i.test(t)) targetUrl = 'https://' + t;
-    else targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(t);
+    else targetUrl = 'https://lite.duckduckgo.com/lite/?q=' + encodeURIComponent(t);
     new URL(targetUrl);
   } catch {
     return res.status(400).send('Invalid URL');
@@ -22,8 +22,14 @@ module.exports = async (req, res) => {
     const resp = await fetch(targetUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Sec-Fetch-User': '?1',
+        'Upgrade-Insecure-Requests': '1',
+        'Cache-Control': 'max-age=0',
       },
       redirect: 'follow',
     });
@@ -39,7 +45,12 @@ module.exports = async (req, res) => {
 
     // Use full path as base href so relative links resolve correctly (e.g. ?query, ../path)
     const baseHref = baseUrl.origin + baseUrl.pathname;
-    body = body.replace(/<\/head>/i, `<base href="${baseHref}"></head>`);
+
+    // Remove any existing <base> tags — only the first <base> in <head> is honored
+    body = body.replace(/<base[^>]*>/gi, '');
+
+    // Inject ours right after <head> so it wins
+    body = body.replace(/<head[^>]*>/i, (match) => match + `<base href="${baseHref}">`);
 
     // Rewrite <a href> and <area href> through proxy
     body = body.replace(

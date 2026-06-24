@@ -72,13 +72,14 @@
     <a href="https://github.com/the-X-alien" target="_blank" class="contact-link">GitHub</a>
     <a href="https://www.linkedin.com/in/dhiaan" target="_blank" class="contact-link">LinkedIn</a>
   </div>
-  <form class="contact-form" action="https://formspree.io/f/mblkejvj" method="POST">
+  <form class="contact-form" action="https://formspree.io/f/mblkejvj" method="POST"
+    toolname="sendContactMessage" tooldescription="Send a contact message to Dhiaan Dave. Accepts: name (full name, text), email (email address), message (free text). Returns: confirmation of delivery.">
     <label for="name">Name</label>
-    <input type="text" id="name" name="name" required placeholder="Your name">
+    <input type="text" id="name" name="name" required placeholder="Your name" toolparamdescription="Your full name">
     <label for="email">Email</label>
-    <input type="email" id="email" name="email" required placeholder="your@email.com">
+    <input type="email" id="email" name="email" required placeholder="your@email.com" toolparamdescription="Your email address">
     <label for="message">Message</label>
-    <textarea id="message" name="message" required placeholder="What's on your mind?"></textarea>
+    <textarea id="message" name="message" required placeholder="What's on your mind?" toolparamdescription="Your message content"></textarea>
     <button type="submit">Send</button>
     <p id="form-status" style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-graphite);margin-top:var(--sp-12);display:none"></p>
   </form>

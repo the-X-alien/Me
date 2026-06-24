@@ -1,0 +1,14 @@
+# Dhiaan Dave — Portfolio
+
+Personal portfolio and project hub for Dhiaan Dave: student, builder, Cove Hacks (Lead of Logistics & Ops), Telos Tutoring (Co-Founder).
+
+## Quick links
+
+- [Homepage](https://dhiaandave.vercel.app/)
+- [Blog](https://dhiaandave.vercel.app/blog.html)
+- [Projects](https://dhiaandave.vercel.app/projects.html)
+- [URL Browser](https://dhiaandave.vercel.app/search.html)
+
+## LLM Extras
+
+- [WebMCP tool schemas — contact form](https://dhiaandave.vercel.app/): form with `toolname="sendContactMessage"` on / and /contact, accepts name, email, message, POSTs to Formspree.

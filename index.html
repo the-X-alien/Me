@@ -18,7 +18,9 @@
 <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Georgia&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Georgia&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Georgia&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Georgia&display=swap" rel="stylesheet"></noscript>
 <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" defer></script>
 <style>
@@ -94,12 +96,13 @@ a{color:inherit;text-decoration:none}
 @keyframes navFadeIn{to{opacity:1;transform:translateY(0)}}
 
 /* === Label Tag === */
-.label-tag{
+.label-tag,h2.label-tag{
   font-family:var(--font-mono);font-size:var(--text-xs);
   font-weight:400;text-transform:uppercase;
   letter-spacing:.05em;color:var(--color-ash);
   display:inline-block;
 }
+h2.label-tag{margin:0}
 
 /* === Hero Section === */
 #hero{
@@ -657,6 +660,13 @@ section.content-section{
 :root.light-mode .faq-answer{background:var(--color-surface)}
 :root.light-mode .toggle-btn{background:rgba(255,255,255,.85)}
 </style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
@@ -733,6 +743,7 @@ section.content-section{
   <div class="loading-ring"></div>
   <span style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10px;color:#808080;text-transform:uppercase;letter-spacing:.15em">Loading</span>
 </div>
+<script>setTimeout(function(){var ls=document.getElementById('loadingScreen');if(ls)ls.classList.add('hidden')},300)</script>
 
 <!-- Custom Cursor -->
 <div class="custom-cursor" id="customCursor"></div>
@@ -833,7 +844,7 @@ section.content-section{
   <div class="section-inner">
     <div class="section-header fade-in">
       <span class="label-tag">01</span>
-      <span class="label-tag">About</span>
+      <h2 class="label-tag">About</h2>
     </div>
     <div class="about-bento">
       <div class="bento-card bento-wide fade-in">
@@ -872,7 +883,7 @@ section.content-section{
   <div class="section-inner">
     <div class="section-header fade-in">
       <span class="label-tag">02</span>
-      <span class="label-tag">Projects</span>
+      <h2 class="label-tag">Projects</h2>
     </div>
     <div id="projects-container" class="projects-grid fade-in">
       <div class="loading-text">Loading projects...</div>
@@ -885,7 +896,7 @@ section.content-section{
   <div class="section-inner">
     <div class="section-header fade-in">
       <span class="label-tag">03</span>
-      <span class="label-tag">Toolkit</span>
+      <h2 class="label-tag">Toolkit</h2>
     </div>
     <div class="skills-ribbon-wrap fade-in">
       <div class="skills-ribbon" id="skillsRibbon">
@@ -901,7 +912,7 @@ section.content-section{
   <div class="section-inner">
     <div class="section-header fade-in">
       <span class="label-tag">&#x25C8;</span>
-      <span class="label-tag">Proficiency</span>
+      <h2 class="label-tag">Proficiency</h2>
     </div>
     <div class="radar-wrap fade-in">
       <svg id="radar-svg"></svg>
@@ -916,7 +927,7 @@ section.content-section{
   <div class="section-inner">
     <div class="section-header fade-in">
       <span class="label-tag">04</span>
-      <span class="label-tag">Writing</span>
+      <h2 class="label-tag">Writing</h2>
     </div>
     <div id="blog-list" class="blog-list fade-in">
       <div class="loading-text">Loading posts...</div>
@@ -932,7 +943,7 @@ section.content-section{
   <div class="section-inner">
     <div class="section-header fade-in">
       <span class="label-tag">05</span>
-      <span class="label-tag">Contact</span>
+      <h2 class="label-tag">Contact</h2>
     </div>
     <div class="contact-links fade-in">
       <a href="mailto:dhiaan.n.d@gmail.com" class="contact-link">Email</a>
@@ -958,7 +969,7 @@ section.content-section{
   <div class="section-inner">
     <div class="section-header fade-in">
       <span class="label-tag">06</span>
-      <span class="label-tag">FAQ</span>
+      <h2 class="label-tag">FAQ</h2>
     </div>
     <div class="faq-list fade-in" id="faqList">
       <div class="faq-item">
@@ -1401,9 +1412,6 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-// === Hide Loading Screen ===
-setTimeout(() => document.getElementById('loadingScreen').classList.add('hidden'), 600);
 
 // === Custom Cursor ===
 const cursor = document.getElementById('customCursor');

@@ -28,7 +28,7 @@
   border-color:var(--color-white);
   transform:translateY(-2px);
 }
-.project-card h3{
+.project-card h3,.project-title{
   font-family:var(--font-mono);font-size:var(--text-sm);
   font-weight:700;text-transform:uppercase;
   letter-spacing:.03em;color:var(--color-white);
@@ -93,7 +93,7 @@
     }
     container.innerHTML = filtered.map(repo => `
       <a href="${repo.html_url}" target="_blank" class="project-card" rel="noopener">
-        <h3>${repo.name}</h3>
+        <h2 class="project-title">${repo.name}</h2>
         <p>${repo.description || 'No description available.'}</p>
         <div class="project-meta">
           <span>★ ${repo.stargazers_count}</span>

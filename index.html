@@ -1800,11 +1800,8 @@ if (form) {
 (function(){
   const btn = document.getElementById('soundToggle');
   const audio = document.getElementById('bgMusic');
-  audio.volume = 0.04;
-  const saved = localStorage.getItem('sound');
-  if (saved === 'on') {
+  if (localStorage.getItem('sound') === 'on') {
     btn.classList.add('active');
-    audio.play().catch(() => {});
   }
   btn.addEventListener('click', () => {
     btn.classList.toggle('active');
@@ -1819,5 +1816,6 @@ if (form) {
   });
 })();
 </script>
+<script src="bgmusic.js"></script>
 </body>
 </html>

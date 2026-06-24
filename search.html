@@ -155,22 +155,24 @@ function renderContent() {
     return;
   }
   const iframe = document.createElement('iframe');
-  iframe.src = '/api/proxy?url=' + encodeURIComponent(tab.url);
   iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups';
-  iframe.addEventListener('load', () => {
-    setLoading(false);
-    updateTabTitle(iframe);
-    try {
-      if (iframe.contentDocument.body && iframe.contentDocument.body.textContent.trim().startsWith('Proxy error')) {
-        iframe.style.border = '1px solid #f44336';
-      } else {
-        iframe.style.border = 'none';
-      }
-    } catch {}
-  });
-  iframe.addEventListener('error', () => { setLoading(false); });
-  tab.iframe = iframe;
   area.appendChild(iframe);
+
+  setLoading(true);
+  fetch('/api/proxy?url=' + encodeURIComponent(tab.url))
+    .then(r => r.ok ? r.text() : r.text().then(t => { throw new Error(t) }))
+    .then(html => {
+      iframe.srcdoc = html;
+      setLoading(false);
+      try { iframe.contentDocument.title = tab.url; } catch {}
+      renderTabs();
+    })
+    .catch(err => {
+      iframe.srcdoc = '<div style="padding:24px;font-family:sans-serif;color:#f44336">Proxy error: ' + err.message + '</div>';
+      setLoading(false);
+    });
+
+  tab.iframe = iframe;
   const inp = document.getElementById('urlInput');
   inp.value = tab.url;
   updateNavButtons();

@@ -71,6 +71,7 @@ module.exports = async (req, res) => {
     body = body.replace(/<object[^>]*>[\s\S]*?<\/object>/gi, '<p style="color:gray;font-style:italic">[object blocked]</p>');
 
     res.setHeader('Content-Type', contentType);
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
     res.status(200).send(body);
   } catch (err) {
     res.status(502).send('Proxy error: ' + err.message);

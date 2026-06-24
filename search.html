@@ -174,6 +174,7 @@ function navigateTab(id, url) {
   const tab = tabs.find(t => t.id === id);
   if (!tab) return;
   const processed = processUrl(url);
+  if (!processed) return;
   tab.url = processed;
   if (tab.historyIdx < tab.history.length - 1) tab.history = tab.history.slice(0, tab.historyIdx + 1);
   tab.history.push(processed);
@@ -187,21 +188,34 @@ function setLoading(on) {
   document.getElementById('loadingIndicator').className = 'loading-indicator' + (on ? ' active' : '');
 }
 
+function isUrl(input) {
+  if (input.startsWith('https://') || input.startsWith('http://')) return true;
+  if (input.startsWith('//')) return true;
+  if (/^[\w-]+\.\w+/.test(input)) return true;
+  return false;
+}
+
 function processUrl(input) {
   const trimmed = input.trim();
   if (!trimmed) return '';
   if (trimmed.startsWith('https://') || trimmed.startsWith('http://')) return trimmed;
   if (trimmed.startsWith('//')) return 'https:' + trimmed;
   if (/^[\w-]+\.\w+/.test(trimmed)) return 'https://' + trimmed;
-  return 'https://html.duckduckgo.com/html/?q=' + encodeURIComponent(trimmed);
+  return ''; // search query
 }
 
 function go() {
   const inp = document.getElementById('urlInput');
   const val = inp.value.trim();
   if (!val) return;
-  if (!activeTabId) createTab(val);
-  else navigateTab(activeTabId, val);
+  const processed = processUrl(val);
+  if (!processed) {
+    // Search query — open in popout (proxy can't serve search engines)
+    window.open('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(val), '_blank');
+  } else {
+    if (!activeTabId) createTab(processed);
+    else navigateTab(activeTabId, processed);
+  }
   inp.blur();
 }
 

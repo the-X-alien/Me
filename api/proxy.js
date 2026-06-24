@@ -12,6 +12,10 @@ module.exports = async (req, res) => {
   } catch {
     return res.status(400).send('Invalid URL');
   }
+  // Forward any extra query params (e.g. form submissions)
+  const extra = Object.fromEntries(Object.entries(req.query).filter(([k]) => k !== 'url'));
+  const extraStr = new URLSearchParams(extra).toString();
+  if (extraStr) targetUrl += (targetUrl.includes('?') ? '&' : '?') + extraStr;
 
   try {
     const resp = await fetch(targetUrl, {

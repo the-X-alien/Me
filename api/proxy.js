@@ -31,6 +31,28 @@ module.exports = async (req, res) => {
   const proxyOrigin = proto + '://' + String(host).split(',')[0].trim();
   const proxyBase = proxyOrigin + '/api/proxy?url=';
 
+  // Raw HTML attribute values are entity-escaped (&amp; etc.). Decode before
+  // parsing as a URL, or rewritten links keep a literal "&amp;" and the target
+  // sees mangled query params (e.g. Bing redirect links lose their u param).
+  const unescapeAttr = (s) => s.replace(/&(amp|lt|gt|quot|#0?39|#x27);/gi,
+    (m, e) => ({ amp: '&', lt: '<', gt: '>', quot: '"', '#39': "'", '#039': "'", '#x27': "'" }[e.toLowerCase()] || m));
+
+  // Bing wraps result links in a JS redirect page (/ck/a?...&u=a1<base64url>) that
+  // cannot complete inside the sandboxed iframe. Unwrap to the real destination.
+  const unwrapRedirect = (abs) => {
+    try {
+      const u = new URL(abs);
+      if (/^(www\.)?bing\.com$/i.test(u.hostname) && u.pathname.startsWith('/ck/')) {
+        const enc = u.searchParams.get('u');
+        if (enc && enc.startsWith('a1')) {
+          const dest = Buffer.from(enc.slice(2).replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf8');
+          if (/^https?:\/\//i.test(dest)) return dest;
+        }
+      }
+    } catch {}
+    return abs;
+  };
+
   try {
     const resp = await fetch(targetUrl, {
       headers: {
@@ -112,7 +134,7 @@ document.documentElement.appendChild(st);
       (m, pre, url, post) => {
         if (url.startsWith('#')) return m; // in-page anchor: leave alone
         try {
-          const abs = new URL(url, baseHref).href;
+          const abs = unwrapRedirect(new URL(unescapeAttr(url), baseHref).href);
           if (abs.startsWith('http')) {
             return pre + proxyBase + encodeURIComponent(abs) + post;
           }
@@ -127,7 +149,7 @@ document.documentElement.appendChild(st);
       /(<form[^>]*?)(?:\saction\s*=\s*["'])([^"']*)(["'])([^>]*>)/gi,
       (m, before, actionUrl, quote, after) => {
         try {
-          const abs = new URL(actionUrl, baseHref).href;
+          const abs = new URL(unescapeAttr(actionUrl), baseHref).href;
           if (abs.startsWith('http')) {
             // Convert POST to GET so form data arrives as query params.
             // Store the RAW url (HTML-escaped only): FormData.get('url') returns the

@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
     const t = raw.trim();
     if (/^https?:\/\//i.test(t)) targetUrl = t;
     else if (/^[\w-]+\.[a-z]{2,}/i.test(t)) targetUrl = 'https://' + t;
-    else targetUrl = 'https://html.duckduckgo.com/html/?q=' + encodeURIComponent(t);
+    else targetUrl = 'https://www.bing.com/search?q=' + encodeURIComponent(t);
     new URL(targetUrl);
   } catch {
     return res.status(400).send('Invalid URL');
@@ -129,9 +129,14 @@ document.documentElement.appendChild(st);
         try {
           const abs = new URL(actionUrl, baseHref).href;
           if (abs.startsWith('http')) {
-            // Convert POST to GET so form data arrives as query params
+            // Convert POST to GET so form data arrives as query params.
+            // Store the RAW url (HTML-escaped only): FormData.get('url') returns the
+            // attribute value verbatim, and a native GET submission URL-encodes it
+            // for us. encodeURIComponent here double-encodes it in both paths, so
+            // the proxy / app no longer recognize it as a URL and fall to web search.
+            const attr = abs.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
             const cleaned = after.replace(/\smethod\s*=\s*["']post["']/gi, ' method="GET"');
-            return `${before} action="${proxyOrigin}/api/proxy"${cleaned}<input type="hidden" name="url" value="${encodeURIComponent(abs)}">`;
+            return `${before} action="${proxyOrigin}/api/proxy"${cleaned}<input type="hidden" name="url" value="${attr}">`;
           }
         } catch {}
         return m;
@@ -151,7 +156,7 @@ document.documentElement.appendChild(st);
     const navScript = `<script>
 function realUrl(h){try{var u=new URL(h);if(u.pathname==='/api/proxy'){var v=u.searchParams.get('url');if(v)return v}}catch(e){}return h}
 document.addEventListener('click',function(e){var a=e.target.closest('a');if(a&&a.href&&/^https?:/i.test(a.href)){e.preventDefault();parent.postMessage({nav:realUrl(a.href),newtab:a.target==='_blank'||e.ctrlKey||e.metaKey},'*')}});
-document.addEventListener('submit',function(e){e.preventDefault();var f=e.target,d=new FormData(f),u=f.action||'';try{var a=new URL(u);if(a.pathname==='/api/proxy'){var t=d.get('url');if(t){u=t;d.delete('url')}}}catch(err){}var q=new URLSearchParams(d).toString();if(q)u+=(u.includes('?')?'&':'?')+q;parent.postMessage({nav:u},'*')});
+document.addEventListener('submit',function(e){e.preventDefault();var f=e.target,d=new FormData(f),u=f.action||'';try{var a=new URL(u);if(a.pathname==='/api/proxy'){var t=d.get('url');if(t){if(/^https?%3A%2F%2F/i.test(t))try{t=decodeURIComponent(t)}catch(e){}u=t;d.delete('url')}}}catch(err){}var q=new URLSearchParams(d).toString();if(q)u+=(u.includes('?')?'&':'?')+q;parent.postMessage({nav:u},'*')});
 <\/script>`;
     body = body.replace('</body>', navScript + '</body>');
 

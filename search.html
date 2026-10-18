@@ -194,7 +194,7 @@ function processUrl(input) {
   if (/^https?:\/\//i.test(v)) return v;
   if (v.indexOf('//') === 0) return 'https:' + v;
   if (/^[\w-]+(\.[\w-]+)+(:\d+)?(\/|$|\?)/.test(v) && v.indexOf(' ') < 0) return 'https://' + v;
-  return 'https://html.duckduckgo.com/html/?q=' + encodeURIComponent(v);
+  return 'https://www.bing.com/search?q=' + encodeURIComponent(v);
 }
 function navigate(id, input, noPush) {
   var t = tabs.find(function (x) { return x.id === id; });

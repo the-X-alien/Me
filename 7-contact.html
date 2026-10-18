@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Dhiaan Dave</title>
+<meta name="description" content="Get in touch with Dhiaan Dave — email, LinkedIn, GitHub, Devpost, or use the contact form. Open to collaboration and internship opportunities.">
+<meta name="author" content="Dhiaan Dave">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Georgia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.contact-links{display:flex;flex-wrap:wrap;gap:var(--sp-16);margin-bottom:var(--sp-40)}
+.contact-link{
+  display:flex;align-items:center;gap:var(--sp-8);
+  font-family:var(--font-mono);font-size:var(--text-base);
+  color:var(--color-ash);
+  border:1px solid var(--color-graphite);
+  border-radius:var(--radius-sm);
+  padding:var(--sp-8) var(--sp-16);
+  transition:border-color .2s ease,color .2s ease;
+}
+.contact-link:hover{border-color:var(--color-white);color:var(--color-white)}
+.contact-form{max-width:480px}
+.contact-form label{
+  display:block;font-family:var(--font-mono);font-size:var(--text-xs);
+  text-transform:uppercase;letter-spacing:.1em;
+  color:var(--color-graphite);margin-bottom:var(--sp-6);
+}
+.contact-form input,.contact-form textarea{
+  width:100%;background:transparent;
+  border:1px solid var(--color-graphite);border-radius:var(--radius-sm);
+  padding:var(--sp-12) var(--sp-14);
+  font-family:var(--font-serif);font-size:var(--text-lg);
+  color:var(--color-white);outline:none;
+  transition:border-color .2s ease;margin-bottom:var(--sp-16);
+}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--color-white)}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:var(--color-steel)}
+.contact-form textarea{resize:vertical;min-height:120px}
+.contact-form button{
+  font-family:var(--font-mono);font-size:var(--text-sm);
+  text-transform:uppercase;letter-spacing:.08em;
+  color:var(--color-white);background:var(--color-violet);
+  border:1px solid var(--color-violet);border-radius:var(--radius-sm);
+  padding:var(--sp-10) var(--sp-24);cursor:pointer;
+  transition:opacity .2s ease;
+}
+.contact-form button:hover{opacity:.85}
+</style>
+</head>
+<body>
+<nav class="page-nav">
+  <a href="index.html" class="nav-logo">Dhiaan Dave</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Writing</a>
+    <a href="projects.html">Projects</a>
+  </div>
+</nav>
+
+<main class="page-main">
+  <div style="margin-bottom:var(--sp-48)">
+    <span class="label-tag" style="margin-bottom:var(--sp-12);display:block;letter-spacing:.15em">05 · Contact</span>
+    <h1 class="page-title">Get in Touch</h1>
+    <p class="page-subtitle">Have an idea, a question, or just want to say hi? Reach out anytime.</p>
+  </div>
+  <div class="contact-links">
+    <a href="mailto:dhiaan.n.d@gmail.com" class="contact-link">Email</a>
+    <a href="https://github.com/the-X-alien" target="_blank" class="contact-link">GitHub</a>
+    <a href="https://www.linkedin.com/in/dhiaan" target="_blank" class="contact-link">LinkedIn</a>
+  </div>
+  <form class="contact-form" action="https://formspree.io/f/mblkejvj" method="POST"
+    toolname="sendContactMessage" tooldescription="Send a contact message to Dhiaan Dave. Accepts: name (full name, text), email (email address), message (free text). Returns: confirmation of delivery.">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required placeholder="Your name" toolparamdescription="Your full name">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required placeholder="your@email.com" toolparamdescription="Your email address">
+    <label for="message">Message</label>
+    <textarea id="message" name="message" required placeholder="What's on your mind?" toolparamdescription="Your message content"></textarea>
+    <button type="submit">Send</button>
+    <p id="form-status" style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-graphite);margin-top:var(--sp-12);display:none"></p>
+  </form>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>&copy; 2026 Dhiaan Dave</span>
+    <div class="footer-links">
+      <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const form = document.querySelector('.contact-form');
+const status = document.getElementById('form-status');
+if (form) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    status.style.display = 'block';
+    status.textContent = 'Sending...';
+    const data = new FormData(form);
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+      if (res.ok) {
+        status.textContent = 'Message sent. Thank you.';
+        form.reset();
+      } else throw new Error();
+    } catch {
+      status.textContent = 'Something went wrong. Try emailing directly.';
+    }
+  });
+}
+</script>
+</body>
+</html>

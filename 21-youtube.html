@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Videos — Dhiaan Dave</title>
+<meta name="description" content="Dhiaan Dave's YouTube channel — latest videos, builds, and projects. Auto-playing most recent upload from the channel.">
+<meta name="author" content="Dhiaan Dave">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&family=Georgia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.video-page{min-height:100vh;display:flex;flex-direction:column}
+.video-main{flex:1;padding:var(--sp-96) var(--sp-24) var(--sp-48);max-width:800px;margin:0 auto;width:100%}
+@media(max-width:640px){.video-main{padding:var(--sp-80) var(--sp-16) var(--sp-32)}}
+.video-card{background:var(--color-card);border:1px solid var(--color-graphite);border-radius:var(--radius-sm);padding:var(--sp-20)}
+.video-card h3{font-family:var(--font-mono);font-size:var(--text-sm);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:var(--sp-4);color:var(--color-white)}
+.video-card .channel{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-steel);margin-bottom:var(--sp-16);display:block}
+.video-card iframe{width:100%;aspect-ratio:16/9;border:none;border-radius:4px}
+</style>
+</head>
+<body class="video-page">
+<nav class="page-nav">
+  <a href="index.html" class="nav-logo">Dhiaan Dave</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Writing</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<main class="video-main">
+  <span class="label-tag" style="display:block;margin-bottom:var(--sp-12);letter-spacing:.15em">Video</span>
+  <h1 class="page-title">My Channel</h1>
+  <p class="page-subtitle">Tech content, builds, and experiments.</p>
+
+  <div class="video-card">
+    <h3>Latest Video</h3>
+    <span class="channel">@I1Do1Stuff</span>
+    <iframe id="ytFrame" src="https://www.youtube.com/embed/yfjJfKQ7xHE" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+</main>
+
+<footer class="site-footer" style="border-top:none">
+  <div class="footer-inner">
+    <span>Content made with care</span>
+    <div class="footer-links">
+      <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+<script>
+(async function loadLatestVideo() {
+  try {
+    const res = await fetch('https://www.youtube.com/feeds/videos.xml?channel_id=UCKmwYbf9sdPxwqYgqKFL5iw');
+    if (!res.ok) throw new Error();
+    const text = await res.text();
+    const match = text.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+    if (match && match[1]) {
+      document.getElementById('ytFrame').src = 'https://www.youtube.com/embed/' + match[1];
+    }
+  } catch {}
+})();
+</script>
+</body>
+</html>

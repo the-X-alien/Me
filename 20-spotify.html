@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music — Dhiaan Dave</title>
+<meta name="description" content="Dhiaan Dave's top Spotify tracks and playlists — embedded player showing recently played music and listening habits.">
+<meta name="author" content="Dhiaan Dave">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&family=Georgia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.music-page{min-height:100vh;display:flex;flex-direction:column}
+.music-main{flex:1;padding:var(--sp-96) var(--sp-24) var(--sp-48);max-width:800px;margin:0 auto;width:100%}
+@media(max-width:640px){.music-main{padding:var(--sp-80) var(--sp-16) var(--sp-32)}}
+.playlist-card{background:var(--color-card);border:1px solid var(--color-graphite);border-radius:var(--radius-sm);padding:var(--sp-20);margin-bottom:var(--sp-20)}
+.playlist-card h3{font-family:var(--font-mono);font-size:var(--text-sm);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:var(--sp-12);color:var(--color-white)}
+.playlist-card iframe{width:100%;height:380px;border:none;border-radius:4px}
+.playlist-note{font-family:var(--font-serif);font-size:var(--text-base);color:var(--color-steel);line-height:1.6;margin-bottom:var(--sp-32)}
+</style>
+</head>
+<body class="music-page">
+<nav class="page-nav">
+  <a href="index.html" class="nav-logo">Dhiaan Dave</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Writing</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<main class="music-main">
+  <span class="label-tag" style="display:block;margin-bottom:var(--sp-12);letter-spacing:.15em">Music</span>
+  <h1 class="page-title">My Playlists</h1>
+  <p class="playlist-note">Tracks I've been listening to. Let me know what you think.</p>
+
+  <div class="playlist-card">
+    <h3>The Giant Collection</h3>
+    <iframe src="https://open.spotify.com/embed/playlist/01RBsUkFa3MInRzqM43bsB?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <div class="playlist-card">
+    <h3>The Overflow</h3>
+    <iframe src="https://open.spotify.com/embed/playlist/48owf52mZlGQacGll9Rk80?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+</main>
+
+<footer class="site-footer" style="border-top:none">
+  <div class="footer-inner">
+    <span>Curated with care</span>
+    <div class="footer-links">
+      <a href="https://github.com/the-X-alien" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/dhiaan" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

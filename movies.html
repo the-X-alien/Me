@@ -17,7 +17,12 @@ body{background:var(--void);color:var(--white);font-family:var(--font-mono);heig
 .embed-top .title{font-size:var(--text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--steel);white-space:nowrap}
 .site-switcher{min-width:0;max-width:45vw;padding:5px 8px;border:1px solid var(--graphite);border-radius:0;background:var(--void);color:var(--white);font:700 var(--text-xs) var(--font-mono);text-transform:uppercase;letter-spacing:.06em}
 .site-switcher:focus-visible{outline:1px solid var(--white);outline-offset:2px}
+.frame-wrap{position:relative;flex:1;display:flex;min-height:0}
 iframe{flex:1;width:100%;border:none}
+.click-shield{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.click-shield span{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;color:var(--steel);border:1px solid var(--graphite);padding:6px 10px;background:rgba(0,0,0,.55);transition:color .2s,border-color .2s}
+.click-shield:hover span,.click-shield:focus-visible span{color:var(--white);border-color:var(--white)}
+.click-shield.hidden{display:none}
 @media(max-width:420px){.embed-top .title{display:none}.site-switcher{max-width:52vw}}
 </style>
 </head>
@@ -32,17 +37,49 @@ iframe{flex:1;width:100%;border:none}
   <span class="title">Movies</span>
   <a id="open-site" href="https://reelix.ac/" target="_blank" rel="noopener noreferrer">Open</a>
 </div>
-<iframe id="movie-frame" src="https://reelix.ac/" title="Movies: reelix.ac" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-encrypted-media" allowfullscreen></iframe>
+<div class="frame-wrap">
+<iframe id="movie-frame" src="https://reelix.ac/" title="Movies: reelix.ac" loading="lazy" allowfullscreen></iframe>
+<div class="click-shield" id="click-shield" role="button" tabindex="0" aria-label="Enable the player"><span>Click to enable player</span></div>
+</div>
 <script>
 const siteSwitcher = document.getElementById('site-switcher');
 const movieFrame = document.getElementById('movie-frame');
 const openSite = document.getElementById('open-site');
+const clickShield = document.getElementById('click-shield');
+
+// Popup guard 1: the first click on these embeds is what usually fires a
+// popup or new tab. This shield eats that first click so nothing can
+// launch, then gets out of the way. It re-arms when the site is switched.
+function disarmShield(){ clickShield.classList.add('hidden'); }
+clickShield.addEventListener('click', disarmShield);
+clickShield.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); disarmShield(); }
+});
+
 siteSwitcher.addEventListener('change', () => {
   const siteUrl = siteSwitcher.value;
   const siteName = siteSwitcher.options[siteSwitcher.selectedIndex].text;
   movieFrame.src = siteUrl;
   movieFrame.title = `Movies: ${siteName}`;
   openSite.href = siteUrl;
+  clickShield.classList.remove('hidden');
+});
+
+// Popup guard 2: without the iframe sandbox, a clicked embed can still try
+// to redirect THIS page (top navigation). Arm a short beforeunload guard
+// right after each click inside the frame so the browser asks before the
+// page gets hijacked, without nagging during normal browsing.
+let topNavGuardUntil = 0;
+window.addEventListener('blur', () => {
+  if (document.activeElement === movieFrame) {
+    topNavGuardUntil = Date.now() + 2500;
+  }
+});
+window.addEventListener('beforeunload', (e) => {
+  if (Date.now() < topNavGuardUntil) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
 });
 </script>
 </body>

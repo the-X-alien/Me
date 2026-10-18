@@ -1,3 +1,5 @@
+const { isBlockedUrl, COSMETIC } = require('./blocklist');
+
 module.exports = async (req, res) => {
   const raw = req.query.url;
   if (!raw) return res.status(400).send('Missing ?url=');
@@ -50,7 +52,43 @@ module.exports = async (req, res) => {
     body = body.replace(/<base[^>]*>/gi, '');
 
     // Inject ours right after <head> so it wins
-    body = body.replace(/<head[^>]*>/i, (match) => match + `<base href="${baseHref}">`);
+    const { DOMAINS } = require('./blocklist');
+    const blockerScript = `<script>(function(){
+var D=${JSON.stringify(DOMAINS)},n=0;
+function bad(u){try{var h=new URL(u,document.baseURI).hostname.toLowerCase();return D.some(function(d){return h===d||h.endsWith('.'+d)})}catch(e){return false}}
+function hit(){n++;try{parent.postMessage({blocked:n},'*')}catch(e){}}
+window.open=function(){hit();return null};
+var of=window.fetch;if(of)window.fetch=function(u){var s=typeof u==='string'?u:(u&&u.url);if(bad(s)){hit();return Promise.reject(new TypeError('blocked'))}return of.apply(this,arguments)};
+var ox=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){if(bad(u)){hit();this.send=function(){};return}return ox.apply(this,arguments)};
+if(navigator.sendBeacon){var ob=navigator.sendBeacon.bind(navigator);navigator.sendBeacon=function(u){if(bad(u)){hit();return true}return ob.apply(navigator,arguments)}}
+new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(el){if(el.nodeType===1&&/^(SCRIPT|IFRAME|IMG|LINK)$/.test(el.tagName)){var u=el.src||el.href;if(u&&bad(u)){el.remove();hit()}}})})}).observe(document,{childList:true,subtree:true});
+var st=document.createElement('style');st.textContent=${JSON.stringify(COSMETIC.join(',') + '{display:none!important}')};
+document.documentElement.appendChild(st);
+})();<\/script>`;
+    body = body.replace(/<head[^>]*>/i, (match) => match + `<base href="${baseHref}">` + blockerScript);
+
+    // Ad/tracker blocking: drop resource tags that point at blocked hosts
+    let blockedCount = 0;
+    const dropIfBlocked = (re, attr) => {
+      body = body.replace(re, (m) => {
+        const mm = m.match(new RegExp('\\s' + attr + '\\s*=\\s*["\']?([^"\'\\s>]+)', 'i'));
+        if (mm && isBlockedUrl(mm[1], baseHref)) { blockedCount++; return ''; }
+        return m;
+      });
+    };
+    body = body.replace(/<script\b[^>]*\bsrc\s*=[^>]*>\s*<\/script>/gi, (m) => {
+      const mm = m.match(/\ssrc\s*=\s*["']?([^"'\s>]+)/i);
+      if (mm && isBlockedUrl(mm[1], baseHref)) { blockedCount++; return ''; }
+      return m;
+    });
+    dropIfBlocked(/<img\b[^>]*>/gi, 'src');
+    dropIfBlocked(/<link\b[^>]*>/gi, 'href');
+    dropIfBlocked(/<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi, 'src');
+    // Inline scripts that load known ad/popup networks
+    body = body.replace(/<script\b(?![^>]*\bsrc\b)[^>]*>[\s\S]*?<\/script>/gi, (m) => {
+      if (!m.includes('function bad(u)') && /googlesyndication|doubleclick\.net|adsbygoogle|popunder|propellerads|exoclick|adsterra|popads|taboola|outbrain/i.test(m)) { blockedCount++; return ''; }
+      return m;
+    });
 
     // Rewrite <a href> and <area href> through proxy
     body = body.replace(
@@ -92,13 +130,15 @@ module.exports = async (req, res) => {
 
     // Inject navigation script so users can click links / submit forms inside the srcdoc iframe
     const navScript = `<script>
-document.addEventListener('click',function(e){var a=e.target.closest('a');if(a&&a.href&&!a.target){e.preventDefault();parent.postMessage({nav:a.href},'*')}});
+document.addEventListener('click',function(e){var a=e.target.closest('a');if(a&&a.href&&/^https?:/i.test(a.href)){e.preventDefault();parent.postMessage({nav:a.href,newtab:a.target==='_blank'||e.ctrlKey||e.metaKey},'*')}});
 document.addEventListener('submit',function(e){e.preventDefault();var f=e.target,u=f.action||location.href,d=new FormData(f),q=new URLSearchParams(d).toString();if(q)u+=(u.includes('?')?'&':'?')+q;parent.postMessage({nav:u},'*')});
 <\/script>`;
     body = body.replace('</body>', navScript + '</body>');
 
     res.setHeader('Content-Type', contentType);
     res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    res.setHeader('X-Blocked-Count', String(blockedCount));
+    res.setHeader('Access-Control-Expose-Headers', 'X-Blocked-Count');
     res.status(200).send(body);
   } catch (err) {
     res.status(502).send('Proxy error: ' + err.message);

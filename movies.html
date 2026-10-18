@@ -11,19 +11,39 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{--void:#000;--white:#fff;--ash:#c6c6c6;--graphite:#4d4d4d;--steel:#808080;--font-mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--text-xs:10px;--text-sm:12px}
 body{background:var(--void);color:var(--white);font-family:var(--font-mono);height:100vh;display:flex;flex-direction:column}
-.embed-top{display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px solid var(--graphite);flex-shrink:0;height:48px}
-.embed-top a{color:var(--steel);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;text-decoration:none;transition:color .2s}
+.embed-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border-bottom:1px solid var(--graphite);flex-shrink:0;height:48px}
+.embed-top a{color:var(--steel);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.1em;text-decoration:none;transition:color .2s;white-space:nowrap}
 .embed-top a:hover{color:var(--white)}
-.embed-top .title{font-size:var(--text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--steel)}
+.embed-top .title{font-size:var(--text-sm);text-transform:uppercase;letter-spacing:.08em;color:var(--steel);white-space:nowrap}
+.site-switcher{min-width:0;max-width:45vw;padding:5px 8px;border:1px solid var(--graphite);border-radius:0;background:var(--void);color:var(--white);font:700 var(--text-xs) var(--font-mono);text-transform:uppercase;letter-spacing:.06em}
+.site-switcher:focus-visible{outline:1px solid var(--white);outline-offset:2px}
 iframe{flex:1;width:100%;border:none}
+@media(max-width:420px){.embed-top .title{display:none}.site-switcher{max-width:52vw}}
 </style>
 </head>
 <body>
 <div class="embed-top">
   <a href="index.html">&#8592; Home</a>
+  <select class="site-switcher" id="site-switcher" aria-label="Choose a movie site">
+    <option value="https://reelix.ac/">reelix.ac</option>
+    <option value="https://stellar.gdn/">stellar.gdn</option>
+    <option value="https://cornclick.com/">cornclick.com</option>
+  </select>
   <span class="title">Movies</span>
-  <a href="https://reelix.ac" target="_blank">Open</a>
+  <a id="open-site" href="https://reelix.ac/" target="_blank" rel="noopener noreferrer">Open</a>
 </div>
-<iframe src="https://reelix.ac" title="Movies" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-encrypted-media" allowfullscreen></iframe>
+<iframe id="movie-frame" src="https://reelix.ac/" title="Movies: reelix.ac" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-encrypted-media" allowfullscreen></iframe>
+<script>
+const siteSwitcher = document.getElementById('site-switcher');
+const movieFrame = document.getElementById('movie-frame');
+const openSite = document.getElementById('open-site');
+siteSwitcher.addEventListener('change', () => {
+  const siteUrl = siteSwitcher.value;
+  const siteName = siteSwitcher.options[siteSwitcher.selectedIndex].text;
+  movieFrame.src = siteUrl;
+  movieFrame.title = `Movies: ${siteName}`;
+  openSite.href = siteUrl;
+});
+</script>
 </body>
 </html>

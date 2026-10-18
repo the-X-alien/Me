@@ -60,11 +60,6 @@ a{color:inherit;text-decoration:none}
 .bm:hover{color:var(--white);border-color:var(--white)}
 .bm-empty{font-size:var(--text-xs);color:var(--graphite)}
 .badge{font-size:var(--text-xs);color:var(--steel);border:1px solid var(--graphite);border-radius:var(--radius-sm);padding:4px 8px;flex-shrink:0;white-space:nowrap}
-.panel{position:absolute;inset:0;background:var(--void);overflow:auto;padding:16px;z-index:5}
-.panel h2{font-size:var(--text-sm);text-transform:uppercase;letter-spacing:.1em;color:var(--ash);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-.panel .row{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--surface);font-size:var(--text-xs);cursor:pointer;color:var(--steel)}
-.panel .row:hover{color:var(--white)}
-.panel .row .t{color:var(--graphite);flex-shrink:0}
 .content-area iframe.hidden{display:none}
 .nav-btn.on{color:#ffd60a;border-color:#ffd60a}
 </style>
@@ -76,7 +71,6 @@ a{color:inherit;text-decoration:none}
   <span class="browser-title">Browser</span>
   <div style="flex:1"></div>
   <span class="badge" id="blockedBadge" title="Ads/trackers/popups blocked in this tab">0 blocked</span>
-  <button class="go-btn" id="histBtn" title="History (Alt+H)">History</button>
 </div>
 
 <div class="tab-bar" id="tabBar">
@@ -91,6 +85,7 @@ a{color:inherit;text-decoration:none}
     <input type="text" id="urlInput" placeholder="Search or enter URL... (Alt+L)" spellcheck="false" autocomplete="off">
   </div>
   <button class="nav-btn" id="starBtn" title="Bookmark this page (Alt+D)">&#9734;</button>
+  <button class="nav-btn on" id="abBtn" title="Ad blocker for this site (Alt+B)" style="font-size:9px;font-weight:700">AB</button>
   <button class="go-btn" id="goBtn">Go</button>
   <button class="go-btn" id="popoutBtn" title="Open in real browser tab" style="font-size:14px;padding:var(--sp-4) var(--sp-8)">&#x2197;</button>
 </div>
@@ -103,7 +98,6 @@ a{color:inherit;text-decoration:none}
     <div class="big-icon">&#x2315;</div>
     <p>Enter a URL or search term above</p>
   </div>
-  <div class="panel" id="histPanel" style="display:none"></div>
 </div>
 
 <script>
@@ -113,10 +107,17 @@ var LS = window.localStorage;
 function load(k, d) { try { return JSON.parse(LS.getItem(k)) || d; } catch (e) { return d; } }
 function save(k, v) { try { LS.setItem(k, JSON.stringify(v)); } catch (e) {} }
 var bookmarks = load('br_bookmarks', []);
-var historyLog = load('br_history', []);
+// Ad blocker prefs: '*' is the global default, per-host overrides. Persisted locally.
+var adblock = load('br_adblock', { '*': true });
+function abFor(url) {
+  try { var h = new URL(url).hostname; if (h in adblock) return adblock[h]; } catch (e) {}
+  return adblock['*'] !== false;
+}
+// History feature was removed; drop anything previously stored.
+try { LS.removeItem('br_history'); } catch (e) {}
 
 var $ = function (id) { return document.getElementById(id); };
-var area = $('contentArea'), startPage = $('startPage'), histPanel = $('histPanel');
+var area = $('contentArea'), startPage = $('startPage');
 
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function getActiveTab() { return tabs.find(function (t) { return t.id === activeTabId; }); }
@@ -131,7 +132,6 @@ function createTab(url) {
 }
 function activateTab(id) {
   activeTabId = id;
-  hideHistory();
   renderTabs();
   showActive();
 }
@@ -180,6 +180,11 @@ function updateUI() {
   var on = t && t.url && bookmarks.some(function (b) { return b.url === t.url; });
   $('starBtn').classList.toggle('on', !!on);
   $('starBtn').innerHTML = on ? '&#9733;' : '&#9734;';
+  var abState = t && t.url ? abFor(t.url) : adblock['*'] !== false;
+  $('abBtn').classList.toggle('on', !!abState);
+  $('abBtn').title = t && t.url
+    ? 'Ad blocker for ' + (function(){ try { return new URL(t.url).hostname; } catch (e) { return 'this site'; } })() + ': ' + (abState ? 'ON' : 'OFF') + ' (Alt+B)'
+    : 'Ad blocker default: ' + (abState ? 'ON' : 'OFF') + ' (Alt+B)';
 }
 
 // === Navigation ===
@@ -204,7 +209,6 @@ function navigate(id, input, noPush) {
   loadTab(t);
 }
 function loadTab(t) {
-  hideHistory();
   t.blocked = 0;
   if (!t.iframe) {
     var f = document.createElement('iframe');
@@ -219,7 +223,7 @@ function loadTab(t) {
   renderTabs();
   showActive();
   var iframe = t.iframe, wantUrl = t.url;
-  fetch('/api/proxy?url=' + encodeURIComponent(t.url))
+  fetch('/api/proxy?url=' + encodeURIComponent(t.url) + (abFor(t.url) ? '' : '&adblock=0'))
     .then(function (r) {
       if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
       var n = parseInt(r.headers.get('X-Blocked-Count') || '0', 10);
@@ -232,7 +236,6 @@ function loadTab(t) {
       var m = o.html.match(/<title[^>]*>([^<]+)<\/title>/i);
       t.title = m ? m[1].trim() : t.url;
       setLoading(false);
-      logHistory(t.url, t.title);
       renderTabs();
     })
     .catch(function (err) {
@@ -268,28 +271,20 @@ window.addEventListener('message', function (e) {
   }
 });
 
-// === History ===
-function logHistory(url, title) {
-  historyLog = historyLog.filter(function (h) { return h.url !== url; });
-  historyLog.unshift({ url: url, title: title, t: Date.now() });
-  historyLog = historyLog.slice(0, 200);
-  save('br_history', historyLog);
+// === Ad blocker toggle ===
+// With a page loaded: toggles the blocker for that site's hostname (per-site override).
+// On the start page: toggles the global default. Reloads the current tab so it takes effect.
+function toggleAdblock() {
+  var t = getActiveTab();
+  if (t && t.url) {
+    try { adblock[new URL(t.url).hostname] = !abFor(t.url); } catch (e) { adblock['*'] = !(adblock['*'] !== false); }
+  } else {
+    adblock['*'] = !(adblock['*'] !== false);
+  }
+  save('br_adblock', adblock);
+  updateUI();
+  if (t && t.url) loadTab(t);
 }
-function showHistory() {
-  var h = '<h2><span>History</span><button class="go-btn" id="clrHist">Clear</button></h2>';
-  if (!historyLog.length) h += '<div class="row">Nothing yet</div>';
-  historyLog.forEach(function (x, i) {
-    h += '<div class="row" data-i="' + i + '"><span class="t">' + new Date(x.t).toLocaleString() + '</span><span>' + esc(x.title) + '</span></div>';
-  });
-  histPanel.innerHTML = h;
-  histPanel.style.display = 'block';
-  $('clrHist').onclick = function () { historyLog = []; save('br_history', []); showHistory(); };
-  histPanel.querySelectorAll('.row[data-i]').forEach(function (r) {
-    r.onclick = function () { navigate(activeTabId || createTab(''), historyLog[+r.dataset.i].url); };
-  });
-}
-function hideHistory() { histPanel.style.display = 'none'; }
-function toggleHistory() { if (histPanel.style.display === 'none') showHistory(); else hideHistory(); }
 
 // === Bookmarks ===
 function renderBookmarks() {
@@ -326,7 +321,7 @@ $('fwdBtn').addEventListener('click', goForward);
 $('refreshBtn').addEventListener('click', refresh);
 $('newTabBtn').addEventListener('click', function () { createTab(''); $('urlInput').focus(); });
 $('starBtn').addEventListener('click', toggleBookmark);
-$('histBtn').addEventListener('click', toggleHistory);
+$('abBtn').addEventListener('click', toggleAdblock);
 // Alt-based shortcuts (Ctrl+T/W/L are reserved by the real browser)
 document.addEventListener('keydown', function (e) {
   if (!e.altKey) return;
@@ -336,7 +331,7 @@ document.addEventListener('keydown', function (e) {
   else if (k === 'l') $('urlInput').focus();
   else if (k === 'r') refresh();
   else if (k === 'd') toggleBookmark();
-  else if (k === 'h') toggleHistory();
+  else if (k === 'b') toggleAdblock();
   else if (e.key === 'ArrowLeft') goBack();
   else if (e.key === 'ArrowRight') goForward();
   else used = false;

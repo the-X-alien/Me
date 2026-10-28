@@ -2,8 +2,10 @@
 
 Upstream: platzhersh/pacman-canvas
 Source: https://github.com/platzhersh/pacman-canvas
-License: CC0-1.0 (code); assets per author notes (see LICENSE file in this directory)
+License: CC0-1.0 (see LICENSE.md file in this directory)
 
-Notes: Author credit retained in-page.
+Notes: Author credit retained in-page. Game graphics are author-drawn (canvas vector code and author-made SVG/icons), covered by the repo's CC0 dedication.
 
-Asset/branding note: the license above covers this repository's code and bundled assets only. It does not grant rights to the original game's name, characters, or artwork. This is a fan-made clone inspired by a third-party game; the underlying game IP belongs to its original owner. Treat the clone's visuals/branding as unverified third-party rights, not cleared by the code license.
+Asset exception handled: the upstream README credits game sounds to third-party sites (soundfxcenter.com, soundfxnow.com) with no verifiable redistribution license, so the mp3/wav sound files and the audio elements were removed from this copy. The game plays silently; its sound code skips missing audio elements by design.
+
+Branding note: "Pac-Man", the character, and the original arcade game are Bandai Namco IP. The CC0 dedication covers only what this repo's author created (code and drawn assets); it cannot grant rights to the underlying game concept, name, or character.

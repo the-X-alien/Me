@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+<base href="/fun/games/hextris/">
+		<title>Hextris</title>
+		<meta name="description" content="An addictive puzzle game inspired by Tetris.">
+		<link rel="manifest" href="manifest.webmanifest">
+		<meta name="apple-itunes-app" content="app-id=903769553"/>
+		<meta name="apple-mobile-web-app-title" content="Hextris">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<link rel="apple-touch-icon" sizes="120x120" href="images/icons/apple-touch-120.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="images/icons/apple-touch-152.png">
+		<link rel="apple-touch-icon" sizes="167x167" href="images/icons/apple-touch-167.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-180.png">
+		<link rel="apple-touch-icon" sizes="512x512" href="images/icons/apple-touch-512.png">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui"/>
+		<meta property="og:url" content="http://hextris.github.io/hextris/"/>
+		<meta property="og:site_name" content="Hextris"/>
+		<meta property="og:title" content="Hextris"/>
+		<meta property="og:description" content="An addictive puzzle game inspired by Tetris."/>
+		<meta property="og:type" content="website"/>
+		<meta property="og:author" content="https://www.facebook.com/hextris"/>
+		<meta property="og:image" content="http://hextris.github.io/hextris/images/facebook-opengraph.png"/>
+		<meta property="og:image:width" content="1200"/>
+		<meta property="og:image:height" content="630"/>
+		<meta property="twitter:card" content="summary"/>
+		<meta property="twitter:site" content="@hextris"/>
+		<meta property="twitter:site:id" content="2742209678"/>
+		<meta property="twitter:creator" content="@hextris"/>
+		<meta property="twitter:creator:id" content="2742209678"/>
+		<meta property="twitter:domain" content="http://hextris.github.io"/>
+		<meta property="twitter:title" content="Hextris"/>
+		<meta property="twitter:description" content="An addictive puzzle game inspired by Tetris."/>
+		<meta property="twitter:image:src" content="http://hextris.github.io/hextris/images/twitter-opengraph.png"/>
+		<meta property="twitter:image:width" content="512"/>
+		<meta property="twitter:image:height" content="512"/>
+		<meta property="twitter:app:id:iphone" content="id903769553">
+		<meta property="twitter:app:id:ipad" content="id903769553">
+		<meta property="twitter:app:id:googleplay" content="com.hextris.hextris">
+		<meta property="twitter:app:country" content="us">
+		<meta property="twitter:app:url:iphone" content="itunes.apple.com/us/app/id903769553?mt=8">
+		<meta property="twitter:app:url:ipad" content="itunes.apple.com/us/app/id903769553?mt=8">
+		<meta property="twitter:app:url:googleplay" content="https://play.google.com/store/apps/details?id=com.hextris.hextris">
+		<link rel="icon" type="image/png" href="favicon.ico">
+		<style>
+@font-face{font-family:'Exo 2';font-style:normal;font-weight:400;src:url('fonts/exo2-latin-ext.woff2') format('woff2');unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Exo 2';font-style:normal;font-weight:400;src:url('fonts/exo2-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+</style>
+		<link rel="stylesheet" href="style/fa/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="style/style.css">
+		<script type='text/javascript' src="vendor/hammer.min.js"></script>
+		<script type='text/javascript' src="vendor/js.cookie.js"></script>
+		<script type='text/javascript' src="vendor/jsonfn.min.js"></script>
+		<script type='text/javascript' src="vendor/keypress.min.js"></script>
+		<script type='text/javascript' src="vendor/jquery.js"></script>
+		<script type='text/javascript' src="js/save-state.js"></script>
+		<script type='text/javascript' src="js/view.js"></script>
+		<script type='text/javascript' src="js/wavegen.js"></script>
+		<script type='text/javascript' src="js/math.js"></script>
+		<script type='text/javascript' src="js/Block.js"></script>
+		<script type='text/javascript' src="js/Hex.js"></script>
+		<script type='text/javascript' src="js/Text.js"></script>
+		<script type='text/javascript' src="js/comboTimer.js"></script>
+		<script type='text/javascript' src="js/checking.js"></script>
+		<script type='text/javascript' src='js/update.js'></script>
+		<script type='text/javascript' src='js/render.js'></script>
+		<script type='text/javascript' src="js/input.js"></script>
+		<script type='text/javascript' src="js/main.js"></script>
+		<script type='text/javascript' src="js/initialization.js"></script>
+		<script src="vendor/sweet-alert.min.js"></script>
+		
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+		<div id="overlay" class="faded overlay"></div>
+		<div id='startBtn' ></div>
+		<div id="helpScreen" class='unselectable'>
+			<div id='inst_main_body'></div>
+		</div>
+		<img id="openSideBar" class='helpText' src="./images/btn_help.svg"/>
+		<div class="faded overlay"></div>
+		<img id="pauseBtn" src="./images/btn_pause.svg"/>
+		<img id='restartBtn' src="./images/btn_restart.svg"/>
+		<div id='HIGHSCORE'>HIGH SCORE</div>
+		
+		<div id='highScoreInGameText'>
+			<div id='highScoreInGameTextHeader'>HIGH SCORE</div><div id='currentHighScore'>10292</div>
+		</div>
+		<div id="gameoverscreen">
+			<div id='container'>
+				<div id='gameOverBox' class='GOTitle'>GAME OVER</div>
+				<div id='cScore'>1843</div>
+				<div id='highScoresTitle' class='GOTitle'>HIGH SCORES</div>
+				<div class='score'><span class='scoreNum'>1.</span> <div id="1place" style="display:inline;">0</div></div>
+				<div class='score'><span class='scoreNum'>2.</span> <div id="2place" style="display:inline;">0</div></div>
+				<div class='score'><span class='scoreNum'>3.</span> <div id="3place" style="display:inline;">0</div></div>
+			</div>
+			<div id='bottomContainer'>
+				<img id='restart' src='./images/btn_restart.svg' height='57px'>
+				<div id='buttonCont'></div>
+			</div>
+		</div>
+	</body>
+</html>

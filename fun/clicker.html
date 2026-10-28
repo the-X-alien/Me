@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coin Clicker — Dhiaan Dave</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--void:#000;--white:#fff;--ash:#c6c6c6;--graphite:#4d4d4d;--steel:#808080;--font-mono:'Space Mono',ui-monospace,monospace}
+body{background:var(--void);color:var(--white);font-family:var(--font-mono);min-height:100vh;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--graphite);height:48px;flex-shrink:0}
+.top a{color:var(--steel);font-size:10px;text-transform:uppercase;letter-spacing:.1em;text-decoration:none}
+.top a:hover{color:var(--white)}
+.top .t{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--steel)}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px 16px;max-width:560px;margin:0 auto;width:100%}
+#count{font-size:clamp(30px,8vw,52px);font-weight:700}
+#rate{color:var(--steel);font-size:11px;text-transform:uppercase;letter-spacing:.1em}
+#coin{width:140px;height:140px;border-radius:50%;border:2px solid var(--white);background:#0a0a0a;color:var(--white);font-family:var(--font-mono);font-size:44px;cursor:pointer;transition:transform .05s;user-select:none}
+#coin:active{transform:scale(.93)}
+.shop{width:100%;display:flex;flex-direction:column;gap:10px}
+.up{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--graphite);padding:14px 16px}
+.up .n{font-size:13px;font-weight:700}
+.up .d{font-size:10px;color:var(--steel);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.up button{background:none;border:1px solid var(--graphite);color:var(--white);font-family:var(--font-mono);font-size:11px;padding:8px 14px;cursor:pointer;white-space:nowrap}
+.up button:hover:not(:disabled){border-color:var(--white)}
+.up button:disabled{color:var(--graphite);cursor:default}
+.msg{color:var(--ash);font-size:10px;text-transform:uppercase;letter-spacing:.1em;min-height:14px}
+</style>
+</head>
+<body>
+<div class="top">
+  <a href="../fun.html">&#8592; /fun</a>
+  <span class="t">Coin Clicker</span>
+  <a href="../index.html">Home</a>
+</div>
+<main>
+  <div id="count">0</div>
+  <div id="rate">0 per click &middot; 0 per second</div>
+  <button id="coin">$</button>
+  <div class="shop">
+    <div class="up"><div><div class="n">Better fingers</div><div class="d">+1 coin per click &middot; owned <span id="o1">0</span></div></div><button id="u1">10 coins</button></div>
+    <div class="up"><div><div class="n">Auto clicker</div><div class="d">+1 coin per second &middot; owned <span id="o2">0</span></div></div><button id="u2">50 coins</button></div>
+    <div class="up"><div><div class="n">Golden touch</div><div class="d">+5 coins per click &middot; owned <span id="o3">0</span></div></div><button id="u3">250 coins</button></div>
+    <div class="up"><div><div class="n">Coin mine</div><div class="d">+10 coins per second &middot; owned <span id="o4">0</span></div></div><button id="u4">1000 coins</button></div>
+  </div>
+  <div class="msg">Progress saves on this device</div>
+</main>
+<script>
+let st=JSON.parse(localStorage.getItem('clicker-save')||'null')||{coins:0,per:1,auto:0,o:[0,0,0,0]};
+const ups=[{base:10,c:1,a:0},{base:50,c:0,a:1},{base:250,c:5,a:0},{base:1000,c:0,a:10}];
+function cost(i){return Math.floor(ups[i].base*Math.pow(1.6,st.o[i]))}
+function fmt(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':Math.floor(n)}
+function draw(){document.getElementById('count').textContent=fmt(st.coins);
+document.getElementById('rate').textContent=st.per+' per click · '+st.auto+' per second';
+ups.forEach((u,i)=>{document.getElementById('o'+(i+1)).textContent=st.o[i];
+const b=document.getElementById('u'+(i+1));b.textContent=cost(i)+' coins';b.disabled=st.coins<cost(i)})}
+document.getElementById('coin').onclick=()=>{st.coins+=st.per;draw()};
+ups.forEach((u,i)=>{document.getElementById('u'+(i+1)).onclick=()=>{const c=cost(i);
+if(st.coins<c)return;st.coins-=c;st.o[i]++;st.per+=u.c;st.auto+=u.a;draw()}});
+setInterval(()=>{if(st.auto){st.coins+=st.auto;draw()}},1000);
+setInterval(()=>localStorage.setItem('clicker-save',JSON.stringify(st)),3000);
+window.addEventListener('beforeunload',()=>localStorage.setItem('clicker-save',JSON.stringify(st)));
+draw();
+</script>
+</body>
+</html>

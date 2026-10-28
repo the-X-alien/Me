@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Type Racer — Dhiaan Dave</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--void:#000;--white:#fff;--ash:#c6c6c6;--graphite:#4d4d4d;--steel:#808080;--font-mono:'Space Mono',ui-monospace,monospace}
+body{background:var(--void);color:var(--white);font-family:var(--font-mono);min-height:100vh;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--graphite);height:48px;flex-shrink:0}
+.top a{color:var(--steel);font-size:10px;text-transform:uppercase;letter-spacing:.1em;text-decoration:none}
+.top a:hover{color:var(--white)}
+.top .t{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--steel)}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px 16px;max-width:640px;margin:0 auto;width:100%}
+.hud{display:flex;gap:24px;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--steel)}
+.hud b{color:var(--white)}
+#words{font-size:clamp(16px,4.5vw,22px);line-height:2;text-align:center;max-width:56ch}
+#words .done{color:var(--steel)}
+#words .cur{color:var(--white);border-bottom:2px solid var(--white)}
+#words .next{color:var(--graphite)}
+#in{background:#0a0a0a;border:1px solid var(--graphite);color:var(--white);font-family:var(--font-mono);font-size:16px;padding:12px 16px;width:min(92vw,420px);text-align:center;outline:none}
+#in:focus{border-color:var(--white)}
+.msg{color:var(--ash);font-size:11px;text-transform:uppercase;letter-spacing:.1em;min-height:16px;text-align:center;line-height:1.8}
+button{background:none;border:1px solid var(--graphite);color:var(--white);font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;padding:10px 22px;cursor:pointer}
+button:hover{border-color:var(--white)}
+</style>
+</head>
+<body>
+<div class="top">
+  <a href="../fun.html">&#8592; /fun</a>
+  <span class="t">Type Racer</span>
+  <a href="../index.html">Home</a>
+</div>
+<main>
+  <div class="hud"><span>Time <b id="t">60</b></span><span>WPM <b id="w">0</b></span><span>Accuracy <b id="a">--</b></span></div>
+  <div id="words"></div>
+  <input id="in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="start typing to begin">
+  <div class="msg" id="m">60 seconds on the clock once you start typing</div>
+  <button id="r">Restart</button>
+</main>
+<script>
+const WL='the of and a to in is you that it he was for on are as with his they i at be this have from or one had by word but not what all were we when your can said there use an each which she do how their if will up other about out many then them these so some her would make like him into time has look two more write go see number no way could people my than first water been call who oil its now find long down day did get come made may part over new sound take only little work know place year live me back give most very after thing our just name good sentence man think say great where help through much before line right too mean old any same tell boy follow came want show also around form three small set put end does another well large must big even such because turn here why ask went men read need land different home us move try kind hand picture again change off play spell air away animal house point page letter mother answer found study still learn should world high'.split(' ');
+const box=document.getElementById('words'),inp=document.getElementById('in');
+let words,wi,typed,started,secs,correctChars,totalKeys,rightKeys,timer;
+function pick(){const out=[];let p=null;while(out.length<40){const w=WL[Math.floor(Math.random()*WL.length)];if(w!==p){out.push(w);p=w}}return out}
+function render(){box.innerHTML=words.map((w,i)=>`<span class="${i<wi?'done':i===wi?'cur':'next'}">${w}</span>`).join(' ')}
+function reset(){words=pick();wi=0;typed=0;started=false;secs=60;correctChars=0;totalKeys=0;rightKeys=0;
+document.getElementById('t').textContent=60;document.getElementById('w').textContent=0;document.getElementById('a').textContent='--';
+inp.value='';document.getElementById('m').textContent='60 seconds on the clock once you start typing';
+clearInterval(timer);render()}
+inp.addEventListener('input',()=>{
+if(!started){started=true;timer=setInterval(()=>{secs--;document.getElementById('t').textContent=secs;
+if(secs<=0)finish()},1000)}
+const v=inp.value;
+if(v.endsWith(' ')){const guess=v.trim(),want=words[wi];
+totalKeys+=guess.length;
+for(let i=0;i<Math.min(guess.length,want.length);i++)if(guess[i]===want[i])rightKeys++;
+if(guess===want)correctChars+=want.length+1;
+wi++;if(wi>=words.length){words=words.concat(pick())}
+inp.value='';render();
+document.getElementById('a').textContent=Math.round(rightKeys/Math.max(1,totalKeys)*100)+'%'}});
+function finish(){clearInterval(timer);inp.disabled=true;
+const wpm=Math.round(correctChars/5);const acc=Math.round(rightKeys/Math.max(1,totalKeys)*100);
+document.getElementById('w').textContent=wpm;
+const pb=+localStorage.getItem('tr-best')||0;
+document.getElementById('m').textContent=wpm+' wpm at '+acc+'% accuracy'+(wpm>pb?' - new personal best':'')+'. Hit restart.';
+if(wpm>pb)localStorage.setItem('tr-best',wpm)}
+document.getElementById('r').onclick=()=>{inp.disabled=false;inp.focus();reset()};
+reset();
+</script>
+</body>
+</html>

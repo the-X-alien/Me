@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2048 — Dhiaan Dave</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--void:#000;--white:#fff;--ash:#c6c6c6;--graphite:#4d4d4d;--steel:#808080;--font-mono:'Space Mono',ui-monospace,monospace}
+body{background:var(--void);color:var(--white);font-family:var(--font-mono);min-height:100vh;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--graphite);height:48px;flex-shrink:0}
+.top a{color:var(--steel);font-size:10px;text-transform:uppercase;letter-spacing:.1em;text-decoration:none}
+.top a:hover{color:var(--white)}
+.top .t{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--steel)}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px}
+.hud{display:flex;gap:24px;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--steel)}
+.hud b{color:var(--white)}
+#board{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:min(92vw,420px);aspect-ratio:1;background:#0a0a0a;border:1px solid var(--graphite);padding:8px;touch-action:none}
+.cell{display:flex;align-items:center;justify-content:center;font-weight:700;font-size:clamp(18px,6vw,32px);color:var(--white);background:#111;border:1px solid #1c1c1c}
+.cell[data-v="2"]{background:#1c1c1c}.cell[data-v="4"]{background:#262626}
+.cell[data-v="8"]{background:#333}.cell[data-v="16"]{background:#404040}
+.cell[data-v="32"]{background:#4d4d4d}.cell[data-v="64"]{background:#5f5f5f}
+.cell[data-v="128"]{background:#737373;font-size:clamp(14px,5vw,26px)}.cell[data-v="256"]{background:#8a8a8a;font-size:clamp(14px,5vw,26px)}
+.cell[data-v="512"]{background:#a3a3a3;color:#000;font-size:clamp(14px,5vw,26px)}.cell[data-v="1024"]{background:#c6c6c6;color:#000;font-size:clamp(12px,4vw,22px)}
+.cell[data-v="2048"]{background:#fff;color:#000;font-size:clamp(12px,4vw,22px)}
+.msg{color:var(--ash);font-size:11px;text-transform:uppercase;letter-spacing:.1em;min-height:16px;text-align:center}
+button{background:none;border:1px solid var(--graphite);color:var(--white);font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;padding:10px 22px;cursor:pointer}
+button:hover{border-color:var(--white)}
+</style>
+</head>
+<body>
+<div class="top">
+  <a href="../fun.html">&#8592; /fun</a>
+  <span class="t">2048</span>
+  <a href="../index.html">Home</a>
+</div>
+<main>
+  <div class="hud"><span>Score <b id="s">0</b></span><span>Best <b id="b">0</b></span></div>
+  <div id="board"></div>
+  <div class="msg" id="m">Arrows or swipe to play</div>
+  <button id="r">New game</button>
+</main>
+<script>
+const board=document.getElementById('board');let g,score,best=+localStorage.getItem('g2048-best')||0;
+document.getElementById('b').textContent=best;
+const cells=[];for(let i=0;i<16;i++){const d=document.createElement('div');d.className='cell';board.appendChild(d);cells.push(d)}
+function reset(){g=Array(16).fill(0);score=0;document.getElementById('s').textContent=0;document.getElementById('m').textContent='Arrows or swipe to play';add();add();draw()}
+function add(){const e=g.map((v,i)=>v?-1:i).filter(i=>i>=0);if(!e.length)return;g[e[Math.floor(Math.random()*e.length)]]=Math.random()<.9?2:4}
+function draw(){cells.forEach((c,i)=>{c.textContent=g[i]||'';c.dataset.v=g[i]||''})}
+function line(a){let v=a.filter(n=>n);for(let i=0;i<v.length-1;i++)if(v[i]===v[i+1]){v[i]*=2;score+=v[i];v.splice(i+1,1)}while(v.length<4)v.push(0);return v}
+function move(dir){const before=g.join();
+for(let i=0;i<4;i++){let idx=[];
+for(let j=0;j<4;j++)idx.push(dir==='l'?i*4+j:dir==='r'?i*4+3-j:dir==='u'?j*4+i:(3-j)*4+i);
+const nl=line(idx.map(k=>g[k]));idx.forEach((k,j)=>g[k]=nl[j])}
+if(g.join()===before)return;add();draw();
+document.getElementById('s').textContent=score;
+if(score>best){best=score;localStorage.setItem('g2048-best',best);document.getElementById('b').textContent=best}
+if(!moves())document.getElementById('m').textContent='Game over. Score '+score;
+else if(g.includes(2048))document.getElementById('m').textContent='You hit 2048. Keep going.'}
+function moves(){for(let i=0;i<16;i++){if(!g[i])return true;
+const x=i%4,y=Math.floor(i/4);
+if(x<3&&g[i]===g[i+1])return true;if(y<3&&g[i]===g[i+4])return true}return false}
+document.addEventListener('keydown',e=>{const m={arrowleft:'l',arrowright:'r',arrowup:'u',arrowdown:'d'}[e.key.toLowerCase()];
+if(m){e.preventDefault();move(m)}});
+let tx,ty;board.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+board.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+if(Math.abs(dx)<24&&Math.abs(dy)<24)return;
+move(Math.abs(dx)>Math.abs(dy)?(dx>0?'r':'l'):(dy>0?'d':'u'))});
+document.getElementById('r').onclick=reset;reset();
+</script>
+</body>
+</html>

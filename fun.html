@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fun — Dhiaan Dave</title>
+<meta name="description" content="Unlisted arcade corner. Small games built from scratch.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--void:#000;--white:#fff;--ash:#c6c6c6;--graphite:#4d4d4d;--steel:#808080;--font-mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+body{background:var(--void);color:var(--white);font-family:var(--font-mono);min-height:100vh}
+.top{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--graphite);height:48px}
+.top a{color:var(--steel);font-size:10px;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;transition:color .2s}
+.top a:hover{color:var(--white)}
+.top .t{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--steel)}
+main{max-width:720px;margin:0 auto;padding:48px 20px 64px}
+h1{font-size:clamp(28px,6vw,44px);font-weight:700;letter-spacing:-.02em;margin-bottom:12px}
+.sub{color:var(--ash);font-size:13px;line-height:1.7;max-width:52ch;margin-bottom:40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.card{display:block;border:1px solid var(--graphite);padding:22px 18px;text-decoration:none;color:var(--white);transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--white);transform:translateY(-2px)}
+.card .k{font-size:10px;color:var(--steel);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+.card .n{font-size:18px;font-weight:700;margin-bottom:8px}
+.card .d{font-size:11px;color:var(--ash);line-height:1.6}
+.note{margin-top:48px;padding-top:20px;border-top:1px solid var(--graphite);color:var(--steel);font-size:10px;line-height:1.8;text-transform:uppercase;letter-spacing:.08em}
+</style>
+</head>
+<body>
+<div class="top">
+  <a href="index.html">&#8592; Home</a>
+  <span class="t">/fun</span>
+  <a href="index.html">dhiaandave</a>
+</div>
+<main>
+  <h1>The fun zone</h1>
+  <p class="sub">You found the unlisted page. Everything here is hand-built from scratch: no embeds, no iframes, no accounts. Pick a game.</p>
+  <div class="grid">
+    <a class="card" href="fun/snake.html">
+      <div class="k">Arcade</div>
+      <div class="n">Snake</div>
+      <div class="d">Eat, grow, don&apos;t hit the walls. Arrow keys, WASD or swipe.</div>
+    </a>
+    <a class="card" href="fun/2048.html">
+      <div class="k">Puzzle</div>
+      <div class="n">2048</div>
+      <div class="d">Slide tiles, merge doubles, chase the 2048 tile.</div>
+    </a>
+    <a class="card" href="fun/typeracer.html">
+      <div class="k">Speed</div>
+      <div class="n">Type Racer</div>
+      <div class="d">Sixty seconds. How many words per minute can you actually type?</div>
+    </a>
+    <a class="card" href="fun/clicker.html">
+      <div class="k">Idle</div>
+      <div class="n">Coin Clicker</div>
+      <div class="d">Click the coin. Buy upgrades. Watch the number go up. Progress saves.</div>
+    </a>
+  </div>
+  <div class="note">Not on the menu on purpose &middot; more games get added here over time</div>
+</main>
+</body>
+</html>
